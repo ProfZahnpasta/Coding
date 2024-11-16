@@ -1,0 +1,54 @@
+.red-button { 
+    background-color: red; 
+    color: white; 
+    padding: 10px 20px; 
+    border: 5px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+} 
+.red-button:hover { 
+    background-color: darkred; 
+} 
+
+.button {
+    background-color: grey;
+    font-family: "papyrus";
+    font-size: 20px;
+    text-align: center;
+    align-items: center;
+}
+
+.normalfont {
+    background-color: black;
+    font-weight: lighter;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    font-family: "Rubik Glitch"
+}
+
+
+
+.img {
+    filter: blur(2px);
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.onimage {
+    font-weight: lighter;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    text-align: center; 
+    font-family: "Comic Sans MS";
+}
