@@ -2,12 +2,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        morning_or_evening();
+        morning_or_evening(3874);
     }
 
-    public static void morning_or_evening() {
+    public static void morning_or_evening(Integer age) {
         String name = "Jonas";
-        Integer age = 15;
         Scanner scanner = new Scanner(System.in);
         System.out.print("Wie viel Uhr ist es? ");
         String strhour = scanner.nextLine();
