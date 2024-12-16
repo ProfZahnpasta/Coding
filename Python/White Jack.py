@@ -4,7 +4,7 @@ import time
 
 def main():
     print("Welcome to White Jack.")
-    user_cards = random.randint(1, 10)
+    user_cards = random.randint(0, 10)
     user_cards_total = int(user_cards)
     dealer_cards = random.randint(11, 21)
     print("Your Cards:", user_cards) 
@@ -12,7 +12,7 @@ def main():
     
     def hit():
         nonlocal user_cards_total
-        user_cards = random.randint(1, 10)
+        user_cards = random.randint(0, 10)
         user_cards_total += int(user_cards)
         print("Your Card:", user_cards)
         print("Your total:", user_cards_total)
@@ -31,7 +31,6 @@ def main():
                 if user_cards_total > dealer_cards:
                     play_again = input("You've won! Do you want to play again? y/n ")
                     if play_again == "y":
-                        os.system("cls")
                         main()
                 elif user_cards_total < dealer_cards:
                     print("You've lost! The game will delete itself now. Bye Bye!")
