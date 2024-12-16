@@ -1,3 +1,5 @@
+package com.profzahnpasta;
+
 import java.util.Scanner;
 
 public class Main {
