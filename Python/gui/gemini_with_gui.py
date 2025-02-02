@@ -36,7 +36,7 @@ canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 canvas.configure(yscrollcommand=scrollbar.set)
 canvas.bind_all("<MouseWheel>", on_mouse_wheel)
 
-title = customtkinter.CTkLabel(scrollable_frame, text="What do you want to ask Gemini?", width=720, height=50, font=("monospace", 30, 'bold'))
+title = customtkinter.CTkLabel(scrollable_frame, text="Gemini Chat", width=720, height=50, font=("monospace", 30, 'bold'))
 title.pack(padx=10, pady=10)
 
 entry = customtkinter.CTkEntry(scrollable_frame, font=("monospace", 20, 'bold'), width=400, height=30)
