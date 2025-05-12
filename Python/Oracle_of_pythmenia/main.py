@@ -31,7 +31,7 @@ player_sprite_right_rect.center = ((1400/2, 800/1.5))
 
 running = True
 current_sprite = player_sprite_standing  # Start with the standing sprite
-current_sprite_rect = player_sprite_standing_rect
+current_sprite_rect = player_sprite_standing_rect 
 
 while running:
     screen.fill((0, 180, 255))
