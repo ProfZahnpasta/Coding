@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #000000;
+  --secondary: #8A2BE2;
+  --accent: #E6E6FA;
+  --text-primary: #FFFFFF;
+  --text-secondary: #F5F5F5;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--primary);
+  color: var(--text-primary);
+}
+
+/* Custom cursor styles */
+* {
+  cursor: none;
+}
+
+.cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--secondary);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.cursor-dot {
+  width: 4px;
+  height: 4px;
+  background-color: var(--secondary);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scroll animation */
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 2s infinite;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(45deg, var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}

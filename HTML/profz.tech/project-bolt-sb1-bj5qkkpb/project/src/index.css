@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-primary text-light-gray;
+}
+
+/* Custom cursor styles */
+* {
+  cursor: none;
+}
+
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid theme('colors.secondary');
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.2s ease;
+}
+
+.custom-cursor-dot {
+  width: 4px;
+  height: 4px;
+  background-color: theme('colors.secondary');
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Hover effect for interactive elements */
+a:hover ~ .custom-cursor,
+button:hover ~ .custom-cursor {
+  transform: scale(1.5);
+}

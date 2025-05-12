@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #0a0a0a;
+  --terminal-green: #00ff00;
+  --terminal-shadow: rgba(0, 255, 0, 0.2);
+  --crt-background: #000000;
+}
+
+@font-face {
+  font-family: 'VT323';
+  src: url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+}
+
+body {
+  background-color: var(--crt-background);
+  color: var(--terminal-green);
+  font-family: 'VT323', monospace;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* CRT Effect */
+.crt::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 2;
+  pointer-events: none;
+  animation: flicker 0.15s infinite;
+}
+
+.crt::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(18, 16, 16, 0.1);
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.27861; }
+  5% { opacity: 0.34769; }
+  10% { opacity: 0.23604; }
+  15% { opacity: 0.90626; }
+  20% { opacity: 0.18128; }
+  25% { opacity: 0.83891; }
+  30% { opacity: 0.65583; }
+  35% { opacity: 0.67807; }
+  40% { opacity: 0.26559; }
+  45% { opacity: 0.84693; }
+  50% { opacity: 0.96019; }
+  55% { opacity: 0.08594; }
+  60% { opacity: 0.20313; }
+  65% { opacity: 0.71988; }
+  70% { opacity: 0.53455; }
+  75% { opacity: 0.37288; }
+  80% { opacity: 0.71428; }
+  85% { opacity: 0.70419; }
+  90% { opacity: 0.7003; }
+  95% { opacity: 0.36108; }
+  100% { opacity: 0.24387; }
+}
+
+/* Scrolling Code Effect */
+.code-scroll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+  opacity: 0.1;
+}
+
+.code-scroll::before {
+  content: "";
+  position: absolute;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--terminal-green) 0%,
+    var(--terminal-green) 5%,
+    transparent 5%,
+    transparent 10%
+  );
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(50%); }
+}
+
+/* Terminal Window */
+.terminal {
+  background-color: rgba(0, 0, 0, 0.9);
+  border: 2px solid var(--terminal-green);
+  box-shadow: 0 0 20px var(--terminal-shadow);
+  padding: 20px;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.terminal::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background: var(--terminal-green);
+  opacity: 0.1;
+}
+
+/* Interactive Elements */
+.btn-terminal {
+  background: transparent;
+  border: 1px solid var(--terminal-green);
+  color: var(--terminal-green);
+  padding: 8px 16px;
+  font-family: 'VT323', monospace;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-terminal:hover {
+  background: var(--terminal-green);
+  color: var(--crt-background);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--terminal-shadow);
+}
+
+/* Form Elements */
+.input-terminal {
+  background: transparent;
+  border: 1px solid var(--terminal-green);
+  color: var(--terminal-green);
+  padding: 8px;
+  font-family: 'VT323', monospace;
+  width: 100%;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-terminal:focus {
+  outline: none;
+  box-shadow: 0 0 10px var(--terminal-shadow);
+  border-color: var(--terminal-green);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typing-effect {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 3s steps(40, end);
+}

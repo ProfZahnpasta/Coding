@@ -1,0 +1,79 @@
+:root {
+  --primary: #000000;
+  --secondary: #8A2BE2;
+  --accent: #E6E6FA;
+  --text-primary: #FFFFFF;
+  --text-secondary: #F5F5F5;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--primary);
+  color: var(--text-primary);
+}
+
+/* Scroll animation */
+@keyframes scroll {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 2s infinite;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(45deg, var(--secondary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Project card animations */
+.project-card {
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Skill bar animations */
+.skill-bar {
+  transition: width 1s ease-in-out;
+}
+
+/* Navbar scroll effect */
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+}
