@@ -1,35 +1,69 @@
 import sys
-import time
 import pygame
 import math
 from pygame.locals import *
- 
+import customtkinter
+import google.generativeai as genai
+import tkinter.font as tkFont
+
+pygame.init()
+
+info = pygame.display.Info()
+width, height = info.current_w, info.current_h
+#print(info.current_h)
+
+
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("dark-blue")
+
+window = customtkinter.CTk()
+window.overrideredirect(True)
+window.geometry("300x70+800+970")
+window.update_idletasks()
+#window.geometry("300x30+width/1.85+height-160")
+#window.geometry("340x155")
+#window.title("Ask the Oracle anything...")
+#window.resizable(False, False)
+
+x, y = 300, 200
+#window.geometry(f"330x35+{x}+{y}")
+
+def ask_oracle(event=None):
+    window.destroy()
+    player_input = entry.get()
+
+pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
+entry = customtkinter.CTkEntry(master=window, font=pixel_font, width=300, height=30,placeholder_text="Ask the oracle anything...")
+entry.pack(pady=20)
+entry.bind("<Return>", ask_oracle)  # ask_oracle
+
+
+
 pygame.init()
  
 fps = 60
 fpsClock = pygame.time.Clock()
  
-info = pygame.display.Info()
-width, height = info.current_w, info.current_h
-screen = pygame.display.set_mode((width, height),pygame.RESIZABLE)
+
+screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
 player_sprite_standing = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer steht.png")
 player_sprite_standing = pygame.transform.scale(player_sprite_standing,(194,259.6))
 player_sprite_standing_rect = player_sprite_standing.get_rect()
-player_sprite_standing_rect.center = ((width/2, 920))
+player_sprite_standing_rect.center = ((width/2, height-160))
 
 
 player_sprite_left = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer links.png")
 player_sprite_left = pygame.transform.scale(player_sprite_left,(280,280))
 player_sprite_left_rect = player_sprite_left.get_rect()
-player_sprite_left_rect.center = ((width/2, 920))
+player_sprite_left_rect.center = ((width/2, height-160))
 
 
 player_sprite_right = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer rechts.PNG")
 player_sprite_right = pygame.transform.scale(player_sprite_right,(280,280))
 player_sprite_right_rect = player_sprite_right.get_rect()
-player_sprite_right_rect.center = ((width/2, 920))
+player_sprite_right_rect.center = ((width/2, height-160))
 
 background_wall = pygame.image.load("Oracle_of_pythmenia\imgs\Background_Wall.png")
 background_wall = pygame.transform.scale(background_wall,(16000,1024))
@@ -50,7 +84,7 @@ oracle_sprite_normal_rect.center = (width/2, height/2)
 player_dialogue_box_texture = pygame.image.load("Oracle_of_pythmenia\imgs\player dialogue box.png")
 player_dialogue_box_texture = pygame.transform.scale(player_dialogue_box_texture,(600,600))
 player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect()
-player_dialogue_box_texture_rect.center = (width/1.85, 970)
+player_dialogue_box_texture_rect.center = (width/1.85, height-160)
 
 
 
@@ -60,8 +94,7 @@ oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect()
 oracle_dialogue_box_texture_rect.center = (width/1.9, height/2)
 
 
-speed = 10  # Speed of the background movement
-
+speed = 10
 first_stage = False
 second_stage = True
 third_stage = False
@@ -85,49 +118,46 @@ while running:
             pygame.quit()
             sys.exit()
 
-    # Check which keys are currently pressed
+    
     keys = pygame.key.get_pressed()
 
     if first_stage:
         screen.fill((70, 144, 184, 255))
         
-        # Draw the background
+        
         screen.blit(background_wall, background_wall_rect)
         
-        if keys[K_a]:  # If 'A' is held down
+        if keys[K_a]:
             current_sprite = player_sprite_left
             current_sprite_rect = player_sprite_left_rect
-            # Prevent moving beyond the left edge of the background
+            
             if background_wall_rect.x + speed <= 0:
-                background_wall_rect.x += speed  # Move background to the right
-        elif keys[K_d]:  # If 'D' is held down
+                background_wall_rect.x += speed  
+        elif keys[K_d]:  
             current_sprite = player_sprite_right
             current_sprite_rect = player_sprite_right_rect
-            # Prevent moving beyond the right edge of the background
+            
             if background_wall_rect.x - speed >= -(background_wall.get_width() - width):
-                background_wall_rect.x -= speed  # Move background to the left
-        else:  # If neither 'A' nor 'D' is held down
+                background_wall_rect.x -= speed  
+        else:  
             current_sprite = player_sprite_standing
             current_sprite_rect = player_sprite_standing_rect
+        #print(f"Background X: {background_wall_rect.x}")
 
-        # Check if the player is at the most right position and RETURN is pressed
-        if background_wall_rect.x == -14070:
+        
+        if background_wall_rect.x <= -13680:
             if keys[K_RETURN]:
                 second_stage = True
                 first_stage = False
 
-        # Draw the current sprite
+        
         screen.blit(current_sprite, current_sprite_rect)
 
     elif second_stage:
-        # Turn the screen black
+        
         screen.fill((0, 0, 0))
         screen.blit(background_hall, background_hall_rect)
         screen.blit(player_sprite_standing, player_sprite_standing_rect)
-
-
-        screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
-        screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
 
         if oracle_start_time is None:
             oracle_start_time = pygame.time.get_ticks()
@@ -135,23 +165,23 @@ while running:
         elapsed_time = pygame.time.get_ticks() - oracle_start_time
 
         if elapsed_time >= 3000:  
-            # Berechne die vertikale Position des Orakels basierend auf der Sinus-Funktion
+            
             float_offset += float_speed
             float_y = math.sin(float_offset) * float_amplitude
             oracle_sprite_normal_rect.centery = (height / 2) + float_y
 
-            # Zeichne das schwebende Orakel
+            
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
             oracle_shown = True
 
         if elapsed_time >= 7000:
             oracle_sprite_normal_rect.center = (width/2-380, height/2)
-            # Berechne die vertikale Position des Orakels basierend auf der Sinus-Funktion
+            
             float_offset += float_speed
             float_y = math.sin(float_offset) * float_amplitude
             oracle_sprite_normal_rect.centery = (height / 2) + float_y
 
-            # Zeichne das schwebende Orakel
+            
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
             oracle_shown = True
 
@@ -161,10 +191,11 @@ while running:
         if elapsed_time >= 9000:
             screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
             screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
+            window.mainloop()
     elif third_stage:
         screen.fill((0, 0, 0))
 
-    # Handle quitting the game
+    
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
