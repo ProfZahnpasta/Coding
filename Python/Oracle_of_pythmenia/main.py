@@ -1,6 +1,7 @@
 import sys
- 
+import time
 import pygame
+import math
 from pygame.locals import *
  
 pygame.init()
@@ -36,15 +37,46 @@ background_wall_rect = background_wall.get_rect()
 background_wall_rect.bottomleft = (0, height)
 #background_wall.center = ((1400/2, 800/1.5))
 
-speed = 30  # Speed of the background movement
+background_hall = pygame.image.load("Oracle_of_pythmenia\imgs\Background_Hall.png")
+background_hall = pygame.transform.scale(background_hall,(1024,1024))
+background_hall_rect = background_hall.get_rect()
+background_hall_rect.center = (width/2, height/2)
 
-first_stage = True
-second_stage = False
+oracle_sprite_normal = pygame.image.load("Oracle_of_pythmenia\imgs\Orakel_transparent.png")
+oracle_sprite_normal = pygame.transform.scale(oracle_sprite_normal,(300,300))
+oracle_sprite_normal_rect = oracle_sprite_normal.get_rect()
+oracle_sprite_normal_rect.center = (width/2, height/2)
+
+player_dialogue_box_texture = pygame.image.load("Oracle_of_pythmenia\imgs\player dialogue box.png")
+player_dialogue_box_texture = pygame.transform.scale(player_dialogue_box_texture,(600,600))
+player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect()
+player_dialogue_box_texture_rect.center = (width/1.85, 970)
+
+
+
+oracle_dialogue_box_texture = pygame.image.load("Oracle_of_pythmenia\imgs\oracle_dialogue box.png")
+oracle_dialogue_box_texture = pygame.transform.scale(oracle_dialogue_box_texture,(600,600))
+oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect()
+oracle_dialogue_box_texture_rect.center = (width/1.9, height/2)
+
+
+speed = 10  # Speed of the background movement
+
+first_stage = False
+second_stage = True
 third_stage = False
 
 
+oracle_shown = False
+oracle_start_time = None 
+
+
+float_offset = 0 
+float_speed = 0.02
+float_amplitude = 10
+
 running = True
-current_sprite = player_sprite_standing  # Start with the standing sprite
+current_sprite = player_sprite_standing
 current_sprite_rect = player_sprite_standing_rect 
 
 while running:
@@ -90,7 +122,45 @@ while running:
     elif second_stage:
         # Turn the screen black
         screen.fill((0, 0, 0))
+        screen.blit(background_hall, background_hall_rect)
+        screen.blit(player_sprite_standing, player_sprite_standing_rect)
 
+
+        screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
+        screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
+
+        if oracle_start_time is None:
+            oracle_start_time = pygame.time.get_ticks()
+
+        elapsed_time = pygame.time.get_ticks() - oracle_start_time
+
+        if elapsed_time >= 3000:  
+            # Berechne die vertikale Position des Orakels basierend auf der Sinus-Funktion
+            float_offset += float_speed
+            float_y = math.sin(float_offset) * float_amplitude
+            oracle_sprite_normal_rect.centery = (height / 2) + float_y
+
+            # Zeichne das schwebende Orakel
+            screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
+            oracle_shown = True
+
+        if elapsed_time >= 7000:
+            oracle_sprite_normal_rect.center = (width/2-380, height/2)
+            # Berechne die vertikale Position des Orakels basierend auf der Sinus-Funktion
+            float_offset += float_speed
+            float_y = math.sin(float_offset) * float_amplitude
+            oracle_sprite_normal_rect.centery = (height / 2) + float_y
+
+            # Zeichne das schwebende Orakel
+            screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
+            oracle_shown = True
+
+            player_sprite_standing_rect.center = ((width/2-380, 920))
+            screen.blit(player_sprite_standing, player_sprite_standing_rect)
+
+        if elapsed_time >= 9000:
+            screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
+            screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
     elif third_stage:
         screen.fill((0, 0, 0))
 
