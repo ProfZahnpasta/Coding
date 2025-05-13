@@ -44,7 +44,8 @@ pygame.init()
 fps = 60
 fpsClock = pygame.time.Clock()
  
-
+icon = pygame.image.load("Oracle_of_pythmenia\imgs\icon.png")
+pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
