@@ -1,3 +1,5 @@
+
+
 from google import genai
 from google.genai import types
 
@@ -49,3 +51,4 @@ running = True
 while running:
     user_input = input(">>>")
     ask_gemini(user_input)
+    print(conversation_history)
