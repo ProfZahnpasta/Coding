@@ -253,6 +253,7 @@ while running:
             screen.blit(player_sprite_standing, player_sprite_standing_rect)
 
         if elapsed_time >= 9000:
+            conversation_history = []
             screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
             screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
             screen.blit(player_text, player_text_rect)
