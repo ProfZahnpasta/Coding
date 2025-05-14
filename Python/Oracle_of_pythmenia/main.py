@@ -18,7 +18,7 @@ customtkinter.set_default_color_theme("dark-blue")
 
 window = customtkinter.CTk()
 window.overrideredirect(True)
-window.geometry("300x70+800+970")
+window.geometry("300x70+860+970")
 window.update_idletasks()
 #window.geometry("300x30+width/1.85+height-160")
 #window.geometry("340x155")
@@ -31,6 +31,7 @@ x, y = 300, 200
 def ask_oracle(event=None):
     window.destroy()
     player_input = entry.get()
+
 
 pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
 entry = customtkinter.CTkEntry(master=window, font=pixel_font, width=300, height=30,placeholder_text="Ask the oracle anything...")
@@ -192,6 +193,7 @@ while running:
         if elapsed_time >= 9000:
             screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
             screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
+            pygame.display.flip()
             window.mainloop()
     elif third_stage:
         screen.fill((0, 0, 0))
@@ -200,6 +202,5 @@ while running:
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
-
     pygame.display.flip()
     fpsClock.tick(fps)
