@@ -97,8 +97,8 @@ oracle_dialogue_box_texture_rect.center = (width/1.9, height/2)
 
 
 speed = 10
-first_stage = False
-second_stage = True
+first_stage = True
+second_stage = False
 third_stage = False
 
 

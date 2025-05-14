@@ -38,7 +38,6 @@ def ask_gemini(user_input):
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=user_input,
-        #messages=""
         config=types.GenerateContentConfig(
             system_instruction=f"{system_instruction_oracle} These are the previous messages, so you can comprehend the chat history: {conversation_history}"
         )
@@ -51,4 +50,4 @@ running = True
 while running:
     user_input = input(">>>")
     ask_gemini(user_input)
-    print(conversation_history)
+    #print(conversation_history)
