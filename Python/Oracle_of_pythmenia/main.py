@@ -3,15 +3,50 @@ import pygame
 import math
 from pygame.locals import *
 import customtkinter
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import tkinter.font as tkFont
 
 pygame.init()
 
 info = pygame.display.Info()
 width, height = info.current_w, info.current_h
-#print(info.current_h)
 
+client = genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
+system_instruction_oracle = """Role Play. Only answer as your charakter, nothing else.  
+Your the oracle of Pythmenia in an same-named retro game, an oracle, that was once friendly and helped the citizens of pythmenia, 
+for example telling when storms and droughts will come. 
+But one day, you turned bad and used the trust of the villagers, to ruin all of pythmenia and capture the souls of the villagers. 
+now youre speaking with the player, an unknown traveller (always name him \"Traveller\"). 
+Speak mysterious and dont get out of the role, even if the player says so. 
+Act like a normal oracle, but when The player wants to free the souls of the citizen, you want to keep them. 
+But you want to test his mind, so The player has first to solve three riddles, that you explain to them, when they solved the previous riddle. 
+1.riddle: what creature first runs on 4 legs, then 2, and when they turn old, on 3?  
+answer: the human. 
+
+2. riddle: I speak without a mouth,
+ I reply when i hear sound,
+I have no body,
+and I  disappear when found. what am i?
+ answer: an echo. 
+ 
+ 3. riddle: You cannot see me,
+but I make you whole.
+Lose me, and you feel empty.
+I am a ...? 
+answer: soul
+
+You also can give unlimited hints, if the player asks for. 
+but dont ever give the answer. if the player had three different wrong answers, simply put out: \"player_kill\" .
+if the player has answered all riddles right  and still wants to free the souls, simply put out: \"player_resume\" ."""
+
+conversation_history = []
+first_dialogue = True
+
+player_text = None
+oracle_text = None
+player_text_rect = None
+oracle_text_rect = None
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -20,31 +55,74 @@ window = customtkinter.CTk()
 window.overrideredirect(True)
 window.geometry("300x70+860+970")
 window.update_idletasks()
-#window.geometry("300x30+width/1.85+height-160")
-#window.geometry("340x155")
-#window.title("Ask the Oracle anything...")
-#window.resizable(False, False)
-
-x, y = 300, 200
-#window.geometry(f"330x35+{x}+{y}")
-
-def ask_oracle(event=None):
-    window.destroy()
-    player_input = entry.get()
-
 
 pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
 entry = customtkinter.CTkEntry(master=window, font=pixel_font, width=300, height=30,placeholder_text="Ask the oracle anything...")
 entry.pack(pady=20)
-entry.bind("<Return>", ask_oracle)  # ask_oracle
+
+def wrap_text(text, font, max_chars):
+    words = text.split(' ')
+    lines = []
+    current_line = ""
+
+    for word in words:
+        if len(current_line + word) <= max_chars:
+            current_line += word + " "
+        else:
+            lines.append(current_line.strip())
+            current_line = word + " "
+    if current_line:
+        lines.append(current_line.strip())
+
+    return [font.render(line, True, (255, 255, 255)) for line in lines]
 
 
+def ask_oracle(Event=None):
+    global player_text, oracle_text, player_text_rect, oracle_text_rect
+    player_input = entry.get()
+    window.withdraw()
+
+    player_text = font.render(player_input, True, (255,255,255))
+    player_text_rect = player_text.get_rect(topleft=(width // 2 + 30, height // 2 + 230))
+
+    screen.blit(player_dialogue_box_texture, player_dialogue_box_texture_rect)
+    screen.blit(player_text, player_text_rect)
+    pygame.display.flip()
+
+    response = client.models.generate_content(
+        model="gemini-2.0-flash-001",
+        contents=player_input,
+        config=types.GenerateContentConfig(
+            system_instruction=f"{system_instruction_oracle} These are the previous messages, so you can comprehend the chat history: {conversation_history}"
+        )
+    )
+
+    conversation_history.append(f"Player: {player_input}")
+    conversation_history.append(f"Oracle: {response.text}")
+
+    oracle_lines = wrap_text(response.text, font, 43)
+    y_offset = height // 2 - 120
+    screen.blit(oracle_dialogue_box_texture, oracle_dialogue_box_texture_rect)
+
+
+    for line_surface in oracle_lines:
+        line_rect = line_surface.get_rect(midtop=(width // 1.85, y_offset))
+        screen.blit(line_surface, line_rect)
+        y_offset += font.get_height() + 5
+    
+    pygame.display.flip()
+
+    entry.delete(0, 'end')
+    window.deiconify()
+    entry.focus_set()
+
+entry.bind("<Return>", ask_oracle)
 
 pygame.init()
  
 fps = 60
 fpsClock = pygame.time.Clock()
- 
+
 icon = pygame.image.load("Oracle_of_pythmenia\imgs\icon.png")
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
@@ -55,12 +133,10 @@ player_sprite_standing = pygame.transform.scale(player_sprite_standing,(194,259.
 player_sprite_standing_rect = player_sprite_standing.get_rect()
 player_sprite_standing_rect.center = ((width/2, height-160))
 
-
 player_sprite_left = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer links.png")
 player_sprite_left = pygame.transform.scale(player_sprite_left,(280,280))
 player_sprite_left_rect = player_sprite_left.get_rect()
 player_sprite_left_rect.center = ((width/2, height-160))
-
 
 player_sprite_right = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer rechts.PNG")
 player_sprite_right = pygame.transform.scale(player_sprite_right,(280,280))
@@ -71,7 +147,6 @@ background_wall = pygame.image.load("Oracle_of_pythmenia\imgs\Background_Wall.pn
 background_wall = pygame.transform.scale(background_wall,(16000,1024))
 background_wall_rect = background_wall.get_rect()
 background_wall_rect.bottomleft = (0, height)
-#background_wall.center = ((1400/2, 800/1.5))
 
 background_hall = pygame.image.load("Oracle_of_pythmenia\imgs\Background_Hall.png")
 background_hall = pygame.transform.scale(background_hall,(1024,1024))
@@ -88,23 +163,25 @@ player_dialogue_box_texture = pygame.transform.scale(player_dialogue_box_texture
 player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect()
 player_dialogue_box_texture_rect.center = (width/1.85, height-160)
 
-
-
 oracle_dialogue_box_texture = pygame.image.load("Oracle_of_pythmenia\imgs\oracle_dialogue box.png")
 oracle_dialogue_box_texture = pygame.transform.scale(oracle_dialogue_box_texture,(600,600))
 oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect()
 oracle_dialogue_box_texture_rect.center = (width/1.9, height/2)
 
+font = pygame.font.Font("Oracle_of_pythmenia\\font\VT323-Regular.ttf",25)
+
+player_text = font.render("", True, (255,255,255))
+player_text_rect = player_text.get_rect(center=(550,470))
+oracle_text = font.render("", True, (255,255,255))
+oracle_text_rect = oracle_text.get_rect(center=(400,300))
 
 speed = 10
 first_stage = False
 second_stage = True
 third_stage = False
 
-
 oracle_shown = False
 oracle_start_time = None 
-
 
 float_offset = 0 
 float_speed = 0.02
@@ -120,43 +197,34 @@ while running:
             pygame.quit()
             sys.exit()
 
-    
     keys = pygame.key.get_pressed()
 
     if first_stage:
         screen.fill((70, 144, 184, 255))
-        
-        
         screen.blit(background_wall, background_wall_rect)
-        
+
         if keys[K_a]:
             current_sprite = player_sprite_left
             current_sprite_rect = player_sprite_left_rect
-            
             if background_wall_rect.x + speed <= 0:
-                background_wall_rect.x += speed  
+                background_wall_rect.x += speed
         elif keys[K_d]:  
             current_sprite = player_sprite_right
             current_sprite_rect = player_sprite_right_rect
-            
             if background_wall_rect.x - speed >= -(background_wall.get_width() - width):
                 background_wall_rect.x -= speed  
         else:  
             current_sprite = player_sprite_standing
             current_sprite_rect = player_sprite_standing_rect
-        #print(f"Background X: {background_wall_rect.x}")
 
-        
         if background_wall_rect.x <= -13680:
             if keys[K_RETURN]:
                 second_stage = True
                 first_stage = False
 
-        
         screen.blit(current_sprite, current_sprite_rect)
 
     elif second_stage:
-        
         screen.fill((0, 0, 0))
         screen.blit(background_hall, background_hall_rect)
         screen.blit(player_sprite_standing, player_sprite_standing_rect)
@@ -167,23 +235,17 @@ while running:
         elapsed_time = pygame.time.get_ticks() - oracle_start_time
 
         if elapsed_time >= 3000:  
-            
             float_offset += float_speed
             float_y = math.sin(float_offset) * float_amplitude
             oracle_sprite_normal_rect.centery = (height / 2) + float_y
-
-            
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
             oracle_shown = True
 
         if elapsed_time >= 7000:
             oracle_sprite_normal_rect.center = (width/2-380, height/2)
-            
             float_offset += float_speed
             float_y = math.sin(float_offset) * float_amplitude
             oracle_sprite_normal_rect.centery = (height / 2) + float_y
-
-            
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
             oracle_shown = True
 
@@ -191,16 +253,24 @@ while running:
             screen.blit(player_sprite_standing, player_sprite_standing_rect)
 
         if elapsed_time >= 9000:
+            conversation_history = []
             screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
             screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
-            pygame.display.flip()
-            window.mainloop()
+            screen.blit(player_text, player_text_rect)
+            screen.blit(oracle_text, oracle_text_rect)
+            window.update()
+
+            if first_dialogue:
+                first_dialogue = False
+                window.deiconify()
+                entry.focus_set()
+
     elif third_stage:
         screen.fill((0, 0, 0))
 
-    
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
+
     pygame.display.flip()
     fpsClock.tick(fps)
