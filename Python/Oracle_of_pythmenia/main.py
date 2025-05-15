@@ -7,7 +7,7 @@ from google import genai
 from google.genai import types
 import tkinter.font as tkFont
 
-pygame.init()
+pygame.init() 
 
 info = pygame.display.Info()
 width, height = info.current_w, info.current_h
