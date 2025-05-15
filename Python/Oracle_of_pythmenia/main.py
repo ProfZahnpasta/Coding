@@ -37,16 +37,16 @@ I am a ...?
 answer: soul
 
 You also can give unlimited hints, if the player asks for. 
-but dont ever give the answer. if the player had three different wrong answers, simply put out: \"player_kill\" .
+but dont ever give the answer.
 if the player has answered all riddles right  and still wants to free the souls, simply put out: \"player_resume\" ."""
 
 conversation_history = []
 first_dialogue = True
 
-player_text = None
-oracle_text = None
-player_text_rect = None
-oracle_text_rect = None
+
+player_text_lines = []
+oracle_lines = []
+
 
 customtkinter.set_appearance_mode("dark")
 customtkinter.set_default_color_theme("dark-blue")
@@ -57,8 +57,10 @@ window.geometry("300x70+860+970")
 window.update_idletasks()
 
 pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
-entry = customtkinter.CTkEntry(master=window, font=pixel_font, width=300, height=30,placeholder_text="Ask the oracle anything...")
+entry = customtkinter.CTkEntry(master=window, font=pixel_font, width=300, height=30, placeholder_text="Ask the oracle anything...")
 entry.pack(pady=20)
+
+
 
 def wrap_text(text, font, max_chars):
     words = text.split(' ')
@@ -76,17 +78,19 @@ def wrap_text(text, font, max_chars):
 
     return [font.render(line, True, (255, 255, 255)) for line in lines]
 
-
 def ask_oracle(Event=None):
-    global player_text, oracle_text, player_text_rect, oracle_text_rect
+    global player_text_lines, oracle_lines
     player_input = entry.get()
     window.withdraw()
 
-    player_text = font.render(player_input, True, (255,255,255))
-    player_text_rect = player_text.get_rect(topleft=(width // 2 + 30, height // 2 + 230))
+    player_text_lines = wrap_text(player_input, font, 43)
 
     screen.blit(player_dialogue_box_texture, player_dialogue_box_texture_rect)
-    screen.blit(player_text, player_text_rect)
+    y_player = player_dialogue_box_texture_rect.top + 20
+    for line_surface in player_text_lines:
+        rect = line_surface.get_rect(midtop=(player_dialogue_box_texture_rect.centerx, y_player))
+        screen.blit(line_surface, rect)
+        y_player += font.get_height() + 5
     pygame.display.flip()
 
     response = client.models.generate_content(
@@ -101,15 +105,8 @@ def ask_oracle(Event=None):
     conversation_history.append(f"Oracle: {response.text}")
 
     oracle_lines = wrap_text(response.text, font, 43)
-    y_offset = height // 2 - 120
-    screen.blit(oracle_dialogue_box_texture, oracle_dialogue_box_texture_rect)
+    globals()['oracle_lines'] = oracle_lines
 
-
-    for line_surface in oracle_lines:
-        line_rect = line_surface.get_rect(midtop=(width // 1.85, y_offset))
-        screen.blit(line_surface, line_rect)
-        y_offset += font.get_height() + 5
-    
     pygame.display.flip()
 
     entry.delete(0, 'end')
@@ -118,75 +115,46 @@ def ask_oracle(Event=None):
 
 entry.bind("<Return>", ask_oracle)
 
+
 pygame.init()
- 
 fps = 60
 fpsClock = pygame.time.Clock()
 
-icon = pygame.image.load("Oracle_of_pythmenia\imgs\icon.png")
+
+icon = pygame.image.load("Oracle_of_pythmenia/imgs/icon.png")
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
-player_sprite_standing = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer steht.png")
-player_sprite_standing = pygame.transform.scale(player_sprite_standing,(194,259.6))
-player_sprite_standing_rect = player_sprite_standing.get_rect()
-player_sprite_standing_rect.center = ((width/2, height-160))
 
-player_sprite_left = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer links.png")
-player_sprite_left = pygame.transform.scale(player_sprite_left,(280,280))
-player_sprite_left_rect = player_sprite_left.get_rect()
-player_sprite_left_rect.center = ((width/2, height-160))
+player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(194,259.6))
+player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(280,280))
+player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(280,280))
+background_wall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Wall.png"),(16000,1024))
+background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Hall.png"),(1024,1024))
+oracle_sprite_normal = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Orakel_transparent.png"),(300,300))
+player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/player dialogue box.png"),(600,600))
+oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_dialogue box.png"),(600,600))
 
-player_sprite_right = pygame.image.load("Oracle_of_pythmenia\imgs\Explorer rechts.PNG")
-player_sprite_right = pygame.transform.scale(player_sprite_right,(280,280))
-player_sprite_right_rect = player_sprite_right.get_rect()
-player_sprite_right_rect.center = ((width/2, height-160))
+player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
+player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
+player_sprite_right_rect = player_sprite_right.get_rect(); player_sprite_right_rect.center = ((width/2, height-160))
+background_wall_rect = background_wall.get_rect(); background_wall_rect.bottomleft = (0, height)
+background_hall_rect = background_hall.get_rect(); background_hall_rect.center = (width/2, height/2)
+oracle_sprite_normal_rect = oracle_sprite_normal.get_rect(); oracle_sprite_normal_rect.center = (width/2, height/2)
+player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
+oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2)
 
-background_wall = pygame.image.load("Oracle_of_pythmenia\imgs\Background_Wall.png")
-background_wall = pygame.transform.scale(background_wall,(16000,1024))
-background_wall_rect = background_wall.get_rect()
-background_wall_rect.bottomleft = (0, height)
-
-background_hall = pygame.image.load("Oracle_of_pythmenia\imgs\Background_Hall.png")
-background_hall = pygame.transform.scale(background_hall,(1024,1024))
-background_hall_rect = background_hall.get_rect()
-background_hall_rect.center = (width/2, height/2)
-
-oracle_sprite_normal = pygame.image.load("Oracle_of_pythmenia\imgs\Orakel_transparent.png")
-oracle_sprite_normal = pygame.transform.scale(oracle_sprite_normal,(300,300))
-oracle_sprite_normal_rect = oracle_sprite_normal.get_rect()
-oracle_sprite_normal_rect.center = (width/2, height/2)
-
-player_dialogue_box_texture = pygame.image.load("Oracle_of_pythmenia\imgs\player dialogue box.png")
-player_dialogue_box_texture = pygame.transform.scale(player_dialogue_box_texture,(600,600))
-player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect()
-player_dialogue_box_texture_rect.center = (width/1.85, height-160)
-
-oracle_dialogue_box_texture = pygame.image.load("Oracle_of_pythmenia\imgs\oracle_dialogue box.png")
-oracle_dialogue_box_texture = pygame.transform.scale(oracle_dialogue_box_texture,(600,600))
-oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect()
-oracle_dialogue_box_texture_rect.center = (width/1.9, height/2)
-
-font = pygame.font.Font("Oracle_of_pythmenia\\font\VT323-Regular.ttf",25)
-
-player_text = font.render("", True, (255,255,255))
-player_text_rect = player_text.get_rect(center=(550,470))
-oracle_text = font.render("", True, (255,255,255))
-oracle_text_rect = oracle_text.get_rect(center=(400,300))
-
+font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
 speed = 10
 first_stage = False
 second_stage = True
 third_stage = False
-
 oracle_shown = False
 oracle_start_time = None 
-
 float_offset = 0 
 float_speed = 0.02
 float_amplitude = 10
-
 running = True
 current_sprite = player_sprite_standing
 current_sprite_rect = player_sprite_standing_rect 
@@ -223,7 +191,6 @@ while running:
                 first_stage = False
 
         screen.blit(current_sprite, current_sprite_rect)
-
     elif second_stage:
         screen.fill((0, 0, 0))
         screen.blit(background_hall, background_hall_rect)
@@ -232,38 +199,39 @@ while running:
         if oracle_start_time is None:
             oracle_start_time = pygame.time.get_ticks()
 
-        elapsed_time = pygame.time.get_ticks() - oracle_start_time
+        elapsed = pygame.time.get_ticks() - oracle_start_time
 
-        if elapsed_time >= 3000:  
+        if elapsed >= 3000:
             float_offset += float_speed
-            float_y = math.sin(float_offset) * float_amplitude
-            oracle_sprite_normal_rect.centery = (height / 2) + float_y
+            oracle_sprite_normal_rect.centery = (height/2) + math.sin(float_offset)*float_amplitude
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
-            oracle_shown = True
 
-        if elapsed_time >= 7000:
-            oracle_sprite_normal_rect.center = (width/2-380, height/2)
+        if elapsed >= 7000:
             float_offset += float_speed
-            float_y = math.sin(float_offset) * float_amplitude
-            oracle_sprite_normal_rect.centery = (height / 2) + float_y
+            oracle_sprite_normal_rect.center = (width/2-380, height/2 + math.sin(float_offset)*float_amplitude)
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
-            oracle_shown = True
-
-            player_sprite_standing_rect.center = ((width/2-380, 920))
+            player_sprite_standing_rect.center = (width/2-380, 920)
             screen.blit(player_sprite_standing, player_sprite_standing_rect)
 
-        if elapsed_time >= 9000:
-            conversation_history = []
-            screen.blit(player_dialogue_box_texture,player_dialogue_box_texture_rect)
-            screen.blit(oracle_dialogue_box_texture,oracle_dialogue_box_texture_rect)
-            screen.blit(player_text, player_text_rect)
-            screen.blit(oracle_text, oracle_text_rect)
-            window.update()
+        if elapsed >= 9000:
+            screen.blit(player_dialogue_box_texture, player_dialogue_box_texture_rect)
+            screen.blit(oracle_dialogue_box_texture, oracle_dialogue_box_texture_rect)
 
-            if first_dialogue:
-                first_dialogue = False
-                window.deiconify()
-                entry.focus_set()
+            y0 = oracle_dialogue_box_texture_rect.top + 20
+            for surf in oracle_lines:
+                rect = surf.get_rect(midtop=(oracle_dialogue_box_texture_rect.centerx, y0))
+                screen.blit(surf, rect)
+                y0 += font.get_height() + 5
+
+            y1 = player_dialogue_box_texture_rect.top + 20
+            for surf in player_text_lines:
+                rect = surf.get_rect(midtop=(player_dialogue_box_texture_rect.centerx, y1))
+                screen.blit(surf, rect)
+                y1 += font.get_height() + 5
+
+            window.update()
+            window.deiconify()
+            entry.focus_set()
 
     elif third_stage:
         screen.fill((0, 0, 0))
