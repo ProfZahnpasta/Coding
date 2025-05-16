@@ -38,7 +38,8 @@ answer: soul
 
 You also can give unlimited hints, if the player asks for. 
 but dont ever give the answer.
-if the player has answered all riddles right  and still wants to free the souls, simply put out: \"player_resume\" ."""
+if the player has answered all riddles right, ask him, if he still wants to free the souls, and when yes, put out (and NOTHING ELSE): player_resume .
+Also, do not put out more than 301 charakters."""
 
 conversation_history = []
 first_dialogue = True
@@ -53,7 +54,7 @@ customtkinter.set_default_color_theme("dark-blue")
 
 window = customtkinter.CTk()
 window.overrideredirect(True)
-window.geometry("300x70+860+970")
+window.geometry(f"300x70+{width - 730}+{height}")
 window.update_idletasks()
 
 pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
@@ -143,7 +144,7 @@ background_wall_rect = background_wall.get_rect(); background_wall_rect.bottomle
 background_hall_rect = background_hall.get_rect(); background_hall_rect.center = (width/2, height/2)
 oracle_sprite_normal_rect = oracle_sprite_normal.get_rect(); oracle_sprite_normal_rect.center = (width/2, height/2)
 player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
-oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2)
+oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2 - 200)
 
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
 speed = 10
@@ -166,6 +167,8 @@ while running:
             sys.exit()
 
     keys = pygame.key.get_pressed()
+
+
 
     if first_stage:
         screen.fill((70, 144, 184, 255))
@@ -196,21 +199,24 @@ while running:
         screen.blit(background_hall, background_hall_rect)
         screen.blit(player_sprite_standing, player_sprite_standing_rect)
 
+        player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
+        oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2 - 200)
+
         if oracle_start_time is None:
             oracle_start_time = pygame.time.get_ticks()
 
         elapsed = pygame.time.get_ticks() - oracle_start_time
 
-        if elapsed >= 3000:
+        if elapsed >= 3000 and elapsed <= 7000:
             float_offset += float_speed
             oracle_sprite_normal_rect.centery = (height/2) + math.sin(float_offset)*float_amplitude
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
 
         if elapsed >= 7000:
             float_offset += float_speed
-            oracle_sprite_normal_rect.center = (width/2-380, height/2 + math.sin(float_offset)*float_amplitude)
+            oracle_sprite_normal_rect.center = (width/2-380, height/2 - 200 + math.sin(float_offset)*float_amplitude)
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
-            player_sprite_standing_rect.center = (width/2-380, 920)
+            player_sprite_standing_rect.center = (width/2-380, height - 160)
             screen.blit(player_sprite_standing, player_sprite_standing_rect)
 
         if elapsed >= 9000:
@@ -242,3 +248,10 @@ while running:
 
     pygame.display.flip()
     fpsClock.tick(fps)
+
+
+
+
+
+
+
