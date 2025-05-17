@@ -11,6 +11,7 @@ pygame.init()
 
 info = pygame.display.Info()
 width, height = info.current_w, info.current_h
+print(width,height)
 
 client = genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
 system_instruction_oracle = """Role Play. Only answer as your charakter, nothing else.  
@@ -36,7 +37,6 @@ DO NOT PUT OUT MORE THAN 300 CHARACTERS! (spaces also count)"""
 conversation_history = []
 first_dialogue = True
 
-
 player_text_lines = []
 oracle_lines = []
 
@@ -46,7 +46,9 @@ customtkinter.set_default_color_theme("dark-blue")
 
 window = customtkinter.CTk()
 window.overrideredirect(True)
-window.geometry(f"300x70+860+970")
+xwindow = width - 1060
+ywindow = height - 110
+window.geometry(f"300x70+{xwindow}+{ywindow}")
 window.update_idletasks()
 
 pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
