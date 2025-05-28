@@ -6,6 +6,9 @@ import customtkinter
 from google import genai
 from google.genai import types
 import tkinter.font as tkFont
+#import os
+
+#os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
 pygame.init() 
 
@@ -47,10 +50,14 @@ customtkinter.set_default_color_theme("dark-blue")
 
 window = customtkinter.CTk()
 window.overrideredirect(True)
-xwindow = width // 2 + 100 - 80
-ywindow = height - 50
+
+
+xwindow = round(width // 2.23156)
+ywindow = round(height // 1.1134)
 print(xwindow,ywindow)
-window.geometry(f"300x70+860+970")
+window.geometry(f"300x70+{xwindow}+{ywindow}")
+
+
 window.update_idletasks()
 
 pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
