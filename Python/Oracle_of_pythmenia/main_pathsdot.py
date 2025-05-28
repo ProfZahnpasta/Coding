@@ -155,8 +155,8 @@ running = True
 current_sprite = player_sprite_standing
 current_sprite_rect = player_sprite_standing_rect 
 
-first_stage = True
-second_stage = False
+first_stage = False
+second_stage = True
 third_stage = False
 
 while running:
