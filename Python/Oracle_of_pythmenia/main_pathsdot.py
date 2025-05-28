@@ -6,16 +6,11 @@ import customtkinter
 from google import genai
 from google.genai import types
 import tkinter.font as tkFont
-import os
-
-
-os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
 pygame.init() 
 
 info = pygame.display.Info()
-width, height = 1920, 1080
-print(width,height)
+width, height = info.current_w, info.current_h
 
 client = genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
 system_instruction_oracle = """Role Play. Only answer as your charakter, nothing else.  
@@ -31,13 +26,12 @@ If the mind of the traveller was tested, the oracle shows its true form, and a b
 1.riddle: what creature first runs on 4 legs, then 2, and when they turn old, on 3?  answer: the human.
 2. riddle: I speak without a mouth, I reply when i hear sound, I have no body, and I  disappear when found. what am i? answer: an echo. 
 3. riddle: You cannot see me, but I make you whole. Lose me, and you feel empty. I am a ...? answer: soul
-Dont change any words in these riddles. At the last riddle, you also can say as a hint, that the answer rhymes with the riddle.
 You also can give unlimited hints, if the player asks for. DONT EVER MENTION "SOUL" OR "ECHO", only if the player has guessed it already!
-Also dont put out characters like  "n/" or "/n". DONT USE TEXT WRAPPING OR RETURN LINES IN THE OUTPUTTING TEXT!
+Also dont put out characters like  "n/" or "/n".
 but dont ever give the answer (only if he guessed it right already). If the player finds the right answer, say that that is right and move on. 
 If the player is struggling to find the answer(so they already asked like 3 times gor a hint or something), give clear responses.
 if the player has answered all riddles right, ask him, if he still wants to free the souls, and when yes, put out (and NOTHING ELSE in the last message): player_resume .
-DO NOT PUT OUT MORE THAN 254 CHARACTERS! (spaces also count)"""
+DO NOT PUT OUT MORE THAN 300 CHARACTERS! (spaces also count)"""
 
 conversation_history = []
 first_dialogue = True
@@ -51,14 +45,7 @@ customtkinter.set_default_color_theme("dark-blue")
 
 window = customtkinter.CTk()
 window.overrideredirect(True)
-
-
-xwindow = round(width // 2.23156)
-ywindow = round(height // 1.1134)
-print(xwindow,ywindow)
-window.geometry(f"300x70+{xwindow}+{ywindow}")
-
-
+window.geometry(f"300x70+860+970")
 window.update_idletasks()
 
 pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, weight="normal")
@@ -84,7 +71,7 @@ def wrap_text(text, font, max_chars):
     return [font.render(line, True, (255, 255, 255)) for line in lines]
 
 def ask_oracle(Event=None):
-    global player_text_lines, oracle_lines,third_stage, second_stage
+    global player_text_lines, oracle_lines
     player_input = entry.get()
     window.withdraw()
 
@@ -100,7 +87,7 @@ def ask_oracle(Event=None):
 
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
-        contents=f"(Do not put out more than 254 characters)Player:{player_input}",
+        contents=f"(Do not put out more than 301 characters)Player:{player_input}",
         config=types.GenerateContentConfig(
             system_instruction=f"{system_instruction_oracle} These are the previous messages, so you can comprehend the chat history: {conversation_history}"
         )
@@ -117,10 +104,10 @@ def ask_oracle(Event=None):
     entry.delete(0, 'end')
     window.deiconify()
     entry.focus_set()
-    oracle_text = response.text
-    #print(oracle_text)
-    if "player_resume" in oracle_text.lower():
-        print(f"Debug player_resume{oracle_text}")
+
+    if "player_resume" in response.text:
+        window.destroy()
+        window_there = False
         second_stage = False
         third_stage = True
 
@@ -132,20 +119,20 @@ fps = 60
 fpsClock = pygame.time.Clock()
 
 
-icon = pygame.image.load("Oracle_of_pythmenia/imgs/icon.png")
+icon = pygame.image.load("./imgs/icon.png")
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
 
-player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(194,259.6))
-player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(280,280))
-player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(280,280))
-background_wall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Wall.png"),(16000,1024))
-background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Hall.png"),(1024,1024))
-oracle_sprite_normal = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Orakel_transparent.png"),(300,300))
-player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/player dialogue box.png"),(600,600))
-oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_dialogue box.png"),(600,600))
+player_sprite_standing = pygame.transform.scale(pygame.image.load("./imgs/Explorer steht.png"),(194,259.6))
+player_sprite_left = pygame.transform.scale(pygame.image.load("./imgs/Explorer links.png"),(280,280))
+player_sprite_right = pygame.transform.scale(pygame.image.load("./imgs/Explorer rechts.PNG"),(280,280))
+background_wall = pygame.transform.scale(pygame.image.load("./imgs/Background_Wall.png"),(16000,1024))
+background_hall = pygame.transform.scale(pygame.image.load("./imgs/Background_Hall.png"),(1024,1024))
+oracle_sprite_normal = pygame.transform.scale(pygame.image.load("./imgs/Orakel_transparent.png"),(300,300))
+player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/player dialogue box.png"),(600,600))
+oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/oracle_dialogue box.png"),(600,600))
 
 player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
 player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
@@ -156,9 +143,8 @@ oracle_sprite_normal_rect = oracle_sprite_normal.get_rect(); oracle_sprite_norma
 player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
 oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2 - 200)
 
-font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
+font = pygame.font.Font("./font/VT323-Regular.ttf",25)
 speed = 10
-
 oracle_shown = False
 oracle_start_time = None 
 window_there = True
@@ -248,14 +234,13 @@ while running:
                 screen.blit(surf, rect)
                 y1 += font.get_height() + 5
 
-            window.update()
-            window.deiconify()
-            entry.focus_set()
+
+            if window_there:
+                window.update()
+                window.deiconify()
+                entry.focus_set()
 
     elif third_stage:
-        if window_there:
-            window.destroy()
-            window_there = False
         screen.fill((0, 0, 0))
 
     if keys[K_ESCAPE]:
