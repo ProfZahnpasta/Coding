@@ -240,15 +240,14 @@ while running:
                 screen.blit(surf, rect)
                 y1 += font.get_height() + 5
 
-            if second_stage:
-                if window_there:
-                    window.update()
-                    window_there = False
-                window.deiconify()
-                entry.focus_set()
+            window.update()
+            window.deiconify()
+            entry.focus_set()
 
     elif third_stage:
-        window.destroy()
+        if window_there:
+            window.destroy()
+            window_there = False
         screen.fill((0, 0, 0))
 
     if keys[K_ESCAPE]:
