@@ -6,14 +6,15 @@ import customtkinter
 from google import genai
 from google.genai import types
 import tkinter.font as tkFont
-#import os
+import os
 
-#os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
+
+os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
 pygame.init() 
 
 info = pygame.display.Info()
-width, height = info.current_w, info.current_h
+width, height = 1920, 1080
 print(width,height)
 
 client = genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
