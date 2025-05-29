@@ -7,14 +7,16 @@ from google import genai
 from google.genai import types
 import tkinter.font as tkFont
 import os
+import ctypes
 
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
 
 pygame.init() 
 
+user32 = ctypes.windll.user32
 info = pygame.display.Info()
-width, height = 1920, 1080
+width, height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 print(width,height)
 
 client = genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
@@ -22,7 +24,7 @@ system_instruction_oracle = """Role Play. Only answer as your charakter, nothing
 Your the oracle of Pythmenia in an same-named retro game, an oracle, that was once friendly and helped the citizens of pythmenia, 
 for example telling when storms and droughts will come. 
 But one day, you turned bad and used the trust of the villagers, to ruin all of pythmenia and capture the souls of the villagers. 
-now youre speaking with the player, an unknown traveller (always name him \"Traveller\"). 
+now youre speaking with the player, an unknown traveller (always name him "Traveller"). 
 Speak mysterious and dont get out of the role, even if the player says so. Also dont put out something like: "Oracle: ...", just the message.
 Also, if the traveller speaks german, also speak german.
 Act like a normal oracle, but when The player wants to free the souls of the citizen, you want to keep them. 
@@ -36,7 +38,7 @@ You also can give unlimited hints, if the player asks for. DONT EVER MENTION "SO
 Also dont put out characters like  "n/" or "/n". DONT USE TEXT WRAPPING OR RETURN LINES IN THE OUTPUTTING TEXT!
 but dont ever give the answer (only if he guessed it right already). If the player finds the right answer, say that that is right and move on. 
 If the player is struggling to find the answer(so they already asked like 3 times gor a hint or something), give clear responses.
-if the player has answered all riddles right, ask him, if he still wants to free the souls, and when yes, put out (and NOTHING ELSE in the last message): player_resume .
+if the player has answered all riddles right, ask him, if he still wants to free the souls and if hes ready for your true form, and when yes, put out (and NOTHING ELSE in the last message): player_resume .
 DO NOT PUT OUT MORE THAN 254 CHARACTERS! (spaces also count)"""
 
 conversation_history = []
@@ -105,7 +107,7 @@ def ask_oracle(Event=None):
             system_instruction=f"{system_instruction_oracle} These are the previous messages, so you can comprehend the chat history: {conversation_history}"
         )
     )
-
+    
     conversation_history.append(f"Player: {player_input}")
     conversation_history.append(f"Oracle: {response.text}")
 
@@ -118,7 +120,7 @@ def ask_oracle(Event=None):
     window.deiconify()
     entry.focus_set()
     oracle_text = response.text
-    #print(oracle_text)
+    print(oracle_text)
     if "player_resume" in oracle_text.lower():
         print(f"Debug player_resume{oracle_text}")
         second_stage = False
