@@ -105,7 +105,7 @@ def ask_oracle(Event=None):
         contents=f"(Do not put out more than 254 characters)Player:{player_input}",
         config=types.GenerateContentConfig(
             system_instruction=f"{system_instruction_oracle} These are the previous messages, so you can comprehend the chat history: {conversation_history}"
-        ).replace("\n"," ")
+        )
     )
     
     conversation_history.append(f"Player: {player_input}")
@@ -194,8 +194,8 @@ current_sprite = player_sprite_standing
 current_sprite_rect = player_sprite_standing_rect 
 
 first_stage = False
-second_stage = False
-third_stage = True
+second_stage = True
+third_stage = False
 
 while running:
     for event in pygame.event.get():
