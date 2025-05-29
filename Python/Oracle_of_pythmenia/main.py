@@ -105,7 +105,7 @@ def ask_oracle(Event=None):
         contents=f"(Do not put out more than 254 characters)Player:{player_input}",
         config=types.GenerateContentConfig(
             system_instruction=f"{system_instruction_oracle} These are the previous messages, so you can comprehend the chat history: {conversation_history}"
-        )
+        ).replace("\n"," ")
     )
     
     conversation_history.append(f"Player: {player_input}")
