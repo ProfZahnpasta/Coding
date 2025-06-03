@@ -143,19 +143,20 @@ pygame.display.set_caption("Oracle of Pythmenia")
 player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(194,259.6))
 player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(280,280))
 player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(280,280))
+player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(280,280))
 background_wall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Wall.png"),(16000,1024))
 background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Hall.png"),(1024,1024))
 oracle_sprite_normal = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Orakel_transparent.png"),(300,300))
 player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/player dialogue box.png"),(600,600))
 oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_dialogue box.png"),(600,600))
 background_bossfight = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/background_bossfight.png"),(1536,1024))
-bossfight_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_outline.png"),(1024,1024))   
-bossfight_raw_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_raw_outline.png"),(1024,1024))
+bossfight_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_outline.png"),(600,600))   
+bossfight_raw_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_raw_outline.png"),(600,600))
 dodge_item_ball = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(1024,1024))
 dodge_item_flash_alert_copy = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash_alert_copy.png"),(600,600))
 dodge_item_flash = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash.png"),(600,600))
 dodge_item_speer = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(600,600))
-oracle_both_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down.png"),(600,600))
+oracle_both_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down.png"),(400,400))
 oracle_left_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_left_down.png"),(600,600))
 oracle_right_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_right_down.png"),(600,600))
 oracle_true_form = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_true_form.png"),(600,600))
@@ -163,19 +164,20 @@ oracle_true_form = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia
 player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
 player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
 player_sprite_right_rect = player_sprite_right.get_rect(); player_sprite_right_rect.center = ((width/2, height-160))
+player_sprite_up_rect = player_sprite_up.get_rect(); player_sprite_up_rect.center = ((width/2, height-160))
 background_wall_rect = background_wall.get_rect(); background_wall_rect.bottomleft = (0, height)
 background_hall_rect = background_hall.get_rect(); background_hall_rect.center = (width/2, height/2)
 oracle_sprite_normal_rect = oracle_sprite_normal.get_rect(); oracle_sprite_normal_rect.center = (width/2, height/2)
 player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
 oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2 - 200)
 background_bossfight_rect = background_bossfight.get_rect(); background_bossfight_rect.center = (width/2,height/2)
-bossfight_outline_rect = bossfight_outline.get_rect(); bossfight_outline_rect.center = (0,0)
-bossfight_raw_outline_rect = bossfight_raw_outline.get_rect(); bossfight_raw_outline_rect.center = (0,0)
+bossfight_outline_rect = bossfight_outline.get_rect(); bossfight_outline_rect.center = (width/2,height/2 + 250)
+bossfight_raw_outline_rect = bossfight_raw_outline.get_rect(); bossfight_raw_outline_rect.center = (width/2,height/2 + 250)
 dodge_item_ball_rect = dodge_item_ball.get_rect(); dodge_item_ball_rect.center = (0,0)
 dodge_item_flash_alert_copy_rect = dodge_item_flash_alert_copy.get_rect(); dodge_item_flash_alert_copy_rect.center = (0,0)
 dodge_item_flash_rect = dodge_item_flash.get_rect(); dodge_item_flash_rect.center = (0,0)
 dodge_item_speer_rect = dodge_item_speer.get_rect(); dodge_item_speer_rect.center = (0,0)
-oracle_both_down_rect = oracle_both_down.get_rect(); oracle_both_down_rect.center = (0,0)
+oracle_both_down_rect = oracle_both_down.get_rect(); oracle_both_down_rect.center = (width/2,height/2 - 200)
 oracle_left_down_rect = oracle_left_down.get_rect(); oracle_left_down_rect.center = (0,0)
 oracle_right_down_rect = oracle_right_down.get_rect(); oracle_right_down_rect.center = (0,0)
 oracle_true_form_rect = oracle_true_form.get_rect(); oracle_true_form_rect.center = (0,0)
@@ -187,15 +189,18 @@ oracle_shown = False
 oracle_start_time = None 
 window_there = True
 float_offset = 0 
-float_speed = 0.02
+float_speed = 0.016
 float_amplitude = 10
 running = True
 current_sprite = player_sprite_standing
 current_sprite_rect = player_sprite_standing_rect 
+player_x = width // 2
+player_y = height - 160
+player_speed = 8
 
 first_stage = False
-second_stage = True
-third_stage = False
+second_stage = False
+third_stage = True
 
 while running:
     for event in pygame.event.get():
@@ -281,8 +286,61 @@ while running:
             window.destroy()
             window_there = False
         screen.blit(background_bossfight, background_bossfight_rect)
-        screen.blit(dodge_item_ball, dodge_item_ball_rect)
+        float_offset += float_speed
+        oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
+        screen.blit(oracle_both_down, oracle_both_down_rect)
+        screen.blit(bossfight_outline, bossfight_outline_rect)
+        screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
+        player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(194/2,259.6/2))
+        player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(280/2,280/2))
+        player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(280/2,280/2))
+        player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(260/2,260/2))
 
+        player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
+        player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
+        player_sprite_right_rect = player_sprite_right.get_rect(); player_sprite_right_rect.center = ((width/2, height-160))
+        player_sprite_up_rect = player_sprite_up.get_rect(); player_sprite_up_rect.center = ((width/2, height-160))
+        if keys[K_a] or keys[K_LEFT]:
+            player_speed = 8
+            current_sprite = player_sprite_left
+            player_x -= player_speed
+        elif keys[K_d] or keys[K_RIGHT]:
+            player_speed = 8
+            current_sprite = player_sprite_right
+            player_x += player_speed 
+        elif keys[K_w] or keys[K_UP]:
+            player_speed = 8
+            current_sprite = player_sprite_up
+            player_y -= player_speed
+        elif keys[K_s] or keys[K_DOWN]:
+            player_speed = 8 
+            current_sprite = player_sprite_standing
+            player_y += player_speed
+        if keys[K_a] or keys[K_LEFT]:
+            if keys[K_SPACE]:
+                player_speed = 14
+                current_sprite = player_sprite_left
+                player_x -= player_speed
+        elif keys[K_d] or keys[K_RIGHT]:
+            if keys[K_SPACE]:
+                player_speed = 14
+                current_sprite = player_sprite_right
+                player_x += player_speed 
+        elif keys[K_w] or keys[K_UP]:
+            if keys[K_SPACE]:
+                player_speed = 14
+                current_sprite = player_sprite_up
+                player_y -= player_speed
+        elif keys[K_s] or keys[K_DOWN]:
+            if keys[K_SPACE]:
+                player_speed = 14
+                current_sprite = player_sprite_standing
+            player_y += player_speed
+        else:  
+            current_sprite = player_sprite_standing
+
+        current_sprite_rect= current_sprite.get_rect(); current_sprite_rect.center = (player_x, player_y)
+        screen.blit(current_sprite, current_sprite_rect)
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
