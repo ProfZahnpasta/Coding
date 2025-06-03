@@ -313,7 +313,7 @@ while running:
             current_sprite = player_sprite_up
             player_y -= player_speed
         elif keys[K_s] or keys[K_DOWN]:
-            player_speed = 8 
+            player_speed = 4
             current_sprite = player_sprite_standing
             player_y += player_speed
         if keys[K_a] or keys[K_LEFT]:
