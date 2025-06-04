@@ -140,10 +140,10 @@ screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
 
-player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(194,259.6))
-player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(280,280))
-player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(280,280))
-player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(280,280))
+player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(308,518))
+player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525,764))
+player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525,765))
+player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561,867))
 background_wall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Wall.png"),(16000,1024))
 background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Hall.png"),(1024,1024))
 oracle_sprite_normal = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Orakel_transparent.png"),(300,300))
@@ -291,59 +291,68 @@ while running:
         screen.blit(oracle_both_down, oracle_both_down_rect)
         screen.blit(bossfight_outline, bossfight_outline_rect)
         screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
-        player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(194/2,259.6/2))
-        player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(280/2,280/2))
-        player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(280/2,280/2))
-        player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(260/2,260/2))
+        player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/7.3,882.6/7.3))
+        player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/6.5,764/6.5))
+        player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/6.5,765/6.5))
+        player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561/7.3,867/7.3))
 
         player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
         player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
         player_sprite_right_rect = player_sprite_right.get_rect(); player_sprite_right_rect.center = ((width/2, height-160))
         player_sprite_up_rect = player_sprite_up.get_rect(); player_sprite_up_rect.center = ((width/2, height-160))
         standing = True
+        old_x, old_y = player_x, player_y
         if keys[K_a] or keys[K_LEFT]:
             player_speed = 8
             current_sprite = player_sprite_left
             player_x -= player_speed
+            last_coords = "-x"
             standing = False
         if keys[K_d] or keys[K_RIGHT]:
             player_speed = 8
             current_sprite = player_sprite_right
             player_x += player_speed 
+            last_coords = "+x"
             standing = False
         if keys[K_w] or keys[K_UP]:
             player_speed = 8
             current_sprite = player_sprite_up
             player_y -= player_speed
+            last_coords = "-y"
             standing = False
         if keys[K_s] or keys[K_DOWN]:
             player_speed = 4
             current_sprite = player_sprite_standing
             player_y += player_speed
+            last_coords = "+y"
             standing = False
         if keys[K_a] or keys[K_LEFT]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_left
                 player_x -= player_speed
+                last_coords = "-x"
                 standing = False
         if keys[K_d] or keys[K_RIGHT]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_right
                 player_x += player_speed 
+                last_coords = "+x"
                 standing = False
         if keys[K_w] or keys[K_UP]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_up
                 player_y -= player_speed
+                last_coords = "-y"
                 standing = False
         if keys[K_s] or keys[K_DOWN]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_standing
             player_y += player_speed
+            last_coords = "+y"
             standing = False
         if standing:  
             current_sprite = player_sprite_standing
@@ -356,9 +365,8 @@ while running:
         offset = (bossfight_raw_outline_rect.x - current_sprite_rect.x, bossfight_raw_outline_rect.y - current_sprite_rect.y)
 
         if player_mask.overlap(outline_mask, offset):
-            print("touching")
-        else:
-            print("not touching outline")
+            player_x, player_y = old_x, old_y
+            current_sprite_rect.center = (player_x, player_y)
             
         screen.blit(current_sprite, current_sprite_rect)
     if keys[K_ESCAPE]:
