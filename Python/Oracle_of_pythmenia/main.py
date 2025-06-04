@@ -183,13 +183,13 @@ oracle_right_down_rect = oracle_right_down.get_rect(); oracle_right_down_rect.ce
 oracle_true_form_rect = oracle_true_form.get_rect(); oracle_true_form_rect.center = (0,0)
 
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
-speed = 10
 
+wall_speed = 10
 oracle_shown = False
 oracle_start_time = None 
 window_there = True
 float_offset = 0 
-float_speed = 0.016
+float_speed = 0.05
 float_amplitude = 10
 running = True
 current_sprite = player_sprite_standing
@@ -219,13 +219,13 @@ while running:
         if keys[K_a]:
             current_sprite = player_sprite_left
             current_sprite_rect = player_sprite_left_rect
-            if background_wall_rect.x + speed <= 0:
-                background_wall_rect.x += speed
+            if background_wall_rect.x + wall_speed <= 0:
+                background_wall_rect.x += wall_speed
         elif keys[K_d]:  
             current_sprite = player_sprite_right
             current_sprite_rect = player_sprite_right_rect
-            if background_wall_rect.x - speed >= -(background_wall.get_width() - width):
-                background_wall_rect.x -= speed  
+            if background_wall_rect.x - wall_speed >= -(background_wall.get_width() - width):
+                background_wall_rect.x -= wall_speed  
         else:  
             current_sprite = player_sprite_standing
             current_sprite_rect = player_sprite_standing_rect
@@ -300,46 +300,66 @@ while running:
         player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
         player_sprite_right_rect = player_sprite_right.get_rect(); player_sprite_right_rect.center = ((width/2, height-160))
         player_sprite_up_rect = player_sprite_up.get_rect(); player_sprite_up_rect.center = ((width/2, height-160))
+        standing = True
         if keys[K_a] or keys[K_LEFT]:
             player_speed = 8
             current_sprite = player_sprite_left
             player_x -= player_speed
-        elif keys[K_d] or keys[K_RIGHT]:
+            standing = False
+        if keys[K_d] or keys[K_RIGHT]:
             player_speed = 8
             current_sprite = player_sprite_right
             player_x += player_speed 
-        elif keys[K_w] or keys[K_UP]:
+            standing = False
+        if keys[K_w] or keys[K_UP]:
             player_speed = 8
             current_sprite = player_sprite_up
             player_y -= player_speed
-        elif keys[K_s] or keys[K_DOWN]:
+            standing = False
+        if keys[K_s] or keys[K_DOWN]:
             player_speed = 4
             current_sprite = player_sprite_standing
             player_y += player_speed
+            standing = False
         if keys[K_a] or keys[K_LEFT]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_left
                 player_x -= player_speed
-        elif keys[K_d] or keys[K_RIGHT]:
+                standing = False
+        if keys[K_d] or keys[K_RIGHT]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_right
                 player_x += player_speed 
-        elif keys[K_w] or keys[K_UP]:
+                standing = False
+        if keys[K_w] or keys[K_UP]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_up
                 player_y -= player_speed
-        elif keys[K_s] or keys[K_DOWN]:
+                standing = False
+        if keys[K_s] or keys[K_DOWN]:
             if keys[K_SPACE]:
                 player_speed = 14
                 current_sprite = player_sprite_standing
             player_y += player_speed
-        else:  
+            standing = False
+        if standing:  
             current_sprite = player_sprite_standing
 
-        current_sprite_rect= current_sprite.get_rect(); current_sprite_rect.center = (player_x, player_y)
+        current_sprite_rect = current_sprite.get_rect(); current_sprite_rect.center = (player_x, player_y)
+
+        player_mask = pygame.mask.from_surface(current_sprite)
+        outline_mask = pygame.mask.from_surface(bossfight_raw_outline)
+
+        offset = (bossfight_raw_outline_rect.x - current_sprite_rect.x, bossfight_raw_outline_rect.y - current_sprite_rect.y)
+
+        if player_mask.overlap(outline_mask, offset):
+            print("touching")
+        else:
+            print("not touching outline")
+            
         screen.blit(current_sprite, current_sprite_rect)
     if keys[K_ESCAPE]:
         pygame.quit()
