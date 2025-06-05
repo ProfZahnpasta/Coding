@@ -8,6 +8,7 @@ from google.genai import types
 import tkinter.font as tkFont
 import os
 import ctypes
+import random
 
 
 os.environ['SDL_VIDEO_WINDOW_POS'] = "0,0"
@@ -16,7 +17,8 @@ pygame.init()
 
 user32 = ctypes.windll.user32
 info = pygame.display.Info()
-width, height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+#width, height = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+width, height = 1920,1080
 print(width,height)
 
 client = genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
@@ -140,9 +142,9 @@ screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
 
-player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(308,518))
-player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525,764))
-player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525,765))
+player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/4,882.6/4))
+player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/3.6,764/3.6))
+player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/3.6,765/3.6))
 player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561,867))
 background_wall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Wall.png"),(16000,1024))
 background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Hall.png"),(1024,1024))
@@ -183,10 +185,16 @@ oracle_right_down_rect = oracle_right_down.get_rect(); oracle_right_down_rect.ce
 oracle_true_form_rect = oracle_true_form.get_rect(); oracle_true_form_rect.center = (0,0)
 
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
+boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
+boss_text2 = font.render("but can you fight?", True, (255,255,255))
+
+boss_text1_rect = boss_text1.get_rect(center=(width/2,height/2 - 500))
+boss_text2_rect = boss_text2.get_rect(center=(width/2,height/2 - 450))
 
 wall_speed = 10
 oracle_shown = False
-oracle_start_time = None 
+oracle_start_time = None
+bossfight_start_time = None
 window_there = True
 float_offset = 0 
 float_speed = 0.05
@@ -288,6 +296,8 @@ while running:
         screen.blit(background_bossfight, background_bossfight_rect)
         float_offset += float_speed
         oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
+        boss_text1_rect.centery = (height/2 - 470) + math.sin(float_offset)*float_amplitude
+        boss_text2_rect.centery = (height/2 - 450) + math.sin(float_offset)*float_amplitude
         screen.blit(oracle_both_down, oracle_both_down_rect)
         screen.blit(bossfight_outline, bossfight_outline_rect)
         screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
@@ -369,6 +379,14 @@ while running:
             current_sprite_rect.center = (player_x, player_y)
             
         screen.blit(current_sprite, current_sprite_rect)
+        if bossfight_start_time is None:
+            bossfight_start_time = pygame.time.get_ticks()
+
+        elapsed = pygame.time.get_ticks() - bossfight_start_time
+        if elapsed <= 5000:
+            screen.blit(boss_text1,boss_text1_rect)
+            screen.blit(boss_text2,boss_text2_rect)
+    
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
