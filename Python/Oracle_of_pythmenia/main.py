@@ -130,6 +130,21 @@ def ask_oracle(Event=None):
 
 entry.bind("<Return>", ask_oracle)
 
+def move_dodge_item(rect, target_coords, speed):
+
+    current_pos = pygame.Vector2(rect.topleft)
+    target = pygame.Vector2(target_coords)
+    direction = (target - current_pos)
+
+    if direction.length() < speed or direction.length() == 0:
+        rect.topleft = target_coords
+    else:
+        direction = direction.normalize() * speed
+        new_pos = current_pos + direction
+        rect.topleft = (round(new_pos.x), round(new_pos.y))
+
+    return rect
+
 
 pygame.init()
 fps = 60
@@ -151,10 +166,10 @@ background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/
 oracle_sprite_normal = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Orakel_transparent.png"),(300,300))
 player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/player dialogue box.png"),(600,600))
 oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_dialogue box.png"),(600,600))
-background_bossfight = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/background_bossfight.png"),(1536,1024))
+background_bossfight = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/background_bossfight.png"),(1920,1280))
 bossfight_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_outline.png"),(600,600))   
 bossfight_raw_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_raw_outline.png"),(600,600))
-dodge_item_ball = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(1024,1024))
+dodge_item_ball = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
 dodge_item_flash_alert_copy = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash_alert_copy.png"),(600,600))
 dodge_item_flash = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash.png"),(600,600))
 dodge_item_speer = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(600,600))
@@ -183,6 +198,9 @@ oracle_both_down_rect = oracle_both_down.get_rect(); oracle_both_down_rect.cente
 oracle_left_down_rect = oracle_left_down.get_rect(); oracle_left_down_rect.center = (0,0)
 oracle_right_down_rect = oracle_right_down.get_rect(); oracle_right_down_rect.center = (0,0)
 oracle_true_form_rect = oracle_true_form.get_rect(); oracle_true_form_rect.center = (0,0)
+ball1_rect = dodge_item_ball.get_rect(); ball1_rect.center = (width//2 - 150, height//2 - 200)
+ball2_rect = dodge_item_ball.get_rect(); ball2_rect.center = (width//2 - 150, height//2 - 200)
+ball3_rect = dodge_item_ball.get_rect(); ball3_rect.center = (width//2 + 150, height//2 - 200)
 
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
 boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
@@ -190,6 +208,7 @@ boss_text2 = font.render("but can you fight?", True, (255,255,255))
 
 boss_text1_rect = boss_text1.get_rect(center=(width/2,height/2 - 500))
 boss_text2_rect = boss_text2.get_rect(center=(width/2,height/2 - 450))
+
 
 wall_speed = 10
 oracle_shown = False
@@ -205,6 +224,10 @@ current_sprite_rect = player_sprite_standing_rect
 player_x = width // 2
 player_y = height - 160
 player_speed = 8
+
+#also after death
+attack_start_time = None
+attack_beginning = True
 
 first_stage = False
 second_stage = False
@@ -293,6 +316,8 @@ while running:
         if window_there:
             window.destroy()
             window_there = False
+        bossfight_phase = "1"
+        dodge_speed = 20
         screen.blit(background_bossfight, background_bossfight_rect)
         float_offset += float_speed
         oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
@@ -386,7 +411,23 @@ while running:
         if elapsed <= 5000:
             screen.blit(boss_text1,boss_text1_rect)
             screen.blit(boss_text2,boss_text2_rect)
-    
+        if elapsed >= 5000:
+            def phase1_attack_3_normal_fast_balls1():
+                global attack_start_time, attack_beginning
+                global ball1_rect, ball2_rect, ball3_rect
+                if attack_beginning:
+                    attack_start_time = pygame.time.get_ticks()
+                    attack_beginning = False
+
+                screen.blit(dodge_item_ball, ball1_rect)
+                screen.blit(dodge_item_ball, ball2_rect)
+                screen.blit(dodge_item_ball, ball3_rect)
+                elapsed = pygame.time.get_ticks() - attack_start_time
+                if elapsed >= 2000:
+                    ball1_rect = move_dodge_item(ball1_rect, (width/2 - 300, 1080), dodge_speed)
+                    ball2_rect = move_dodge_item(ball2_rect, (width/2 , 1080), dodge_speed)
+                    ball3_rect = move_dodge_item(ball3_rect, (width/2 + 150, 1080), dodge_speed)
+            phase1_attack_3_normal_fast_balls1()
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
