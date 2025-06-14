@@ -212,6 +212,15 @@ boss_text2 = font.render("but can you fight?", True, (255,255,255))
 boss_text1_rect = boss_text1.get_rect(center=(width/2,height/2 - 500))
 boss_text2_rect = boss_text2.get_rect(center=(width/2,height/2 - 450))
 
+death_screen_text = font.render("YOU DIED", True, (255,255,255))
+death_option1_text = font.render("Try again", True, (255,255,255))
+death_option2_text = font.render("Give up", True, (255,255,255))
+selection_text = font.render("^", True, (255,255,255))
+
+death_screen_text_rect = death_screen_text.get_rect(center=(width/2,height/2 - 500))
+death_option1_text_rect = death_option1_text.get_rect(center=(width/2,height/2 - 450))
+death_option2_text_rect = death_option2_text.get_rect(center=(width/2,height/2 - 500))
+selection_text_rect = selection_text.get_rect(center=(width/2,height/2 - 450))
 
 wall_speed = 10
 oracle_shown = False
@@ -228,6 +237,8 @@ player_x = width // 2
 player_y = height - 160
 player_speed = 8
 dead = None
+bossfight_phase = 1
+next_attack = True
 
 #also after death
 attack_start_time = None
@@ -320,7 +331,6 @@ while running:
         if window_there:
             window.destroy()
             window_there = False
-        bossfight_phase = "1"
         dodge_speed = 20
         screen.blit(background_bossfight, background_bossfight_rect)
         float_offset += float_speed
@@ -457,13 +467,26 @@ while running:
                 if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
                     return False
             #phase1_attack_3_normal_fast_balls1()
-            dead = phase1_attack_3_normal_fast_balls1()
-            if dead:
-                break
-            elif dead == False:
-                next_attack = True
-                print("next attack")
-            
+            #print("test")
+            if bossfight_phase == 1:
+                if next_attack == True:
+                    rng_attacks = random.randint(1,3)
+                    print(rng_attacks)
+                    next_attack = False
+                if rng_attacks == 1:
+                    dead = phase1_attack_3_normal_fast_balls1()
+                    if dead:
+                        screen.fill((0, 0, 0))
+                    if dead == False:
+                        next_attack = True
+                        print("next attack")
+                if rng_attacks == 2:
+                    print("attack 2")
+                if rng_attacks == 3:
+                    print("attack 3")
+            #if bossfight_phase == 2:
+                #rng_attacks = random.randint(1,3) ...
+                
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
