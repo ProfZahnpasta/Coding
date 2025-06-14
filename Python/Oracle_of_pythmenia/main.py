@@ -331,162 +331,162 @@ while running:
         if window_there:
             window.destroy()
             window_there = False
-        dodge_speed = 20
-        screen.blit(background_bossfight, background_bossfight_rect)
-        float_offset += float_speed
-        oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
-        boss_text1_rect.centery = (height/2 - 470) + math.sin(float_offset)*float_amplitude
-        boss_text2_rect.centery = (height/2 - 450) + math.sin(float_offset)*float_amplitude
-        screen.blit(oracle_both_down, oracle_both_down_rect)
-        screen.blit(bossfight_outline, bossfight_outline_rect)
-        screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
-        player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/7.3,882.6/7.3))
-        player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/6.5,764/6.5))
-        player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/6.5,765/6.5))
-        player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561/7.3,867/7.3))
+        if dead == False or dead == None:
+            dodge_speed = 20
+            screen.blit(background_bossfight, background_bossfight_rect)
+            float_offset += float_speed
+            oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
+            boss_text1_rect.centery = (height/2 - 470) + math.sin(float_offset)*float_amplitude
+            boss_text2_rect.centery = (height/2 - 450) + math.sin(float_offset)*float_amplitude
+            screen.blit(oracle_both_down, oracle_both_down_rect)
+            screen.blit(bossfight_outline, bossfight_outline_rect)
+            screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
+            player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/7.3,882.6/7.3))
+            player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/6.5,764/6.5))
+            player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/6.5,765/6.5))
+            player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561/7.3,867/7.3))
 
-        player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
-        player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
-        player_sprite_right_rect = player_sprite_right.get_rect(); player_sprite_right_rect.center = ((width/2, height-160))
-        player_sprite_up_rect = player_sprite_up.get_rect(); player_sprite_up_rect.center = ((width/2, height-160))
-        standing = True
-        old_x, old_y = player_x, player_y
-        if keys[K_a] or keys[K_LEFT]:
-            player_speed = 8
-            current_sprite = player_sprite_left
-            player_x -= player_speed
-            last_coords = "-x"
-            standing = False
-        if keys[K_d] or keys[K_RIGHT]:
-            player_speed = 8
-            current_sprite = player_sprite_right
-            player_x += player_speed 
-            last_coords = "+x"
-            standing = False
-        if keys[K_w] or keys[K_UP]:
-            player_speed = 8
-            current_sprite = player_sprite_up
-            player_y -= player_speed
-            last_coords = "-y"
-            standing = False
-        if keys[K_s] or keys[K_DOWN]:
-            player_speed = 4
-            current_sprite = player_sprite_standing
-            player_y += player_speed
-            last_coords = "+y"
-            standing = False
-        if keys[K_a] or keys[K_LEFT]:
-            if keys[K_SPACE]:
-                player_speed = 14
+            player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
+            player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
+            player_sprite_right_rect = player_sprite_right.get_rect(); player_sprite_right_rect.center = ((width/2, height-160))
+            player_sprite_up_rect = player_sprite_up.get_rect(); player_sprite_up_rect.center = ((width/2, height-160))
+            standing = True
+            old_x, old_y = player_x, player_y
+            if keys[K_a] or keys[K_LEFT]:
+                player_speed = 8
                 current_sprite = player_sprite_left
                 player_x -= player_speed
                 last_coords = "-x"
                 standing = False
-        if keys[K_d] or keys[K_RIGHT]:
-            if keys[K_SPACE]:
-                player_speed = 14
+            if keys[K_d] or keys[K_RIGHT]:
+                player_speed = 8
                 current_sprite = player_sprite_right
                 player_x += player_speed 
                 last_coords = "+x"
                 standing = False
-        if keys[K_w] or keys[K_UP]:
-            if keys[K_SPACE]:
-                player_speed = 14
+            if keys[K_w] or keys[K_UP]:
+                player_speed = 8
                 current_sprite = player_sprite_up
                 player_y -= player_speed
                 last_coords = "-y"
                 standing = False
-        if keys[K_s] or keys[K_DOWN]:
-            if keys[K_SPACE]:
-                player_speed = 14
+            if keys[K_s] or keys[K_DOWN]:
+                player_speed = 4
                 current_sprite = player_sprite_standing
-            player_y += player_speed
-            last_coords = "+y"
-            standing = False
-        if standing:  
-            current_sprite = player_sprite_standing
+                player_y += player_speed
+                last_coords = "+y"
+                standing = False
+            if keys[K_a] or keys[K_LEFT]:
+                if keys[K_SPACE]:
+                    player_speed = 14
+                    current_sprite = player_sprite_left
+                    player_x -= player_speed
+                    last_coords = "-x"
+                    standing = False
+            if keys[K_d] or keys[K_RIGHT]:
+                if keys[K_SPACE]:
+                    player_speed = 14
+                    current_sprite = player_sprite_right
+                    player_x += player_speed 
+                    last_coords = "+x"
+                    standing = False
+            if keys[K_w] or keys[K_UP]:
+                if keys[K_SPACE]:
+                    player_speed = 14
+                    current_sprite = player_sprite_up
+                    player_y -= player_speed
+                    last_coords = "-y"
+                    standing = False
+            if keys[K_s] or keys[K_DOWN]:
+                if keys[K_SPACE]:
+                    player_speed = 14
+                    current_sprite = player_sprite_standing
+                player_y += player_speed
+                last_coords = "+y"
+                standing = False
+            if standing:  
+                current_sprite = player_sprite_standing
 
-        current_sprite_rect = current_sprite.get_rect(); current_sprite_rect.center = (player_x, player_y)
+            current_sprite_rect = current_sprite.get_rect(); current_sprite_rect.center = (player_x, player_y)
 
-        player_mask = pygame.mask.from_surface(current_sprite)
-        outline_mask = pygame.mask.from_surface(bossfight_raw_outline)
+            player_mask = pygame.mask.from_surface(current_sprite)
+            outline_mask = pygame.mask.from_surface(bossfight_raw_outline)
 
-        offset = (bossfight_raw_outline_rect.x - current_sprite_rect.x, bossfight_raw_outline_rect.y - current_sprite_rect.y)
+            offset = (bossfight_raw_outline_rect.x - current_sprite_rect.x, bossfight_raw_outline_rect.y - current_sprite_rect.y)
 
-        if player_mask.overlap(outline_mask, offset):
-            player_x, player_y = old_x, old_y
-            current_sprite_rect.center = (player_x, player_y)
-            
-        screen.blit(current_sprite, current_sprite_rect)
-        if bossfight_start_time is None:
-            bossfight_start_time = pygame.time.get_ticks()
-
-        elapsed = pygame.time.get_ticks() - bossfight_start_time
-        if elapsed <= 5000:
-            screen.blit(boss_text1,boss_text1_rect)
-            screen.blit(boss_text2,boss_text2_rect)
-        if elapsed >= 5000:
-            def phase1_attack_3_normal_fast_balls1():
-                global attack_start_time, attack_beginning
-                global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
-                global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
-                global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
-                global current_sprite
-                #global target_ball1_y, target_ball2_y, target_ball3_y
-                if attack_beginning:
-                    attack_start_time = pygame.time.get_ticks()
-                    attack_beginning = False
-
-                screen.blit(dodge_item_ball, ball1_rect)
-                screen.blit(dodge_item_ball, ball2_rect)
-                screen.blit(dodge_item_ball, ball3_rect)
-                target_ball1_x, target_ball1_y = 660 ,1080
-                target_ball2_x, target_ball2_y = 960 ,1080
-                target_ball3_x, target_ball3_y = 1110 ,1080
-                elapsed = pygame.time.get_ticks() - attack_start_time
-                if elapsed >= 2000:
-                    ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
-                    ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
-                    ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
-                player_left_mask = pygame.mask.from_surface(player_sprite_left)
-                player_right_mask = pygame.mask.from_surface(player_sprite_right)
-                player_standing_mask = pygame.mask.from_surface(player_sprite_standing)
-                player_up_mask = pygame.mask.from_surface(player_sprite_up)
-                ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
-                ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
-                ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
-
-                player_mask = pygame.mask.from_surface(current_sprite)
-
-                for ball_rect, ball_mask in zip([ball1_rect, ball2_rect, ball3_rect], [ball_mask1, ball_mask2, ball_mask3]):
-                    offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
-                    if player_mask.overlap(ball_mask, offset):
-                        print("hit")
-                        return True
+            if player_mask.overlap(outline_mask, offset):
+                player_x, player_y = old_x, old_y
+                current_sprite_rect.center = (player_x, player_y)
                 
-                if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
-                    return False
-            #phase1_attack_3_normal_fast_balls1()
-            #print("test")
-            if bossfight_phase == 1:
-                if next_attack == True:
-                    rng_attacks = random.randint(1,3)
-                    print(rng_attacks)
-                    next_attack = False
-                if rng_attacks == 1:
-                    dead = phase1_attack_3_normal_fast_balls1()
-                    if dead:
-                        screen.fill((0, 0, 0))
-                    if dead == False:
-                        next_attack = True
-                        print("next attack")
-                if rng_attacks == 2:
-                    print("attack 2")
-                if rng_attacks == 3:
-                    print("attack 3")
-            #if bossfight_phase == 2:
-                #rng_attacks = random.randint(1,3) ...
-                
+            screen.blit(current_sprite, current_sprite_rect)
+            if bossfight_start_time is None:
+                bossfight_start_time = pygame.time.get_ticks()
+
+            elapsed = pygame.time.get_ticks() - bossfight_start_time
+            if elapsed <= 5000:
+                screen.blit(boss_text1,boss_text1_rect)
+                screen.blit(boss_text2,boss_text2_rect)
+            if elapsed >= 5000:
+                def phase1_attack_3_normal_fast_balls1():
+                    global attack_start_time, attack_beginning
+                    global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
+                    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+                    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+                    global current_sprite
+                    #global target_ball1_y, target_ball2_y, target_ball3_y
+                    if attack_beginning:
+                        attack_start_time = pygame.time.get_ticks()
+                        attack_beginning = False
+
+                    screen.blit(dodge_item_ball, ball1_rect)
+                    screen.blit(dodge_item_ball, ball2_rect)
+                    screen.blit(dodge_item_ball, ball3_rect)
+                    target_ball1_x, target_ball1_y = 660 ,1080
+                    target_ball2_x, target_ball2_y = 960 ,1080
+                    target_ball3_x, target_ball3_y = 1110 ,1080
+                    elapsed = pygame.time.get_ticks() - attack_start_time
+                    if elapsed >= 2000:
+                        ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
+                        ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
+                        ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
+                    player_left_mask = pygame.mask.from_surface(player_sprite_left)
+                    player_right_mask = pygame.mask.from_surface(player_sprite_right)
+                    player_standing_mask = pygame.mask.from_surface(player_sprite_standing)
+                    player_up_mask = pygame.mask.from_surface(player_sprite_up)
+                    ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
+                    ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
+                    ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
+
+                    player_mask = pygame.mask.from_surface(current_sprite)
+
+                    for ball_rect, ball_mask in zip([ball1_rect, ball2_rect, ball3_rect], [ball_mask1, ball_mask2, ball_mask3]):
+                        offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
+                        if player_mask.overlap(ball_mask, offset):
+                            print("hit")
+                            return True
+                    
+                    if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
+                        return False
+                #phase1_attack_3_normal_fast_balls1()
+                #print("test")
+                if bossfight_phase == 1:
+                    if next_attack == True:
+                        rng_attacks = random.randint(1,3)
+                        print(rng_attacks)
+                        next_attack = False
+                    if rng_attacks == 1:
+                        dead = phase1_attack_3_normal_fast_balls1()
+                        if dead == False:
+                            next_attack = True
+                            print("next attack")
+                    if rng_attacks == 2:
+                        print("attack 2")
+                    if rng_attacks == 3:
+                        print("attack 3")
+                #if bossfight_phase == 2:
+                    #rng_attacks = random.randint(1,3) ...
+        elif dead:
+            screen.fill((0, 0, 0))
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
