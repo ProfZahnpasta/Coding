@@ -206,21 +206,23 @@ ball2_rect = dodge_item_ball2.get_rect(); ball2_rect.center = (width//2 - 150, h
 ball3_rect = dodge_item_ball3.get_rect(); ball3_rect.center = (width//2 + 150, height//2 - 200)
 
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
+title_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",170)
+middle_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",90)
 boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
 boss_text2 = font.render("but can you fight?", True, (255,255,255))
 
 boss_text1_rect = boss_text1.get_rect(center=(width/2,height/2 - 500))
 boss_text2_rect = boss_text2.get_rect(center=(width/2,height/2 - 450))
 
-death_screen_text = font.render("YOU DIED", True, (255,255,255))
-death_option1_text = font.render("Try again", True, (255,255,255))
-death_option2_text = font.render("Give up", True, (255,255,255))
-selection_text = font.render("^", True, (255,255,255))
+death_screen_text = title_font.render("YOU DIED", True, (255,255,255))
+death_option1_text = middle_font.render("Try again", True, (255,255,255))
+death_option2_text = middle_font.render("Give up", True, (255,255,255))
+selection_text = middle_font.render("^", True, (255,255,255))
 
-death_screen_text_rect = death_screen_text.get_rect(center=(width/2,height/2 - 500))
-death_option1_text_rect = death_option1_text.get_rect(center=(width/2,height/2 - 450))
-death_option2_text_rect = death_option2_text.get_rect(center=(width/2,height/2 - 500))
-selection_text_rect = selection_text.get_rect(center=(width/2,height/2 - 450))
+death_screen_text_rect = death_screen_text.get_rect(center=(width/2,height/2 - 200))
+death_option1_text_rect = death_option1_text.get_rect(center=(width/2 - 300,height/2 + 200))
+death_option2_text_rect = death_option2_text.get_rect(center=(width/2 + 300,height/2 + 200))
+selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
 
 wall_speed = 10
 oracle_shown = False
@@ -239,13 +241,15 @@ player_speed = 8
 dead = None
 bossfight_phase = 1
 next_attack = True
+boss_pose = "both up"
+selec = "left"
 
 #also after death
 attack_start_time = None
 attack_beginning = True
 
 def phase1_attack_3_normal_fast_balls1():
-    global attack_start_time, attack_beginning
+    global attack_start_time, attack_beginning, boss_pose
     global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
     global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
     global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
@@ -257,6 +261,8 @@ def phase1_attack_3_normal_fast_balls1():
         ball1_rect.center = (width//2 - 150, height//2 - 200)
         ball2_rect.center = (width//2 - 150, height//2 - 200)
         ball3_rect.center = (width//2 + 150, height//2 - 200)
+        no_hit = True
+        no_finish = True
 
     screen.blit(dodge_item_ball, ball1_rect)
     screen.blit(dodge_item_ball, ball2_rect)
@@ -269,6 +275,8 @@ def phase1_attack_3_normal_fast_balls1():
         ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
         ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
         ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
+    if elapsed >= 2300:
+        boss_pose = "both down"
     player_left_mask = pygame.mask.from_surface(player_sprite_left)
     player_right_mask = pygame.mask.from_surface(player_sprite_right)
     player_standing_mask = pygame.mask.from_surface(player_sprite_standing)
@@ -283,11 +291,15 @@ def phase1_attack_3_normal_fast_balls1():
         offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
         if player_mask.overlap(ball_mask, offset):
             print("hit")
-            return True
+            return True#, boss_pose
+            #no_hit = False
     
     if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
-        return False
+        return False#, boss_pose
+        #no_finish = False
 
+    #if no_hit and no_finish:
+        #return None, boss_pose
 first_stage = False
 second_stage = False
 third_stage = True
@@ -495,6 +507,23 @@ while running:
                     #rng_attacks = random.randint(1,3) ...
         elif dead:
             screen.fill((0, 0, 0))
+            screen.blit(death_screen_text, death_screen_text_rect)
+            screen.blit(death_option1_text, death_option1_text_rect)
+            screen.blit(death_option2_text, death_option2_text_rect)
+            screen.blit(selection_text, selection_text_rect)
+            
+            if keys[K_LEFT] or keys[K_a]:
+                selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
+                selec = "left"
+            if keys[K_RIGHT] or keys[K_d]:
+                selection_text_rect = selection_text.get_rect(center=(width/2 + 300,height/2 + 300))
+                selec = "right"
+            
+            if keys[K_RETURN] and selec == "left":
+                print("respawn")
+            if keys[K_RETURN] and selec == "right":
+                pygame.quit()
+                sys.exit()
     if keys[K_ESCAPE]:
         pygame.quit()
         sys.exit()
