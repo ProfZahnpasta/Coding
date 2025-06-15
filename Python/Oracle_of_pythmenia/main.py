@@ -244,6 +244,50 @@ next_attack = True
 attack_start_time = None
 attack_beginning = True
 
+def phase1_attack_3_normal_fast_balls1():
+    global attack_start_time, attack_beginning
+    global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
+    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+    global current_sprite
+    #global target_ball1_y, target_ball2_y, target_ball3_y
+    if attack_beginning:
+        attack_start_time = pygame.time.get_ticks()
+        attack_beginning = False
+        ball1_rect.center = (width//2 - 150, height//2 - 200)
+        ball2_rect.center = (width//2 - 150, height//2 - 200)
+        ball3_rect.center = (width//2 + 150, height//2 - 200)
+
+    screen.blit(dodge_item_ball, ball1_rect)
+    screen.blit(dodge_item_ball, ball2_rect)
+    screen.blit(dodge_item_ball, ball3_rect)
+    target_ball1_x, target_ball1_y = 660 ,1080
+    target_ball2_x, target_ball2_y = 960 ,1080
+    target_ball3_x, target_ball3_y = 1110 ,1080
+    elapsed = pygame.time.get_ticks() - attack_start_time
+    if elapsed >= 2000:
+        ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
+        ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
+        ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
+    player_left_mask = pygame.mask.from_surface(player_sprite_left)
+    player_right_mask = pygame.mask.from_surface(player_sprite_right)
+    player_standing_mask = pygame.mask.from_surface(player_sprite_standing)
+    player_up_mask = pygame.mask.from_surface(player_sprite_up)
+    ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
+    ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
+    ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
+
+    player_mask = pygame.mask.from_surface(current_sprite)
+
+    for ball_rect, ball_mask in zip([ball1_rect, ball2_rect, ball3_rect], [ball_mask1, ball_mask2, ball_mask3]):
+        offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
+        if player_mask.overlap(ball_mask, offset):
+            print("hit")
+            return True
+    
+    if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
+        return False
+
 first_stage = False
 second_stage = False
 third_stage = True
@@ -427,62 +471,26 @@ while running:
                 screen.blit(boss_text1,boss_text1_rect)
                 screen.blit(boss_text2,boss_text2_rect)
             if elapsed >= 5000:
-                def phase1_attack_3_normal_fast_balls1():
-                    global attack_start_time, attack_beginning
-                    global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
-                    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
-                    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
-                    global current_sprite
-                    #global target_ball1_y, target_ball2_y, target_ball3_y
-                    if attack_beginning:
-                        attack_start_time = pygame.time.get_ticks()
-                        attack_beginning = False
-
-                    screen.blit(dodge_item_ball, ball1_rect)
-                    screen.blit(dodge_item_ball, ball2_rect)
-                    screen.blit(dodge_item_ball, ball3_rect)
-                    target_ball1_x, target_ball1_y = 660 ,1080
-                    target_ball2_x, target_ball2_y = 960 ,1080
-                    target_ball3_x, target_ball3_y = 1110 ,1080
-                    elapsed = pygame.time.get_ticks() - attack_start_time
-                    if elapsed >= 2000:
-                        ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
-                        ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
-                        ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
-                    player_left_mask = pygame.mask.from_surface(player_sprite_left)
-                    player_right_mask = pygame.mask.from_surface(player_sprite_right)
-                    player_standing_mask = pygame.mask.from_surface(player_sprite_standing)
-                    player_up_mask = pygame.mask.from_surface(player_sprite_up)
-                    ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
-                    ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
-                    ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
-
-                    player_mask = pygame.mask.from_surface(current_sprite)
-
-                    for ball_rect, ball_mask in zip([ball1_rect, ball2_rect, ball3_rect], [ball_mask1, ball_mask2, ball_mask3]):
-                        offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
-                        if player_mask.overlap(ball_mask, offset):
-                            print("hit")
-                            return True
-                    
-                    if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
-                        return False
                 #phase1_attack_3_normal_fast_balls1()
                 #print("test")
                 if bossfight_phase == 1:
                     if next_attack == True:
-                        rng_attacks = random.randint(1,3)
+                        rng_attacks = random.randint(1,1)
                         print(rng_attacks)
                         next_attack = False
                     if rng_attacks == 1:
                         dead = phase1_attack_3_normal_fast_balls1()
-                        if dead == False:
-                            next_attack = True
-                            print("next attack")
                     if rng_attacks == 2:
                         print("attack 2")
                     if rng_attacks == 3:
                         print("attack 3")
+
+                    if dead == False:
+                        next_attack = True
+                        attack_start_time = None
+                        attack_beginning = True
+                        dead = None
+                        print("next attack")
                 #if bossfight_phase == 2:
                     #rng_attacks = random.randint(1,3) ...
         elif dead:
