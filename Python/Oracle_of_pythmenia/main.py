@@ -277,10 +277,6 @@ def phase1_attack_3_normal_fast_balls1():
         ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
     if elapsed >= 2300:
         boss_pose = "both down"
-    player_left_mask = pygame.mask.from_surface(player_sprite_left)
-    player_right_mask = pygame.mask.from_surface(player_sprite_right)
-    player_standing_mask = pygame.mask.from_surface(player_sprite_standing)
-    player_up_mask = pygame.mask.from_surface(player_sprite_up)
     ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
     ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
     ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
@@ -318,12 +314,12 @@ while running:
         screen.fill((70, 144, 184, 255))
         screen.blit(background_wall, background_wall_rect)
 
-        if keys[K_a]:
+        if keys[K_a] or keys[K_LEFT]:
             current_sprite = player_sprite_left
             current_sprite_rect = player_sprite_left_rect
             if background_wall_rect.x + wall_speed <= 0:
                 background_wall_rect.x += wall_speed
-        elif keys[K_d]:  
+        elif keys[K_d] or keys[K_RIGHT]:  
             current_sprite = player_sprite_right
             current_sprite_rect = player_sprite_right_rect
             if background_wall_rect.x - wall_speed >= -(background_wall.get_width() - width):
@@ -433,28 +429,28 @@ while running:
                 last_coords = "+y"
                 standing = False
             if keys[K_a] or keys[K_LEFT]:
-                if keys[K_SPACE]:
+                if keys[K_SPACE] or keys[K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_left
                     player_x -= player_speed
                     last_coords = "-x"
                     standing = False
             if keys[K_d] or keys[K_RIGHT]:
-                if keys[K_SPACE]:
+                if keys[K_SPACE] or keys[K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_right
                     player_x += player_speed 
                     last_coords = "+x"
                     standing = False
             if keys[K_w] or keys[K_UP]:
-                if keys[K_SPACE]:
+                if keys[K_SPACE] or keys[K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_up
                     player_y -= player_speed
                     last_coords = "-y"
                     standing = False
             if keys[K_s] or keys[K_DOWN]:
-                if keys[K_SPACE]:
+                if keys[K_SPACE] or keys[K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_standing
                 player_y += player_speed
@@ -521,6 +517,7 @@ while running:
             
             if keys[K_RETURN] and selec == "left":
                 print("respawn")
+                
             if keys[K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
