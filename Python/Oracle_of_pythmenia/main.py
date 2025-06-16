@@ -1,11 +1,10 @@
 import sys
 import pygame
 import math
-from pygame.locals import *
 import customtkinter
-from google import genai
-from google.genai import types
-import tkinter.font as tkFont
+import google
+import google.genai
+import tkinter.font
 import os
 import ctypes
 import random
@@ -21,7 +20,7 @@ info = pygame.display.Info()
 width, height = 1920,1080
 print(width,height)
 
-client = genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
+client = google.genai.Client(api_key="AIzaSyDPL8c8DWH-5GxqsCq5Sxg15TUPLWtFpEY")
 system_instruction_oracle = """Role Play. Only answer as your charakter, nothing else.  
 Your the oracle of Pythmenia in an same-named retro game, an oracle, that was once friendly and helped the citizens of pythmenia, 
 for example telling when storms and droughts will come. 
@@ -105,7 +104,7 @@ def ask_oracle(Event=None):
     response = client.models.generate_content(
         model="gemini-2.0-flash-001",
         contents=f"(Do not put out more than 254 characters)Player:{player_input}",
-        config=types.GenerateContentConfig(
+        config=google.genai.types.GenerateContentConfig(
             system_instruction=f"{system_instruction_oracle} These are the previous messages, so you can comprehend the chat history: {conversation_history}"
         )
     )
@@ -303,7 +302,7 @@ third_stage = True
 
 while running:
     for event in pygame.event.get():
-        if event.type == QUIT:
+        if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
 
@@ -315,12 +314,12 @@ while running:
         screen.fill((70, 144, 184, 255))
         screen.blit(background_wall, background_wall_rect)
 
-        if keys[K_a] or keys[K_LEFT]:
+        if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             current_sprite = player_sprite_left
             current_sprite_rect = player_sprite_left_rect
             if background_wall_rect.x + wall_speed <= 0:
                 background_wall_rect.x += wall_speed
-        elif keys[K_d] or keys[K_RIGHT]:  
+        elif keys[pygame.K_d] or keys[pygame.K_RIGHT]:  
             current_sprite = player_sprite_right
             current_sprite_rect = player_sprite_right_rect
             if background_wall_rect.x - wall_speed >= -(background_wall.get_width() - width):
@@ -330,7 +329,7 @@ while running:
             current_sprite_rect = player_sprite_standing_rect
 
         if background_wall_rect.x <= -13680:
-            if keys[K_RETURN]:
+            if keys[pygame.K_RETURN]:
                 second_stage = True
                 first_stage = False
 
@@ -405,53 +404,53 @@ while running:
             player_sprite_up_rect = player_sprite_up.get_rect(); player_sprite_up_rect.center = ((width/2, height-160))
             standing = True
             old_x, old_y = player_x, player_y
-            if keys[K_a] or keys[K_LEFT]:
+            if keys[pygame.K_a] or keys[pygame.K_LEFT]:
                 player_speed = 8
                 current_sprite = player_sprite_left
                 player_x -= player_speed
                 last_coords = "-x"
                 standing = False
-            if keys[K_d] or keys[K_RIGHT]:
+            if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
                 player_speed = 8
                 current_sprite = player_sprite_right
                 player_x += player_speed 
                 last_coords = "+x"
                 standing = False
-            if keys[K_w] or keys[K_UP]:
+            if keys[pygame.K_w] or keys[pygame.K_UP]:
                 player_speed = 8
                 current_sprite = player_sprite_up
                 player_y -= player_speed
                 last_coords = "-y"
                 standing = False
-            if keys[K_s] or keys[K_DOWN]:
+            if keys[pygame.K_s] or keys[pygame.K_DOWN]:
                 player_speed = 4
                 current_sprite = player_sprite_standing
                 player_y += player_speed
                 last_coords = "+y"
                 standing = False
-            if keys[K_a] or keys[K_LEFT]:
-                if keys[K_SPACE] or keys[K_LSHIFT]:
+            if keys[pygame.K_a] or keys[pygame.K_LEFT]:
+                if keys[pygame.K_SPACE] or keys[pygame.K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_left
                     player_x -= player_speed
                     last_coords = "-x"
                     standing = False
-            if keys[K_d] or keys[K_RIGHT]:
-                if keys[K_SPACE] or keys[K_LSHIFT]:
+            if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+                if keys[pygame.K_SPACE] or keys[pygame.K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_right
                     player_x += player_speed 
                     last_coords = "+x"
                     standing = False
-            if keys[K_w] or keys[K_UP]:
-                if keys[K_SPACE] or keys[K_LSHIFT]:
+            if keys[pygame.K_w] or keys[pygame.K_UP]:
+                if keys[pygame.K_SPACE] or keys[pygame.K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_up
                     player_y -= player_speed
                     last_coords = "-y"
                     standing = False
-            if keys[K_s] or keys[K_DOWN]:
-                if keys[K_SPACE] or keys[K_LSHIFT]:
+            if keys[pygame.K_s] or keys[pygame.K_DOWN]:
+                if keys[pygame.K_SPACE] or keys[pygame.K_LSHIFT]:
                     player_speed = 14
                     current_sprite = player_sprite_standing
                 player_y += player_speed
@@ -509,14 +508,14 @@ while running:
             screen.blit(death_option2_text, death_option2_text_rect)
             screen.blit(selection_text, selection_text_rect)
             
-            if keys[K_LEFT] or keys[K_a]:
+            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
                 selec = "left"
-            if keys[K_RIGHT] or keys[K_d]:
+            if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 selection_text_rect = selection_text.get_rect(center=(width/2 + 300,height/2 + 300))
                 selec = "right"
             
-            if keys[K_RETURN] and selec == "left":
+            if keys[pygame.K_RETURN] and selec == "left":
                 #print("respawn")
                 attack_start_time = None
                 attack_beginning = True
@@ -527,10 +526,10 @@ while running:
                 boss_pose = "both up"
                 selec = "left"
                 elapsed = 0
-            if keys[K_RETURN] and selec == "right":
+            if keys[pygame.K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
-    if keys[K_ESCAPE]:
+    if keys[pygame.K_ESCAPE]:
         pygame.quit()
         sys.exit()
 
