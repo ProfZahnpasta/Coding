@@ -145,6 +145,54 @@ def move_dodge_item(rect, target_coords, speed):
 
     return rect
 
+def phase1_attack_3_normal_fast_balls1():
+    global attack_start_time, attack_beginning, boss_pose
+    global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
+    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+    global current_sprite
+    #global target_ball1_y, target_ball2_y, target_ball3_y
+    if attack_beginning:
+        attack_start_time = pygame.time.get_ticks()
+        attack_beginning = False
+        ball1_rect.center = (width//2 - 150, height//2 - 200)
+        ball2_rect.center = (width//2 - 150, height//2 - 200)
+        ball3_rect.center = (width//2 + 150, height//2 - 200)
+        no_hit = True
+        no_finish = True
+
+    screen.blit(dodge_item_ball, ball1_rect)
+    screen.blit(dodge_item_ball, ball2_rect)
+    screen.blit(dodge_item_ball, ball3_rect)
+    target_ball1_x, target_ball1_y = 660 ,1080
+    target_ball2_x, target_ball2_y = 960 ,1080
+    target_ball3_x, target_ball3_y = 1110 ,1080
+    elapsed = pygame.time.get_ticks() - attack_start_time
+    if elapsed >= 2000:
+        ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
+        ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
+        ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
+    if elapsed >= 2300:
+        boss_pose = "both down"
+    ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
+    ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
+    ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
+
+    player_mask = pygame.mask.from_surface(current_sprite)
+
+    for ball_rect, ball_mask in zip([ball1_rect, ball2_rect, ball3_rect], [ball_mask1, ball_mask2, ball_mask3]):
+        offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
+        if player_mask.overlap(ball_mask, offset):
+            print("hit")
+            return True#, boss_pose
+            #no_hit = False
+    
+    if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
+        return False#, boss_pose
+        #no_finish = False
+
+    #if no_hit and no_finish:
+        #return None, boss_pose
 
 pygame.init()
 fps = 60
@@ -238,6 +286,7 @@ current_sprite_rect = player_sprite_standing_rect
 player_x = width // 2
 player_y = height - 160
 player_speed = 8
+respawn = False
 dead = None
 bossfight_phase = 1
 next_attack = True
@@ -248,54 +297,6 @@ selec = "left"
 attack_start_time = None
 attack_beginning = True
 
-def phase1_attack_3_normal_fast_balls1():
-    global attack_start_time, attack_beginning, boss_pose
-    global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
-    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
-    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
-    global current_sprite
-    #global target_ball1_y, target_ball2_y, target_ball3_y
-    if attack_beginning:
-        attack_start_time = pygame.time.get_ticks()
-        attack_beginning = False
-        ball1_rect.center = (width//2 - 150, height//2 - 200)
-        ball2_rect.center = (width//2 - 150, height//2 - 200)
-        ball3_rect.center = (width//2 + 150, height//2 - 200)
-        no_hit = True
-        no_finish = True
-
-    screen.blit(dodge_item_ball, ball1_rect)
-    screen.blit(dodge_item_ball, ball2_rect)
-    screen.blit(dodge_item_ball, ball3_rect)
-    target_ball1_x, target_ball1_y = 660 ,1080
-    target_ball2_x, target_ball2_y = 960 ,1080
-    target_ball3_x, target_ball3_y = 1110 ,1080
-    elapsed = pygame.time.get_ticks() - attack_start_time
-    if elapsed >= 2000:
-        ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
-        ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
-        ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
-    if elapsed >= 2300:
-        boss_pose = "both down"
-    ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
-    ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
-    ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
-
-    player_mask = pygame.mask.from_surface(current_sprite)
-
-    for ball_rect, ball_mask in zip([ball1_rect, ball2_rect, ball3_rect], [ball_mask1, ball_mask2, ball_mask3]):
-        offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
-        if player_mask.overlap(ball_mask, offset):
-            print("hit")
-            return True#, boss_pose
-            #no_hit = False
-    
-    if ball1_rect.y >= target_ball1_y and ball2_rect.y >= target_ball2_y and ball3_rect.y >= target_ball3_y:
-        return False#, boss_pose
-        #no_finish = False
-
-    #if no_hit and no_finish:
-        #return None, boss_pose
 first_stage = False
 second_stage = False
 third_stage = True
@@ -516,8 +517,16 @@ while running:
                 selec = "right"
             
             if keys[K_RETURN] and selec == "left":
-                print("respawn")
-                
+                #print("respawn")
+                attack_start_time = None
+                attack_beginning = True
+                bossfight_start_time = None
+                dead = None
+                bossfight_phase = 1
+                next_attack = True
+                boss_pose = "both up"
+                selec = "left"
+                elapsed = 0
             if keys[K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
