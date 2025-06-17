@@ -326,6 +326,9 @@ oracle_both_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia
 oracle_left_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_left_down.png"),(600,600))
 oracle_right_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_right_down.png"),(600,600))
 oracle_true_form = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_true_form.png"),(600,600))
+damage_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/damage_item.png"),(600,600))
+potion_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/potion_item.png"),(600,600))
+
 
 player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
 player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
@@ -352,6 +355,8 @@ ball2_rect = dodge_item_ball2.get_rect(); ball2_rect.center = (width//2 - 150, h
 ball3_rect = dodge_item_ball3.get_rect(); ball3_rect.center = (width//2 + 150, height//2 - 200)
 dodge_item_speer1_rect = dodge_item_speer1.get_rect(); dodge_item_speer1_rect.center = (width//2 - 150, height//2 - 200)
 dodge_item_speer2_rect = dodge_item_speer2.get_rect(); dodge_item_speer2_rect.center = (width//2 + 150, height//2 - 200)
+damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
+damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
 
 
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
@@ -388,13 +393,13 @@ player_x = width // 2
 player_y = height - 160
 player_speed = 8
 respawn = False
+#also after death9
 dead = None
 bossfight_phase = 1
 next_attack = True
 boss_pose = "both up"
 selec = "left"
-
-#also after death
+attack_3_counter = 0
 attack_start_time = None
 attack_beginning = True
 
@@ -587,6 +592,11 @@ while running:
                         rng_attacks = random.randint(1,3)
                         print(rng_attacks)
                         next_attack = False
+                        attack_3_counter =+ 1
+                        print(attack_3_counter)
+                        if attack_3_counter == 3:
+                            attack_3_counter = 0
+                            damage_item_there = True
                     if rng_attacks == 1:
                         dead = phase1_attack_3_normal_fast_balls1()
                         if dead:
@@ -605,6 +615,7 @@ while running:
                         attack_start_time = None
                         attack_beginning = True
                         dead = None
+                        attack_3_counter = 0
                         print("next attack")
                 #if bossfight_phase == 2:
                     #rng_attacks = random.randint(1,3) ...
