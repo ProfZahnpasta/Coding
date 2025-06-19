@@ -172,7 +172,7 @@ def phase1_attack_3_normal_fast_balls1():
     target_ball2_x, target_ball2_y = 960 ,1080
     target_ball3_x, target_ball3_y = 1110 ,1080
     elapsed = pygame.time.get_ticks() - attack_start_time
-    if elapsed >= 2000:
+    if elapsed >= 500:
         ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
         ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
         ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
@@ -222,7 +222,7 @@ def phase1_attack_3_normal_fast_balls2():
     target_ball2_x, target_ball2_y = 1110 ,1080
     target_ball3_x, target_ball3_y = 960 ,1080
     elapsed = pygame.time.get_ticks() - attack_start_time
-    if elapsed >= 2000:
+    if elapsed >= 500:
         ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
         ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
         ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
@@ -367,6 +367,7 @@ damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
 title_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",170)
 middle_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",90)
+middle_middle_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",40)
 boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
 boss_text2 = font.render("but can you fight?", True, (255,255,255))
 
@@ -382,6 +383,10 @@ death_screen_text_rect = death_screen_text.get_rect(center=(width/2,height/2 - 2
 death_option1_text_rect = death_option1_text.get_rect(center=(width/2 - 300,height/2 + 200))
 death_option2_text_rect = death_option2_text.get_rect(center=(width/2 + 300,height/2 + 200))
 selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
+
+boss_hp_text = font.render("", True, (255,255,255))
+boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
+
 
 wall_speed = 10
 oracle_shown = False
@@ -413,6 +418,7 @@ di_going_to_boss = False
 boss_hit = False
 boss_hit = False
 boss_hit_time = None
+boss_hp = 1000
 
 first_stage = False
 second_stage = False
@@ -503,6 +509,7 @@ while running:
             window_there = False
         if dead == False or dead == None:
             screen.blit(background_bossfight, background_bossfight_rect)
+            #print(boss_hp)
             float_offset += float_speed
             oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
             boss_text1_rect.centery = (height/2 - 470) + math.sin(float_offset)*float_amplitude
@@ -513,6 +520,7 @@ while running:
             if boss_hit:
                 boss_hit_time = now
                 boss_hit = False
+                boss_hp -= 50
             if boss_hit_time is not None and now - boss_hit_time < 1000:
                 screen.blit(oracle_hit, oracle_both_down_rect)
             else:
@@ -603,12 +611,24 @@ while running:
                 bossfight_start_time = pygame.time.get_ticks()
 
             elapsed = pygame.time.get_ticks() - bossfight_start_time
+
             if elapsed <= 5000:
                 screen.blit(boss_text1,boss_text1_rect)
                 screen.blit(boss_text2,boss_text2_rect)
             if elapsed >= 5000:
+                if boss_hp == 1000:
+                    bossfight_phase = 1
+                elif boss_hp <= 700 and boss_hp >= 400:
+                    bossfight_phase = 2
+                elif boss_hp <= 400:
+                    bossfight_phase = 3
+                elif boss_hp <= 0:
+                    pygame.quit()
                 #phase1_attack_3_normal_fast_balls1()
                 #print("test")
+                boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
+                boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
+                screen.blit(boss_hp_text,boss_hp_text_rect)
                 if bossfight_phase == 1:
                     if next_attack == True:
                         rng_attacks = random.randint(1,3)
@@ -631,15 +651,33 @@ while running:
                         dead = phase1_attack_2_fast_speers()
                         if dead:
                             time.sleep(1)
-                    
+                    if bossfight_phase == 2:
+                        rng_attacks = random.randint(1,3)
+                        print(rng_attacks)
+                        next_attack = False
+                        attack_3_counter += 1
+                        print(attack_3_counter)
+                        if attack_3_counter == 3:
+                            attack_3_counter = -1
+                            spawn_damage_item = True
+                        print("STAGE 2")
+                    if bossfight_phase == 3:
+                        rng_attacks = random.randint(1,3)
+                        print(rng_attacks)
+                        next_attack = False
+                        attack_3_counter += 1
+                        print(attack_3_counter)
+                        if attack_3_counter == 3:
+                            attack_3_counter = -1
+                            spawn_damage_item = True
+
                     if dead == False:
                         next_attack = True
                         attack_start_time = None
                         attack_beginning = True
                         dead = None
                         print("next attack")
-                #if bossfight_phase == 2:
-                    #rng_attacks = random.randint(1,3) ...
+                
                 if spawn_damage_item:
                     randomx_in_outline = random.randint(734,1178)
                     randomy_in_outline = random.randint(609,973)
@@ -701,6 +739,7 @@ while running:
                 boss_hit = False
                 boss_hit = False
                 boss_hit_time = None
+                boss_hp = 1000
             if keys[pygame.K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
@@ -710,11 +749,3 @@ while running:
         sys.exit()
     pygame.display.flip()
     fpsClock.tick(fps)
-
-
-
-
-
-
-
-
