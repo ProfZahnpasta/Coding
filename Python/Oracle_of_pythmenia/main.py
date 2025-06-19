@@ -69,6 +69,10 @@ entry = customtkinter.CTkEntry(master=window, font=pixel_font, width=300, height
 entry.pack(pady=20)
 
 
+def get_mousclick_coords():
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        x, y = event.pos
+        print(f"Mouse clicked at: ({x}, {y})")
 
 def wrap_text(text, font, max_chars):
     words = text.split(' ')
@@ -356,7 +360,7 @@ ball3_rect = dodge_item_ball3.get_rect(); ball3_rect.center = (width//2 + 150, h
 dodge_item_speer1_rect = dodge_item_speer1.get_rect(); dodge_item_speer1_rect.center = (width//2 - 150, height//2 - 200)
 dodge_item_speer2_rect = dodge_item_speer2.get_rect(); dodge_item_speer2_rect.center = (width//2 + 150, height//2 - 200)
 damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
-damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
+
 
 
 font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
@@ -402,6 +406,8 @@ selec = "left"
 attack_3_counter = 0
 attack_start_time = None
 attack_beginning = True
+spawn_damage_item = False
+damage_item_there = False
 
 first_stage = False
 second_stage = False
@@ -596,15 +602,15 @@ while running:
                         print(attack_3_counter)
                         if attack_3_counter == 3:
                             attack_3_counter = 0
-                            damage_item_there = True
+                            spawn_damage_item = True
                     if rng_attacks == 1:
                         dead = phase1_attack_3_normal_fast_balls1()
-                        if dead:
-                            time.sleep(1)
+                        #if dead:
+                        #    time.sleep(1)
                     if rng_attacks == 2:
                         dead = phase1_attack_3_normal_fast_balls2()
-                        if dead:
-                            time.sleep(1)
+                        #if dead:
+                        #    time.sleep(1)
                     if rng_attacks == 3:
                         dead = phase1_attack_2_fast_speers()
                         if dead:
@@ -619,39 +625,50 @@ while running:
                         print("next attack")
                 #if bossfight_phase == 2:
                     #rng_attacks = random.randint(1,3) ...
-        elif dead:
-            screen.fill((0, 0, 0))
-            screen.blit(death_screen_text, death_screen_text_rect)
-            screen.blit(death_option1_text, death_option1_text_rect)
-            screen.blit(death_option2_text, death_option2_text_rect)
-            screen.blit(selection_text, selection_text_rect)
-            
-            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
-                selec = "left"
-            if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                selection_text_rect = selection_text.get_rect(center=(width/2 + 300,height/2 + 300))
-                selec = "right"
-            
-            if keys[pygame.K_RETURN] and selec == "left":
-                #print("respawn")
-                attack_start_time = None
-                attack_beginning = True
-                bossfight_start_time = None
-                dead = None
-                bossfight_phase = 1
-                next_attack = True
-                boss_pose = "both up"
-                selec = "left"
-                elapsed = 0
-            if keys[pygame.K_RETURN] and selec == "right":
-                pygame.quit()
-                sys.exit()
+                if spawn_damage_item:
+                    randomx_in_outline = random.randint(734,1178)
+                    randomy_in_outline = random.randint(609,973)
+                    damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (609, 973)
+                    damage_item_there = True
+                    spawn_damage_item = False    
+                if damage_item_there:
+                    screen.blit(damage_item, damage_item_rect)         
+            if dead:
+                screen.fill((0, 0, 0))
+                screen.blit(death_screen_text, death_screen_text_rect)
+                screen.blit(death_option1_text, death_option1_text_rect)
+                screen.blit(death_option2_text, death_option2_text_rect)
+                screen.blit(selection_text, selection_text_rect)
+
+                
+                if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                    selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
+                    selec = "left"
+                if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+                    selection_text_rect = selection_text.get_rect(center=(width/2 + 300,height/2 + 300))
+                    selec = "right"
+                
+                if keys[pygame.K_RETURN] and selec == "left":
+                    #print("respawn")
+                    attack_start_time = None
+                    attack_beginning = True
+                    bossfight_start_time = None
+                    dead = None
+                    bossfight_phase = 1
+                    next_attack = True
+                    boss_pose = "both up"
+                    selec = "left"
+                    elapsed = 0
+                if keys[pygame.K_RETURN] and selec == "right":
+                    pygame.quit()
+                    sys.exit()
+    #get_mousclick_coords()
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
         sys.exit()
     pygame.display.flip()
     fpsClock.tick(fps)
+
 
 
 
