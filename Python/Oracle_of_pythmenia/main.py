@@ -330,7 +330,8 @@ oracle_both_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia
 oracle_left_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_left_down.png"),(600,600))
 oracle_right_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_right_down.png"),(600,600))
 oracle_true_form = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_true_form.png"),(600,600))
-damage_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/damage_item.png"),(600,600))
+oracle_hit = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down_hit.png"),(400,400))
+damage_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/damage_item.png"),(100,100))
 potion_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/potion_item.png"),(600,600))
 
 
@@ -403,11 +404,15 @@ bossfight_phase = 1
 next_attack = True
 boss_pose = "both up"
 selec = "left"
-attack_3_counter = 0
+attack_3_counter = -1
 attack_start_time = None
 attack_beginning = True
 spawn_damage_item = False
 damage_item_there = False
+di_going_to_boss = False
+boss_hit = False
+boss_hit = False
+boss_hit_time = None
 
 first_stage = False
 second_stage = False
@@ -502,8 +507,19 @@ while running:
             oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
             boss_text1_rect.centery = (height/2 - 470) + math.sin(float_offset)*float_amplitude
             boss_text2_rect.centery = (height/2 - 450) + math.sin(float_offset)*float_amplitude
-            screen.blit(oracle_both_down, oracle_both_down_rect)
-            screen.blit(bossfight_outline, bossfight_outline_rect)
+
+            now = pygame.time.get_ticks()
+
+            if boss_hit:
+                boss_hit_time = now
+                boss_hit = False
+            if boss_hit_time is not None and now - boss_hit_time < 1000:
+                screen.blit(oracle_hit, oracle_both_down_rect)
+            else:
+                screen.blit(oracle_both_down, oracle_both_down_rect)
+                if boss_hit_time is not None and now - boss_hit_time >= 1000:
+                    boss_hit_time = None
+            
             screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
             player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/7.3,882.6/7.3))
             player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/6.5,764/6.5))
@@ -598,70 +614,96 @@ while running:
                         rng_attacks = random.randint(1,3)
                         print(rng_attacks)
                         next_attack = False
-                        attack_3_counter =+ 1
+                        attack_3_counter += 1
                         print(attack_3_counter)
                         if attack_3_counter == 3:
-                            attack_3_counter = 0
+                            attack_3_counter = -1
                             spawn_damage_item = True
                     if rng_attacks == 1:
                         dead = phase1_attack_3_normal_fast_balls1()
-                        #if dead:
-                        #    time.sleep(1)
+                        if dead:
+                            time.sleep(1)
                     if rng_attacks == 2:
                         dead = phase1_attack_3_normal_fast_balls2()
-                        #if dead:
-                        #    time.sleep(1)
+                        if dead:
+                            time.sleep(1)
                     if rng_attacks == 3:
                         dead = phase1_attack_2_fast_speers()
                         if dead:
                             time.sleep(1)
-
+                    
                     if dead == False:
                         next_attack = True
                         attack_start_time = None
                         attack_beginning = True
                         dead = None
-                        attack_3_counter = 0
                         print("next attack")
                 #if bossfight_phase == 2:
                     #rng_attacks = random.randint(1,3) ...
                 if spawn_damage_item:
                     randomx_in_outline = random.randint(734,1178)
                     randomy_in_outline = random.randint(609,973)
-                    damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (609, 973)
+                    damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (randomx_in_outline, randomy_in_outline)
                     damage_item_there = True
                     spawn_damage_item = False    
+                    print("damage item spawned")
+                    attack_3_counter = 0
                 if damage_item_there:
-                    screen.blit(damage_item, damage_item_rect)         
-            if dead:
-                screen.fill((0, 0, 0))
-                screen.blit(death_screen_text, death_screen_text_rect)
-                screen.blit(death_option1_text, death_option1_text_rect)
-                screen.blit(death_option2_text, death_option2_text_rect)
-                screen.blit(selection_text, selection_text_rect)
+                    screen.blit(damage_item, damage_item_rect)
 
-                
-                if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-                    selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
-                    selec = "left"
-                if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-                    selection_text_rect = selection_text.get_rect(center=(width/2 + 300,height/2 + 300))
-                    selec = "right"
-                
-                if keys[pygame.K_RETURN] and selec == "left":
-                    #print("respawn")
-                    attack_start_time = None
-                    attack_beginning = True
-                    bossfight_start_time = None
-                    dead = None
-                    bossfight_phase = 1
-                    next_attack = True
-                    boss_pose = "both up"
-                    selec = "left"
-                    elapsed = 0
-                if keys[pygame.K_RETURN] and selec == "right":
-                    pygame.quit()
-                    sys.exit()
+                    item_mask1 = pygame.mask.from_surface(damage_item)
+
+                    player_mask = pygame.mask.from_surface(current_sprite)
+
+                    for item_rect, item_mask in zip([damage_item_rect], [item_mask1]):
+                        offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+                        if player_mask.overlap(item_mask, offset):
+                            di_going_to_boss = True
+                            damage_item_there = False
+                            print("going to boss")
+                if di_going_to_boss:
+                    boss_coords = width/2, height/2 - 200
+                    damage_item_rect = move_dodge_item(damage_item_rect, boss_coords, 40)
+                    screen.blit(damage_item, damage_item_rect)
+                    if damage_item_rect.centery <= height/2 - 200:
+                        boss_hit = True
+                        di_going_to_boss = False
+        elif dead:
+            screen.fill((0, 0, 0))
+            screen.blit(death_screen_text, death_screen_text_rect)
+            screen.blit(death_option1_text, death_option1_text_rect)
+            screen.blit(death_option2_text, death_option2_text_rect)
+            screen.blit(selection_text, selection_text_rect)
+
+            
+            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                selection_text_rect = selection_text.get_rect(center=(width/2 - 300,height/2 + 300))
+                selec = "left"
+            if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+                selection_text_rect = selection_text.get_rect(center=(width/2 + 300,height/2 + 300))
+                selec = "right"
+            
+            if keys[pygame.K_RETURN] and selec == "left":
+                #print("respawn")
+                attack_start_time = None
+                attack_beginning = True
+                bossfight_start_time = None
+                dead = None
+                bossfight_phase = 1
+                next_attack = True
+                boss_pose = "both up"
+                selec = "left"
+                elapsed = 0
+                spawn_damage_item = False
+                damage_item_there = False
+                attack_3_counter = -1
+                di_going_to_boss = False
+                boss_hit = False
+                boss_hit = False
+                boss_hit_time = None
+            if keys[pygame.K_RETURN] and selec == "right":
+                pygame.quit()
+                sys.exit()
     #get_mousclick_coords()
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
