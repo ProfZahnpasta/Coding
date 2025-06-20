@@ -248,6 +248,51 @@ def phase1_attack_3_normal_fast_balls2():
     #if no_hit and no_finish:
         #return None, boss_pose
 
+def phase1_attack_2_horizontal_fast_balls():
+    global attack_start_time, attack_beginning, boss_pose
+    global ball1_rect, ball2_rect, dodge_item_ball
+    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+    global current_sprite
+    dodge_speed = 20
+    #global target_ball1_y, target_ball2_y, target_ball3_y
+    if attack_beginning:
+        attack_start_time = pygame.time.get_ticks()
+        attack_beginning = False
+        ball1_rect.center = (680, 701)
+        ball2_rect.center = (1231, 900)
+        no_hit = True
+        no_finish = True
+
+    screen.blit(dodge_item_ball, ball1_rect)
+    screen.blit(dodge_item_ball, ball2_rect)
+    target_item1_x, target_item1_y = 1231, 601
+    target_item2_x, target_item2_y = 680, 1000
+    elapsed = pygame.time.get_ticks() - attack_start_time
+    if elapsed >= 500:
+        ball1_rect = move_dodge_item(ball1_rect, (target_item1_x, target_item1_y), dodge_speed)
+        ball2_rect = move_dodge_item(ball2_rect, (target_item2_x, target_item2_y), dodge_speed)
+    if elapsed >= 2300:
+        boss_pose = "both down"
+    item_mask1 = pygame.mask.from_surface(dodge_item_ball1)
+    item_mask2 = pygame.mask.from_surface(dodge_item_ball2)
+
+    player_mask = pygame.mask.from_surface(current_sprite)
+
+    for item_rect, item_mask in zip([ball1_rect, ball2_rect], [item_mask1, item_mask2,]):
+        offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+        if player_mask.overlap(item_mask, offset):
+            print("hit")
+            return True#, boss_pose
+            #no_hit = False
+    
+    if ball1_rect.centerx >= target_item1_x and ball2_rect.centerx >= target_item2_x:
+        return False#, boss_pose
+        #no_finish = False
+
+    #if no_hit and no_finish:
+        #return None, boss_pose
+
 def phase1_attack_2_fast_speers():
     global attack_start_time, attack_beginning, boss_pose
     global dodge_item_speer1, dodge_item_speer2, dodge_item_speer2_rect, dodge_item_speer1_rect
@@ -269,7 +314,7 @@ def phase1_attack_2_fast_speers():
     target_item1_x, target_item1_y = width//2 - 150,1080
     target_item2_x, target_item2_y = width//2 + 150,1080
     elapsed = pygame.time.get_ticks() - attack_start_time
-    if elapsed >= 500:
+    if elapsed >= 200:
         dodge_item_speer1_rect = move_dodge_item(dodge_item_speer1_rect, (target_item1_x, target_item1_y), dodge_speed)
         dodge_item_speer2_rect = move_dodge_item(dodge_item_speer2_rect, (target_item2_x, target_item2_y), dodge_speed)
     if elapsed >= 2300:
@@ -293,6 +338,62 @@ def phase1_attack_2_fast_speers():
     #if no_hit and no_finish:
         #return None, boss_pose
 
+
+def phase1_attack_2_slow_diagonal_speers_oaa():
+    global attack_start_time, attack_beginning, boss_pose
+    global diagonal_speer_right, diagonal_speer_left, diagonal_speer_right_rect, diagonal_speer_left_rect
+    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+    global current_sprite
+    global attack_preview, first_attack
+    dodge_speed = 25
+    #global target_ball1_y, target_ball2_y, target_ball3_y
+    if attack_beginning:
+        attack_start_time = pygame.time.get_ticks()
+        attack_beginning = False
+        diagonal_speer_right_rect = diagonal_speer_right.get_rect(); diagonal_speer_right_rect.center = (621, 464)
+        diagonal_speer_left_rect = diagonal_speer_left.get_rect(); diagonal_speer_left_rect.center = (1294, 488)
+        no_hit = True
+        no_finish = True
+        first_attack = True
+        attack_preview = True
+    
+    target_item1_x, target_item1_y = 1280, 1064
+    target_item2_x, target_item2_y = 633, 1065
+    elapsed = pygame.time.get_ticks() - attack_start_time
+
+    if attack_preview:
+        screen.blit(diagonal_speer_right, diagonal_speer_right_rect)
+    if elapsed >= 200:
+        attack_preview = False
+        if first_attack:
+            screen.blit(diagonal_speer_right, diagonal_speer_right_rect)
+            diagonal_speer_right_rect = move_dodge_item(diagonal_speer_right_rect, (target_item1_x, target_item1_y), dodge_speed)
+        if diagonal_speer_right_rect.centery >= target_item1_y:
+            first_attack = False
+            screen.blit(diagonal_speer_left, diagonal_speer_left_rect)
+            if elapsed >= 1800:
+                diagonal_speer_left_rect = move_dodge_item(diagonal_speer_left_rect, (target_item2_x, target_item2_y), dodge_speed)
+    if elapsed >= 2300:
+        boss_pose = "both down"
+    item_mask1 = pygame.mask.from_surface(diagonal_speer_right)
+    item_mask2 = pygame.mask.from_surface(diagonal_speer_left)
+
+    player_mask = pygame.mask.from_surface(current_sprite)
+
+    for item_rect, item_mask in zip([diagonal_speer_right_rect, diagonal_speer_left_rect], [item_mask1, item_mask2,]):
+        offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+        if player_mask.overlap(item_mask, offset):
+            print("hit")
+            return True#, boss_pose
+            #no_hit = False
+    
+    if diagonal_speer_left_rect.centery >= target_item2_y:
+        return False#, boss_pose
+        #no_finish = False
+
+    #if no_hit and no_finish:
+        #return None, boss_pose
 
 pygame.init()
 fps = 60
@@ -323,7 +424,9 @@ dodge_item_ball2 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia
 dodge_item_ball3 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
 dodge_item_flash_alert_copy = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash_alert.png"),(600,600))
 dodge_item_flash = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash.png"),(600,600))
-dodge_item_speer = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(600,600))
+dodge_item_speer = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(230,230))
+diagonal_speer_right = pygame.transform.rotate(dodge_item_speer, 45)
+diagonal_speer_left = pygame.transform.rotate(dodge_item_speer, -45)
 dodge_item_speer1 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(300,300))
 dodge_item_speer2 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(300,300))
 oracle_both_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down.png"),(400,400))
@@ -361,6 +464,8 @@ ball3_rect = dodge_item_ball3.get_rect(); ball3_rect.center = (width//2 + 150, h
 dodge_item_speer1_rect = dodge_item_speer1.get_rect(); dodge_item_speer1_rect.center = (width//2 - 150, height//2 - 200)
 dodge_item_speer2_rect = dodge_item_speer2.get_rect(); dodge_item_speer2_rect.center = (width//2 + 150, height//2 - 200)
 damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
+diagonal_speer_right_rect = diagonal_speer_right.get_rect(); diagonal_speer_right_rect.center = (699, 581)
+diagonal_speer_left_rect = diagonal_speer_left.get_rect(); diagonal_speer_left_rect.center = (1221, 575)
 
 
 
@@ -419,6 +524,9 @@ boss_hit = False
 boss_hit = False
 boss_hit_time = None
 boss_hp = 1000
+won = False
+attack_preview = True
+first_attack = True
 
 first_stage = False
 second_stage = False
@@ -623,7 +731,7 @@ while running:
                 elif boss_hp <= 400:
                     bossfight_phase = 3
                 elif boss_hp <= 0:
-                    pygame.quit()
+                    won = True
                 #phase1_attack_3_normal_fast_balls1()
                 #print("test")
                 boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
@@ -631,11 +739,11 @@ while running:
                 screen.blit(boss_hp_text,boss_hp_text_rect)
                 if bossfight_phase == 1:
                     if next_attack == True:
-                        rng_attacks = random.randint(1,3)
-                        print(rng_attacks)
+                        rng_attacks = random.randint(1,5)
+                        #print(rng_attacks)
                         next_attack = False
                         attack_3_counter += 1
-                        print(attack_3_counter)
+                        #print(attack_3_counter)
                         if attack_3_counter == 3:
                             attack_3_counter = -1
                             spawn_damage_item = True
@@ -649,6 +757,14 @@ while running:
                             time.sleep(1)
                     if rng_attacks == 3:
                         dead = phase1_attack_2_fast_speers()
+                        if dead:
+                            time.sleep(1)
+                    if rng_attacks == 4:
+                        dead = phase1_attack_2_horizontal_fast_balls()
+                        if dead:
+                            time.sleep(1)
+                    if rng_attacks == 5:
+                        dead = phase1_attack_2_slow_diagonal_speers_oaa()
                         if dead:
                             time.sleep(1)
                     if bossfight_phase == 2:
@@ -684,7 +800,7 @@ while running:
                     damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (randomx_in_outline, randomy_in_outline)
                     damage_item_there = True
                     spawn_damage_item = False    
-                    print("damage item spawned")
+                    #print("damage item spawned")
                     attack_3_counter = 0
                 if damage_item_there:
                     screen.blit(damage_item, damage_item_rect)
@@ -698,7 +814,7 @@ while running:
                         if player_mask.overlap(item_mask, offset):
                             di_going_to_boss = True
                             damage_item_there = False
-                            print("going to boss")
+                            #print("going to boss")
                 if di_going_to_boss:
                     boss_coords = width/2, height/2 - 200
                     damage_item_rect = move_dodge_item(damage_item_rect, boss_coords, 40)
@@ -740,6 +856,7 @@ while running:
                 boss_hit = False
                 boss_hit_time = None
                 boss_hp = 1000
+                won = False
             if keys[pygame.K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
