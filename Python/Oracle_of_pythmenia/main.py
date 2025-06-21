@@ -527,6 +527,8 @@ boss_hp = 1000
 won = False
 attack_preview = True
 first_attack = True
+bossfight_p2_start_time = None
+bossfight_p3_start_time = None
 
 first_stage = False
 second_stage = False
@@ -726,7 +728,7 @@ while running:
             if elapsed >= 5000:
                 if boss_hp == 1000:
                     bossfight_phase = 1
-                elif boss_hp <= 700 and boss_hp >= 400:
+                elif boss_hp <= 950 and boss_hp >= 400:
                     bossfight_phase = 2
                 elif boss_hp <= 400:
                     bossfight_phase = 3
@@ -734,10 +736,11 @@ while running:
                     won = True
                 #phase1_attack_3_normal_fast_balls1()
                 #print("test")
-                boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
-                boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
-                screen.blit(boss_hp_text,boss_hp_text_rect)
+                
                 if bossfight_phase == 1:
+                    boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
+                    boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
+                    screen.blit(boss_hp_text,boss_hp_text_rect)
                     if next_attack == True:
                         rng_attacks = random.randint(1,5)
                         #print(rng_attacks)
@@ -767,32 +770,45 @@ while running:
                         dead = phase1_attack_2_slow_diagonal_speers_oaa()
                         if dead:
                             time.sleep(1)
-                    if bossfight_phase == 2:
-                        rng_attacks = random.randint(1,3)
-                        print(rng_attacks)
-                        next_attack = False
-                        attack_3_counter += 1
-                        print(attack_3_counter)
-                        if attack_3_counter == 3:
-                            attack_3_counter = -1
-                            spawn_damage_item = True
-                        print("STAGE 2")
-                    if bossfight_phase == 3:
-                        rng_attacks = random.randint(1,3)
-                        print(rng_attacks)
-                        next_attack = False
-                        attack_3_counter += 1
-                        print(attack_3_counter)
-                        if attack_3_counter == 3:
-                            attack_3_counter = -1
-                            spawn_damage_item = True
+                if bossfight_phase == 2:
+                    if bossfight_p2_start_time is None:
+                        bossfight_p2_start_time = pygame.time.get_ticks()
 
-                    if dead == False:
-                        next_attack = True
-                        attack_start_time = None
-                        attack_beginning = True
-                        dead = None
-                        print("next attack")
+                    elapsed_phase2 = pygame.time.get_ticks() - bossfight_p2_start_time
+                    if elapsed_phase2 <= 5000:
+                        boss_text1 = font.render("NOBODY has ever survived that,", True, (255,255,255))
+                        boss_text2 = font.render("and so will YOU!", True, (255,255,255))
+                        screen.blit(boss_text1,boss_text1_rect)
+                        screen.blit(boss_text2,boss_text2_rect)
+                    if elapsed_phase2 >= 5000:
+                        boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
+                        boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
+                        screen.blit(boss_hp_text,boss_hp_text_rect)                        
+                        rng_attacks = random.randint(1,3)
+                        print(rng_attacks)
+                        next_attack = False
+                        attack_3_counter += 1
+                        print(attack_3_counter)
+                        if attack_3_counter == 3:
+                            attack_3_counter = -1
+                            spawn_damage_item = True
+                    print("STAGE 2")
+                if bossfight_phase == 3:
+                    rng_attacks = random.randint(1,3)
+                    print(rng_attacks)
+                    next_attack = False
+                    attack_3_counter += 1
+                    print(attack_3_counter)
+                    if attack_3_counter == 3:
+                        attack_3_counter = -1
+                        spawn_damage_item = True
+
+                if dead == False:
+                    next_attack = True
+                    attack_start_time = None
+                    attack_beginning = True
+                    dead = None
+                    #print("next attack")
                 
                 if spawn_damage_item:
                     randomx_in_outline = random.randint(734,1178)
@@ -842,6 +858,8 @@ while running:
                 attack_start_time = None
                 attack_beginning = True
                 bossfight_start_time = None
+                bossfight_p2_start_time = None
+                bossfight_p3_start_time = None
                 dead = None
                 bossfight_phase = 1
                 next_attack = True
