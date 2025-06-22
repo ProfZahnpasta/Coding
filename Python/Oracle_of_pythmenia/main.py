@@ -346,7 +346,7 @@ def phase1_attack_2_slow_diagonal_speers_oaa():
     global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
     global current_sprite
     global attack_preview, first_attack
-    dodge_speed = 25
+    dodge_speed = 35
     #global target_ball1_y, target_ball2_y, target_ball3_y
     if attack_beginning:
         attack_start_time = pygame.time.get_ticks()
@@ -450,24 +450,24 @@ def phase2_attack_3_lightning_strikes_oaa():
         dodge_item_flash_alert_rect = dodge_item_flash_alert.get_rect(); dodge_item_flash_alert_rect.center = (x1)
         screen.blit(dodge_item_flash_alert, dodge_item_flash_alert_rect)
         hit_item_there = False
-    if elapsed >= 500 and elapsed <= 1500:
+    if elapsed >= 800 and elapsed <= 1800:
         attack_preview = False
         dodge_item_flash_rect = dodge_item_flash.get_rect(); dodge_item_flash_rect.center = (x1)
         screen.blit(dodge_item_flash, dodge_item_flash_rect)
         hit_item_there = True
-    if elapsed >= 1500 and elapsed <= 2000:
+    if elapsed >= 1800 and elapsed <= 2600:
         dodge_item_flash_alert_rect = dodge_item_flash_alert.get_rect(); dodge_item_flash_alert_rect.center = (x2)
         screen.blit(dodge_item_flash_alert, dodge_item_flash_alert_rect)
         hit_item_there = False
-    if elapsed >= 2000 and elapsed <= 3000:
+    if elapsed >= 2600 and elapsed <= 3600:
         dodge_item_flash_rect = dodge_item_flash.get_rect(); dodge_item_flash_rect.center = (x2)
         screen.blit(dodge_item_flash, dodge_item_flash_rect)
         hit_item_there = True
-    if elapsed >= 3000 and elapsed <= 3500:
+    if elapsed >= 3600 and elapsed <= 4400:
         dodge_item_flash_alert_rect = dodge_item_flash_alert.get_rect(); dodge_item_flash_alert_rect.center = (x3)
         screen.blit(dodge_item_flash_alert, dodge_item_flash_alert_rect)
         hit_item_there = False
-    if elapsed >= 3500 and elapsed <= 4500:
+    if elapsed >= 4400 and elapsed <= 5400:
         dodge_item_flash_rect = dodge_item_flash.get_rect(); dodge_item_flash_rect.center = (x3)
         screen.blit(dodge_item_flash, dodge_item_flash_rect)
         hit_item_there = True
@@ -483,7 +483,7 @@ def phase2_attack_3_lightning_strikes_oaa():
                 return True#, boss_pose
                 #no_hit = False
         
-    if elapsed >= 4500:
+    if elapsed >= 5400:
         return False#, boss_pose
         #no_finish = False
 
@@ -811,7 +811,7 @@ di_going_to_boss = False
 boss_hit = False
 boss_hit = False
 boss_hit_time = None
-boss_hp = 1000
+boss_hp = 700
 won = False
 attack_preview = True
 first_attack = True
@@ -1025,7 +1025,7 @@ while running:
                 screen.blit(boss_text2,boss_text2_rect)
             if elapsed >= 5000:
                 if boss_hp == 1000:
-                    bossfight_phase = 2
+                    bossfight_phase = 1
                 elif boss_hp <= 700 and boss_hp >= 400:
                     bossfight_phase = 2
                 elif boss_hp <= 400:
@@ -1067,6 +1067,8 @@ while running:
                         boss_text2 = font.render("and so will YOU!", True, (255,255,255))
                         screen.blit(boss_text1,boss_text1_rect)
                         screen.blit(boss_text2,boss_text2_rect)
+                        attack_3_counter = 0
+                        next_attack = True
                     if elapsed_phase2 >= 5000:
                         boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
                         boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
@@ -1171,7 +1173,7 @@ while running:
                 boss_hit = False
                 boss_hit = False
                 boss_hit_time = None
-                boss_hp = 1000
+                boss_hp = 700
                 won = False
                 small = False
             if keys[pygame.K_RETURN] and selec == "right":
