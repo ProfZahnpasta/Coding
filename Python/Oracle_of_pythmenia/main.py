@@ -536,6 +536,78 @@ def phase2_attack_2_fast_lightning_strikes():
     #if no_hit and no_finish:
         #return None, boss_pose
 
+def phase2_attack_4_slow_balls_shrunked():
+    global attack_start_time, attack_beginning, boss_pose
+    global ball1_rect, ball2_rect, ball3_rect, ball4_rect, dodge_item_ball
+    global potion_item, potion_item_rect
+    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+    global current_sprite
+    global potion_item_there, small
+    dodge_speed = 13
+    #global target_ball1_y, target_ball2_y, target_ball3_y
+    if attack_beginning:
+        attack_start_time = pygame.time.get_ticks()
+        attack_beginning = False
+        randomx_in_outline = random.randint(734,1178)
+        randomy_in_outline = random.randint(609,973)
+        potion_item_rect = potion_item.get_rect(); potion_item_rect.center = (randomx_in_outline, randomy_in_outline)
+        ball1_rect.center = (681, 895)
+        ball2_rect.center = (683, 694)
+        ball3_rect.center = (860, 541)
+        ball4_rect.center = (1063, 542)
+        potion_item_there = True
+        no_hit = True
+        no_finish = True
+
+    if potion_item_there:
+        screen.blit(potion_item, potion_item_rect)
+        potion_item_mask = pygame.mask.from_surface(potion_item)
+
+        potion_player_mask = pygame.mask.from_surface(current_sprite)
+
+        for item_rect, item_mask in zip([potion_item_rect], [potion_item_mask]):
+            offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+            if potion_player_mask.overlap(item_mask, offset):
+                potion_item_there = False
+                small = True
+    screen.blit(dodge_item_ball, ball1_rect)
+    screen.blit(dodge_item_ball, ball2_rect)
+    screen.blit(dodge_item_ball, ball3_rect)
+    screen.blit(dodge_item_ball, ball4_rect)
+    target_ball1_x, target_ball1_y = 1254, 875
+    target_ball2_x, target_ball2_y = 1260, 695
+    target_ball3_x, target_ball3_y = 866, 1026
+    target_ball4_x, target_ball4_y = 1060, 1044
+    elapsed = pygame.time.get_ticks() - attack_start_time
+    if elapsed >= 1500:
+        ball1_rect = move_dodge_item(ball1_rect, (target_ball1_x, target_ball1_y), dodge_speed)
+        ball2_rect = move_dodge_item(ball2_rect, (target_ball2_x, target_ball2_y), dodge_speed)
+        ball3_rect = move_dodge_item(ball3_rect, (target_ball3_x, target_ball3_y), dodge_speed)
+        ball4_rect = move_dodge_item(ball4_rect, (target_ball4_x, target_ball4_y), dodge_speed)
+    if elapsed >= 2300:
+        boss_pose = "both down"
+    ball_mask1 = pygame.mask.from_surface(dodge_item_ball1)
+    ball_mask2 = pygame.mask.from_surface(dodge_item_ball2)
+    ball_mask3 = pygame.mask.from_surface(dodge_item_ball3)
+    ball_mask4 = pygame.mask.from_surface(dodge_item_ball4)
+
+    player_mask = pygame.mask.from_surface(current_sprite)
+
+    for ball_rect, ball_mask in zip([ball1_rect, ball2_rect, ball3_rect, ball4_rect], [ball_mask1, ball_mask2, ball_mask3, ball_mask4]):
+        offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
+        if player_mask.overlap(ball_mask, offset):
+            print("hit")
+            return True#, boss_pose
+            #no_hit = False
+    
+    if ball1_rect.centery >= target_ball1_y and ball2_rect.centery >= target_ball2_y and ball3_rect.centery >= target_ball3_y:
+        return False#, boss_pose
+        #no_finish = False
+
+    #if no_hit and no_finish:
+        #return None, boss_pose
+
 pygame.init()
 fps = 60
 fpsClock = pygame.time.Clock()
@@ -563,6 +635,7 @@ dodge_item_ball = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/
 dodge_item_ball1 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
 dodge_item_ball2 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
 dodge_item_ball3 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball4 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
 dodge_item_flash_alert = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash_alert.png"),(97/4,1333/4))
 dodge_item_flash = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash.png"),(350/4,1536/4))
 dodge_item_speer = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(230,230))
@@ -576,7 +649,7 @@ oracle_right_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmeni
 oracle_true_form = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_true_form.png"),(600,600))
 oracle_hit = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down_hit.png"),(400,400))
 damage_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/damage_item.png"),(100,100))
-potion_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/potion_item.png"),(600,600))
+potion_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/potion_item.png"),(100,100))
 
 
 player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
@@ -604,6 +677,7 @@ oracle_true_form_rect = oracle_true_form.get_rect(); oracle_true_form_rect.cente
 ball1_rect = dodge_item_ball1.get_rect(); ball1_rect.center = (width//2 - 150, height//2 - 200)
 ball2_rect = dodge_item_ball2.get_rect(); ball2_rect.center = (width//2 - 150, height//2 - 200)
 ball3_rect = dodge_item_ball3.get_rect(); ball3_rect.center = (width//2 + 150, height//2 - 200)
+ball4_rect = dodge_item_ball4.get_rect(); ball4_rect.center = (width//2 + 150, height//2 - 200)
 dodge_item_speer1_rect = dodge_item_speer1.get_rect(); dodge_item_speer1_rect.center = (width//2 - 150, height//2 - 200)
 dodge_item_speer2_rect = dodge_item_speer2.get_rect(); dodge_item_speer2_rect.center = (width//2 + 150, height//2 - 200)
 damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
@@ -674,6 +748,8 @@ bossfight_p2_start_time = None
 bossfight_p3_start_time = None
 hit_item_there = None
 x1, x2, x3 = None, None, None
+potion_item_there = None
+small = False
 
 first_stage = False
 second_stage = False
@@ -784,10 +860,16 @@ while running:
                     boss_hit_time = None
             
             screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
-            player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/7.3,882.6/7.3))
-            player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/6.5,764/6.5))
-            player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/6.5,765/6.5))
-            player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561/7.3,867/7.3))
+            if small:
+                player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/10,882.6/10))
+                player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/8.9,764/8.9))
+                player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/8.9,765/8.9))
+                player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561/10,867/10))
+            else:
+                player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/7.3,882.6/7.3))
+                player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/6.5,764/6.5))
+                player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/6.5,765/6.5))
+                player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561/7.3,867/7.3))
 
             player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
             player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
@@ -925,11 +1007,12 @@ while running:
                         boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
                         screen.blit(boss_hp_text,boss_hp_text_rect)    
                         if next_attack == True:                    
-                            rng_attacks = random.randint(1,2)
+                            rng_attacks = random.randint(3,3)
                             #print(rng_attacks)
                             next_attack = False
                             attack_3_counter += 1
                             #print(attack_3_counter)
+                            small = False
                             if attack_3_counter == 3:
                                 attack_3_counter = -1
                                 spawn_damage_item = True
@@ -937,6 +1020,8 @@ while running:
                             dead = phase2_attack_3_lightning_strikes_oaa()
                         if rng_attacks == 2:
                             dead = phase2_attack_2_fast_lightning_strikes()
+                        if rng_attacks == 3:
+                            dead = phase2_attack_4_slow_balls_shrunked()
                 if bossfight_phase == 3:
                     rng_attacks = random.randint(1,3)
                     print(rng_attacks)
@@ -1021,6 +1106,7 @@ while running:
                 boss_hit_time = None
                 boss_hp = 1000
                 won = False
+                small = False
             if keys[pygame.K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
