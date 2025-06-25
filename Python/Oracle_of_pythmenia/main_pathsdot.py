@@ -1016,40 +1016,41 @@ screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
 
-player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/4,882.6/4))
-player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/3.6,764/3.6))
-player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.png"),(525/3.6,765/3.6))
-player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561,867))
-background_wall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Wall.png"),(16000,1024))
-background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Hall.png"),(1024,1024))
-oracle_sprite_normal = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Orakel_transparent.png"),(300,300))
-player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/player dialogue box.png"),(600,600))
-oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_dialogue box.png"),(600,600))
-background_bossfight = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/background_bossfight.png"),(1920,1280))
-bossfight_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_outline.png"),(600,600))   
-bossfight_raw_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_raw_outline.png"),(600,600))
-dodge_item_ball = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball1 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball2 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball3 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball4 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
-dodge_item_flash_alert = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash_alert.png"),(97/4,1333/4))
-dodge_item_flash = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash.png"),(350/4,1536/4))
-dodge_item_speer = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(230,230))
+player_sprite_standing = pygame.transform.scale(pygame.image.load("./imgs/Explorer steht.png"),(525/4,882.6/4))
+player_sprite_left = pygame.transform.scale(pygame.image.load("./imgs/Explorer links.png"),(525/3.6,764/3.6))
+player_sprite_right = pygame.transform.scale(pygame.image.load("./imgs/Explorer rechts.png"),(525/3.6,765/3.6))
+player_sprite_up =  pygame.transform.scale(pygame.image.load("./imgs/Explorer oben.png"),(561,867))
+background_wall = pygame.transform.scale(pygame.image.load("./imgs/Background_Wall.png"),(16000,1024))
+background_hall = pygame.transform.scale(pygame.image.load("./imgs/Background_Hall.png"),(1024,1024))
+oracle_sprite_normal = pygame.transform.scale(pygame.image.load("./imgs/Orakel_transparent.png"),(300,300))
+player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/player dialogue box.png"),(600,600))
+oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/oracle_dialogue box.png"),(600,600))
+background_bossfight = pygame.transform.scale(pygame.image.load("./imgs/background_bossfight.png"),(1920,1280))
+bossfight_outline = pygame.transform.scale(pygame.image.load("./imgs/bossfight_outline.png"),(600,600))   
+bossfight_raw_outline = pygame.transform.scale(pygame.image.load("./imgs/bossfight_raw_outline.png"),(600,600))
+dodge_item_ball = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball1 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball2 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball3 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball4 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
+dodge_item_flash_alert = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_flash_alert.png"),(97/4,1333/4))
+dodge_item_flash = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_flash.png"),(350/4,1536/4))
+dodge_item_speer = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(230,230))
 diagonal_speer_right = pygame.transform.rotate(dodge_item_speer, 45)
 diagonal_speer_left = pygame.transform.rotate(dodge_item_speer, -45)
 upsidedown_speer = pygame.transform.rotate(dodge_item_speer, 180)
 left_speer = pygame.transform.rotate(dodge_item_speer, -90)
 topright_speer = pygame.transform.rotate(dodge_item_speer, 135)
-dodge_item_speer1 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(300,300))
-dodge_item_speer2 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(300,300))
-oracle_both_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down.png"),(400,400))
-oracle_left_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_left_down.png"),(600,600))
-oracle_right_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_right_down.png"),(600,600))
-oracle_true_form = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_true_form.png"),(600,600))
-oracle_hit = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down_hit.png"),(400,400))
-damage_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/damage_item.png"),(100,100))
-potion_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/potion_item.png"),(100,100))
+dodge_item_speer1 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(300,300))
+dodge_item_speer2 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(300,300))
+oracle_both_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_both_down.png"),(400,400))
+oracle_left_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_left_down.png"),(600,600))
+oracle_right_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_right_down.png"),(600,600))
+oracle_true_form = pygame.transform.scale(pygame.image.load("./imgs/oracle_true_form.png"),(600,600))
+oracle_hit = pygame.transform.scale(pygame.image.load("./imgs/oracle_both_down_hit.png"),(400,400))
+damage_item = pygame.transform.scale(pygame.image.load("./imgs/damage_item.png"),(100,100))
+potion_item = pygame.transform.scale(pygame.image.load("./imgs/potion_item.png"),(100,100))
+
 
 
 player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
@@ -1089,10 +1090,10 @@ left_speer_rect = left_speer.get_rect(); left_speer_rect.center = (1221, 575)
 topright_speer_rect = topright_speer.get_rect(); topright_speer_rect.center = (637, 1076)
 
 
-font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
-title_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",170)
-middle_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",90)
-middle_middle_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",40)
+font = pygame.font.Font("./font/VT323-Regular.ttf",25)
+title_font = pygame.font.Font("./font/VT323-Regular.ttf",170)
+middle_font = pygame.font.Font("./font/VT323-Regular.ttf",90)
+middle_middle_font = pygame.font.Font("./font/VT323-Regular.ttf",40)
 boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
 boss_text2 = font.render("but can you fight?", True, (255,255,255))
 
@@ -1211,9 +1212,8 @@ while running:
             oracle_start_time = pygame.time.get_ticks()
 
         elapsed = pygame.time.get_ticks() - oracle_start_time
-        float_speed = 0.02
-        if elapsed >= 3000 and elapsed <= 7000:
 
+        if elapsed >= 3000 and elapsed <= 7000:
             float_offset += float_speed
             oracle_sprite_normal_rect.centery = (height/2) + math.sin(float_offset)*float_amplitude
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
@@ -1252,7 +1252,6 @@ while running:
         if dead == False or dead == None:
             screen.blit(background_bossfight, background_bossfight_rect)
             #print(boss_hp)
-            float_speed = 0.05
             float_offset += float_speed
             oracle_both_down_rect.centery = (height/2 - 200) + math.sin(float_offset)*float_amplitude
             boss_text1_rect.centery = (height/2 - 470) + math.sin(float_offset)*float_amplitude
