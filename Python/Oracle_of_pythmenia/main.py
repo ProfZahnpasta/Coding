@@ -781,6 +781,131 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
     #if no_hit and no_finish:
         #return None, boss_pose
 
+
+def phase3_attack_6_normal_fast_balls_shrunked_oaa():
+    global attack_start_time, attack_beginning, boss_pose
+    global ball1_rect, ball2_rect, ball3_rect, ball4_rect, ball5_rect, ball6_rect, dodge_item_ball
+    global potion_item, potion_item_rect
+    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+    global current_sprite
+    global potion_item_there, small, attack_preview
+    global dodge_speed1, dodge_speed2, dodge_speed3, dodge_speed4, dodge_speed5, dodge_speed6
+
+
+    #global target_ball1_y, target_ball2_y, target_ball3_y
+    if attack_beginning:
+        attack_start_time = pygame.time.get_ticks()
+        attack_beginning = False
+        randomx_in_outline = random.randint(734,1178)
+        randomy_in_outline = random.randint(609,973)
+        potion_item_rect = potion_item.get_rect(); potion_item_rect.center = (randomx_in_outline, randomy_in_outline)
+
+        ball1_rect.center = (1194, 491)
+        ball2_rect.center = (1151, 490)
+        ball3_rect.center = (854, 483)
+        ball4_rect.center = (796, 477)
+        ball5_rect.center = (616, 503)
+        ball6_rect.center = (610, 877)
+        
+        rng_speed1 = random.randint(15,50)
+        rng_speed2 = random.randint(15,50)
+        rng_speed3 = random.randint(15,50)
+        rng_speed4 = random.randint(15,50)
+        rng_speed5 = random.randint(15,50)
+        rng_speed6 = random.randint(15,50)  
+
+        dodge_speed1 = rng_speed1
+        dodge_speed2 = rng_speed2
+        dodge_speed3 = rng_speed3
+        dodge_speed4 = rng_speed4
+        dodge_speed5 = rng_speed5
+        dodge_speed6 = rng_speed6
+        attack_preview = True
+        
+        
+        potion_item_there = True
+        no_hit = True
+        no_finish = True
+
+    if potion_item_there:
+        screen.blit(potion_item, potion_item_rect)
+        potion_item_mask = pygame.mask.from_surface(potion_item)
+
+        potion_player_mask = pygame.mask.from_surface(current_sprite)
+
+        for item_rect, item_mask in zip([potion_item_rect], [potion_item_mask]):
+            offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+            if potion_player_mask.overlap(item_mask, offset):
+                potion_item_there = False
+                small = True
+    
+    
+    
+    
+
+    target_item1_x, target_item1_y = 1152, 1036
+    target_item2_x, target_item2_y = 1032, 1031
+    target_item3_x, target_item3_y = 854, 1033
+    target_item4_x, target_item4_y = 796, 1033
+    target_item5_x, target_item5_y = 1254, 1065
+    target_item6_x, target_item6_y = 1270, 877
+
+    elapsed = pygame.time.get_ticks() - attack_start_time
+
+    if attack_preview:
+        screen.blit(dodge_item_ball, ball1_rect)
+
+    if elapsed >= 1500:
+        attack_preview = False
+        ball1_rect = move_dodge_item(ball1_rect, (target_item1_x, target_item1_y), dodge_speed1)
+        screen.blit(dodge_item_ball, ball1_rect)
+
+    if elapsed >= 2300:
+        ball2_rect = move_dodge_item(ball2_rect, (target_item2_x, target_item2_y), dodge_speed2)
+        screen.blit(dodge_item_ball, ball2_rect)
+
+    if elapsed >= 3100:
+        ball3_rect = move_dodge_item(ball3_rect, (target_item3_x, target_item3_y), dodge_speed3)
+        screen.blit(dodge_item_ball, ball3_rect)
+
+    if elapsed >= 3900:
+        ball4_rect = move_dodge_item(ball4_rect, (target_item4_x, target_item4_y), dodge_speed4)
+        screen.blit(dodge_item_ball, ball4_rect)
+
+    if elapsed >= 4700:
+        ball5_rect = move_dodge_item(ball5_rect, (target_item5_x, target_item5_y), dodge_speed5)
+        screen.blit(dodge_item_ball, ball5_rect)
+
+    if elapsed >= 5500:
+        ball6_rect = move_dodge_item(ball6_rect, (target_item6_x, target_item6_y), dodge_speed6)
+        screen.blit(dodge_item_ball, ball6_rect)
+
+        
+
+    item_mask1 = pygame.mask.from_surface(dodge_item_ball)
+    item_mask2 = pygame.mask.from_surface(dodge_item_ball)
+    item_mask3 = pygame.mask.from_surface(dodge_item_ball)
+    item_mask4 = pygame.mask.from_surface(dodge_item_ball)
+    item_mask5 = pygame.mask.from_surface(dodge_item_ball)
+    item_mask6 = pygame.mask.from_surface(dodge_item_ball)
+
+    player_mask = pygame.mask.from_surface(current_sprite)
+
+    for item_rect, item_mask in zip([ball1_rect, ball2_rect, ball3_rect, ball4_rect, ball5_rect, ball6_rect, ], [item_mask1, item_mask2, item_mask3, item_mask4, item_mask5, item_mask6]):
+        offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+        if player_mask.overlap(item_mask, offset):
+            print("hit")
+            return True#, boss_pose
+            #no_hit = False
+    
+    if ball6_rect.centerx >= target_item6_x and ball5_rect.centerx >= target_item5_x and ball4_rect.centery >= target_item4_y:
+        return False#, boss_pose
+        #no_finish = False
+
+    #if no_hit and no_finish:
+        #return None, boss_pose
+
 pygame.init()
 fps = 60
 fpsClock = pygame.time.Clock()
@@ -854,6 +979,8 @@ ball1_rect = dodge_item_ball1.get_rect(); ball1_rect.center = (width//2 - 150, h
 ball2_rect = dodge_item_ball2.get_rect(); ball2_rect.center = (width//2 - 150, height//2 - 200)
 ball3_rect = dodge_item_ball3.get_rect(); ball3_rect.center = (width//2 + 150, height//2 - 200)
 ball4_rect = dodge_item_ball4.get_rect(); ball4_rect.center = (width//2 + 150, height//2 - 200)
+ball5_rect = dodge_item_ball4.get_rect(); ball5_rect.center = (width//2 + 150, height//2 - 200)
+ball6_rect = dodge_item_ball4.get_rect(); ball6_rect.center = (width//2 + 150, height//2 - 200)
 dodge_item_speer1_rect = dodge_item_speer1.get_rect(); dodge_item_speer1_rect.center = (width//2 - 150, height//2 - 200)
 dodge_item_speer2_rect = dodge_item_speer2.get_rect(); dodge_item_speer2_rect.center = (width//2 + 150, height//2 - 200)
 damage_item_rect = damage_item.get_rect(); damage_item_rect.center = (0, 0)
@@ -927,6 +1054,13 @@ hit_item_there = None
 x1, x2, x3 = None, None, None
 potion_item_there = None
 small = False
+dodge_speed1 = 0
+dodge_speed2 = 0
+dodge_speed3 = 0
+dodge_speed4 = 0
+dodge_speed5 = 0
+dodge_speed6 = 0
+
 
 first_stage = False
 second_stage = False
@@ -1129,7 +1263,6 @@ while running:
                 bossfight_phase = 2
             elif boss_hp <= 400 and boss_hp > 0:
                 bossfight_phase = 3
-                print("phase 3")
             elif boss_hp <= 0:
                 won = True
             #phase1_attack_3_normal_fast_balls1()
@@ -1217,7 +1350,7 @@ while running:
                     boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
                     screen.blit(boss_hp_text,boss_hp_text_rect)    
                     if next_attack == True:                    
-                        rng_attacks = random.randint(1,1)
+                        rng_attacks = random.randint(1,2)
                         #print(rng_attacks)
                         next_attack = False
                         attack_3_counter += 1
@@ -1228,6 +1361,8 @@ while running:
                             spawn_damage_item = True
                     if rng_attacks == 1:
                         dead = phase3_attack_4_normal_fast_speers_shrunked_oaa()
+                    if rng_attacks == 2:
+                        dead = phase3_attack_6_normal_fast_balls_shrunked_oaa()
             if dead == False:
                 next_attack = True
                 attack_start_time = None
@@ -1313,7 +1448,7 @@ while running:
             if keys[pygame.K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
-    #get_mousclick_coords()
+    get_mousclick_coords()
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
         sys.exit()
