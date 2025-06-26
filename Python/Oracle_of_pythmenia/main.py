@@ -124,6 +124,7 @@ def ask_oracle(Event=None):
         print(f"Debug player_resume{oracle_text}")
         second_stage = False
         third_stage = True
+        start_music = True
 
 entry.bind("<Return>", ask_oracle)
 
@@ -156,6 +157,7 @@ def phase1_attack_3_normal_fast_balls1():
         ball1_rect.center = (width//2 - 150, height//2 - 200)
         ball2_rect.center = (width//2 - 150, height//2 - 200)
         ball3_rect.center = (width//2 + 150, height//2 - 200)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -182,6 +184,7 @@ def phase1_attack_3_normal_fast_balls1():
         offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
         if player_mask.overlap(ball_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -191,7 +194,6 @@ def phase1_attack_3_normal_fast_balls1():
 
     #if no_hit and no_finish:
         #return None, boss_pose
-
 def phase1_attack_3_normal_fast_balls2():
     global attack_start_time, attack_beginning, boss_pose
     global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
@@ -206,6 +208,7 @@ def phase1_attack_3_normal_fast_balls2():
         ball1_rect.center = (width//2 - 150, height//2 - 200)
         ball2_rect.center = (width//2 + 150, height//2 - 200)
         ball3_rect.center = (width//2 + 150, height//2 - 200)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -232,6 +235,7 @@ def phase1_attack_3_normal_fast_balls2():
         offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
         if player_mask.overlap(ball_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -255,6 +259,7 @@ def phase1_attack_2_horizontal_fast_balls():
         attack_beginning = False
         ball1_rect.center = (680, 701)
         ball2_rect.center = (1231, 900)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -277,6 +282,7 @@ def phase1_attack_2_horizontal_fast_balls():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -300,6 +306,7 @@ def phase1_attack_2_fast_speers():
         attack_beginning = False
         dodge_item_speer1_rect.center = (width//2 - 150, height//2 - 200)
         dodge_item_speer2_rect.center = (width//2 + 150, height//2 - 200)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -322,6 +329,7 @@ def phase1_attack_2_fast_speers():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -347,6 +355,8 @@ def phase1_attack_2_slow_diagonal_speers_oaa():
         attack_beginning = False
         diagonal_speer_right_rect = diagonal_speer_right.get_rect(); diagonal_speer_right_rect.center = (621, 464)
         diagonal_speer_left_rect = diagonal_speer_left.get_rect(); diagonal_speer_left_rect.center = (1294, 488)
+        no_hit = True
+        throw.play()
         no_hit = True
         no_finish = True
         first_attack = True
@@ -379,6 +389,7 @@ def phase1_attack_2_slow_diagonal_speers_oaa():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -474,6 +485,7 @@ def phase2_attack_3_lightning_strikes_oaa():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if player_mask.overlap(item_mask, offset):
                 print("hit")
+                hit.play()
                 return True#, boss_pose
                 #no_hit = False
         
@@ -499,6 +511,9 @@ def phase2_attack_2_fast_lightning_strikes():
         dodge_item_flash_rect2.center = (width//2 + 150, 1150)
         
         no_hit = True
+        throw.play()
+        
+        no_hit = True
         no_finish = True
 
     screen.blit(dodge_item_flash, dodge_item_flash_rect1)
@@ -520,6 +535,7 @@ def phase2_attack_2_fast_lightning_strikes():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -565,6 +581,7 @@ def phase2_attack_4_slow_balls_shrunked():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if potion_player_mask.overlap(item_mask, offset):
                 potion_item_there = False
+                effect.play()
                 small = True
     screen.blit(dodge_item_ball, ball1_rect)
     screen.blit(dodge_item_ball, ball2_rect)
@@ -593,6 +610,7 @@ def phase2_attack_4_slow_balls_shrunked():
         offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
         if player_mask.overlap(ball_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -636,6 +654,7 @@ def phase2_attack_3_normal_fast_speers_shrunked():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if potion_player_mask.overlap(item_mask, offset):
                 potion_item_there = False
+                effect.play()
                 small = True
     screen.blit(diagonal_speer_left, diagonal_speer_left_rect)
     screen.blit(diagonal_speer_right, diagonal_speer_right_rect)
@@ -663,6 +682,7 @@ def phase2_attack_3_normal_fast_speers_shrunked():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -672,7 +692,8 @@ def phase2_attack_3_normal_fast_speers_shrunked():
 
     #if no_hit and no_finish:
         #return None, boss_pose
-    
+
+
 def phase3_attack_4_normal_fast_speers_shrunked_oaa():
     global attack_start_time, attack_beginning, boss_pose
     global diagonal_speer_right, topright_speer, topright_speer_rect, diagonal_speer_right_rect, diagonal_speer_left_rect, dodge_item_speer, dodge_item_speer_rect, left_speer, left_speer_rect
@@ -712,6 +733,7 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if potion_player_mask.overlap(item_mask, offset):
                 potion_item_there = False
+                effect.play()
                 small = True
     
     
@@ -766,6 +788,7 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -816,6 +839,7 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if potion_player_mask.overlap(item_mask, offset):
                 potion_item_there = False
+                effect.play()
                 small = True
     
     
@@ -870,6 +894,113 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
+            return True#, boss_pose
+            #no_hit = False
+    
+    if elapsed >= 3200:
+        return False#, boss_pose
+        #no_finish = False
+
+    #if no_hit and no_finish:
+        #return None, boss_pose
+
+
+def phase3_attack_4_normal_fast_speers_shrunked_oaa():
+    global attack_start_time, attack_beginning, boss_pose
+    global diagonal_speer_right, topright_speer, topright_speer_rect, diagonal_speer_right_rect, diagonal_speer_left_rect, dodge_item_speer, dodge_item_speer_rect, left_speer, left_speer_rect
+    global potion_item, potion_item_rect
+    global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
+    global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
+    global current_sprite
+    global potion_item_there, small, attack_preview
+    dodge_speed = 50
+    #global target_ball1_y, target_ball2_y, target_ball3_y
+    if attack_beginning:
+        attack_start_time = pygame.time.get_ticks()
+        attack_beginning = False
+        randomx_in_outline = random.randint(734,1178)
+        randomy_in_outline = random.randint(609,973)
+        potion_item_rect = potion_item.get_rect(); potion_item_rect.center = (randomx_in_outline, randomy_in_outline)
+
+        diagonal_speer_right_rect = diagonal_speer_right.get_rect(); diagonal_speer_right_rect.center = (621, 464)
+        topright_speer_rect = topright_speer.get_rect(); topright_speer_rect.center = (637, 1076)
+        dodge_item_speer_rect = dodge_item_speer.get_rect(); dodge_item_speer_rect.center = (956, 455)
+        left_speer_rect = left_speer.get_rect(); left_speer_rect.center = (1363, 774)
+        
+        attack_preview = True
+        
+        
+        potion_item_there = True
+        no_hit = True
+        no_finish = True
+
+    if potion_item_there:
+        screen.blit(potion_item, potion_item_rect)
+        potion_item_mask = pygame.mask.from_surface(potion_item)
+
+        potion_player_mask = pygame.mask.from_surface(current_sprite)
+
+        for item_rect, item_mask in zip([potion_item_rect], [potion_item_mask]):
+            offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+            if potion_player_mask.overlap(item_mask, offset):
+                potion_item_there = False
+                effect.play()
+                small = True
+    
+    
+    
+    
+
+    target_item1_x, target_item1_y = 1278, 1075
+    target_item2_x, target_item2_y = 1274, 545
+    target_item3_x, target_item3_y = 955, 1073
+    target_item4_x, target_item4_y = 585, 780
+
+    elapsed = pygame.time.get_ticks() - attack_start_time
+
+    if attack_preview:
+        screen.blit(diagonal_speer_right, diagonal_speer_right_rect)
+        
+    if elapsed >= 800 and elapsed < 1400:
+        attack_preview = False
+        diagonal_speer_right_rect = move_dodge_item(diagonal_speer_right_rect, (target_item1_x, target_item1_y), dodge_speed)
+        screen.blit(diagonal_speer_right, diagonal_speer_right_rect)
+
+    if elapsed >= 1000 and elapsed < 1400:
+        screen.blit(topright_speer, topright_speer_rect)
+
+    if elapsed >= 1400 and elapsed < 2000:
+        topright_speer_rect = move_dodge_item(topright_speer_rect, (target_item2_x, target_item2_y), dodge_speed)
+        screen.blit(topright_speer, topright_speer_rect)
+
+    if elapsed >= 1600 and elapsed < 2000:
+        screen.blit(dodge_item_speer, dodge_item_speer_rect)
+
+    if elapsed >= 2000 and elapsed < 2600:
+        dodge_item_speer_rect = move_dodge_item(dodge_item_speer_rect, (target_item3_x, target_item3_y), dodge_speed)
+        screen.blit(dodge_item_speer, dodge_item_speer_rect)
+
+    if elapsed >= 2200 and elapsed < 2600:
+        screen.blit(left_speer, left_speer_rect)
+
+    if elapsed >= 2600 and elapsed < 3200:
+        left_speer_rect = move_dodge_item(left_speer_rect, (target_item4_x, target_item4_y), dodge_speed)
+        screen.blit(left_speer, left_speer_rect)
+        
+
+    item_mask1 = pygame.mask.from_surface(diagonal_speer_right)
+    item_mask2 = pygame.mask.from_surface(topright_speer)
+    item_mask3 = pygame.mask.from_surface(dodge_item_speer)
+    item_mask4 = pygame.mask.from_surface(left_speer)
+
+    player_mask = pygame.mask.from_surface(current_sprite)
+
+    for item_rect, item_mask in zip([diagonal_speer_right_rect, topright_speer_rect, dodge_item_speer_rect, left_speer_rect], [item_mask1, item_mask2, item_mask3, item_mask4]):
+        offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
+        if player_mask.overlap(item_mask, offset):
+            print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -927,9 +1058,6 @@ def phase3_attack_6_normal_fast_balls_shrunked_oaa():
 
     
     
-    
-    
-
     target_item1_x, target_item1_y = 1152, 1036
     target_item2_x, target_item2_y = 1032, 1031
     target_item3_x, target_item3_y = 854, 1033
@@ -969,6 +1097,7 @@ def phase3_attack_6_normal_fast_balls_shrunked_oaa():
 
         
 
+
     item_mask1 = pygame.mask.from_surface(dodge_item_ball)
     item_mask2 = pygame.mask.from_surface(dodge_item_ball)
     item_mask3 = pygame.mask.from_surface(dodge_item_ball)
@@ -982,6 +1111,7 @@ def phase3_attack_6_normal_fast_balls_shrunked_oaa():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -1006,6 +1136,11 @@ def phase3_attack_1_ball_strike_speer():
         dodge_item_flash_rect1.center = (1116, 422)
         dodge_item_ball_rect.center = (802, 502)
         left_speer_rect.center = (1290, 870)
+
+
+        
+        no_hit = True
+        throw.play()
 
 
         
@@ -1038,6 +1173,7 @@ def phase3_attack_1_ball_strike_speer():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -1062,6 +1198,8 @@ def phase3_attack_3_strikes_speer():
         dodge_item_flash_rect1.center = (width//2 - 150, height//2 - 200)
         dodge_item_flash_rect2.center = (width//2 + 150, height//2 - 200)
         dodge_item_speer_rect.center = (width//2, height//2 - 200)
+        no_hit = True
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -1090,6 +1228,7 @@ def phase3_attack_3_strikes_speer():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -1100,8 +1239,14 @@ def phase3_attack_3_strikes_speer():
     #if no_hit and no_finish:
         #return None, boss_pose
 pygame.init()
+pygame.mixer.init()
 fps = 60
 fpsClock = pygame.time.Clock()
+
+# Sound effects
+effect = pygame.mixer.Sound("Oracle_of_pythmenia/sfx/effect.mp3")
+hit = pygame.mixer.Sound("Oracle_of_pythmenia/sfx/hit.wav")
+throw = pygame.mixer.Sound("Oracle_of_pythmenia/sfx/throw.mp3")
 
 
 icon = pygame.image.load("Oracle_of_pythmenia/imgs/icon.png")
@@ -1253,7 +1398,7 @@ dodge_speed3 = 0
 dodge_speed4 = 0
 dodge_speed5 = 0
 dodge_speed6 = 0
-
+start_music = True
 
 first_stage = False
 second_stage = False
@@ -1273,6 +1418,12 @@ while running:
         screen.fill((70, 144, 184, 255))
         screen.blit(background_wall, background_wall_rect)
 
+        if start_music:
+            start_music = False
+            pygame.mixer.init()
+            pygame.mixer.music.load("Oracle_of_pythmenia/bg_music/stage1.ogg") 
+            pygame.mixer.music.play(-1,0.0)
+
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             current_sprite = player_sprite_left
             current_sprite_rect = player_sprite_left_rect
@@ -1290,6 +1441,7 @@ while running:
         if background_wall_rect.x <= -13680:
             if keys[pygame.K_RETURN]:
                 second_stage = True
+                start_music = True
                 first_stage = False
 
         screen.blit(current_sprite, current_sprite_rect)
@@ -1297,6 +1449,12 @@ while running:
         screen.fill((0, 0, 0))
         screen.blit(background_hall, background_hall_rect)
         screen.blit(player_sprite_standing, player_sprite_standing_rect)
+
+        if start_music:
+            start_music = False
+            pygame.mixer.init()
+            pygame.mixer.music.load("Oracle_of_pythmenia/bg_music/stage2.mp3") 
+            pygame.mixer.music.play(-1,0.0)
 
         player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
         oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2 - 200)
@@ -1343,6 +1501,13 @@ while running:
         if window_there:
             window.destroy()
             window_there = False
+
+        if start_music:
+            start_music = False
+            pygame.mixer.init()
+            pygame.mixer.music.load("Oracle_of_pythmenia/bg_music/stage3.mp3") 
+            pygame.mixer.music.play(-1,0.0)
+
         if dead == False or dead == None:
             screen.blit(background_bossfight, background_bossfight_rect)
             #print(boss_hp)
