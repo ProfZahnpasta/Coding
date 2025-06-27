@@ -124,6 +124,7 @@ def ask_oracle(Event=None):
         print(f"Debug player_resume{oracle_text}")
         second_stage = False
         third_stage = True
+        start_music = True
 
 entry.bind("<Return>", ask_oracle)
 
@@ -156,6 +157,7 @@ def phase1_attack_3_normal_fast_balls1():
         ball1_rect.center = (width//2 - 150, height//2 - 200)
         ball2_rect.center = (width//2 - 150, height//2 - 200)
         ball3_rect.center = (width//2 + 150, height//2 - 200)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -182,6 +184,7 @@ def phase1_attack_3_normal_fast_balls1():
         offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
         if player_mask.overlap(ball_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -191,7 +194,6 @@ def phase1_attack_3_normal_fast_balls1():
 
     #if no_hit and no_finish:
         #return None, boss_pose
-
 def phase1_attack_3_normal_fast_balls2():
     global attack_start_time, attack_beginning, boss_pose
     global ball1_rect, ball2_rect, ball3_rect, dodge_item_ball
@@ -206,6 +208,7 @@ def phase1_attack_3_normal_fast_balls2():
         ball1_rect.center = (width//2 - 150, height//2 - 200)
         ball2_rect.center = (width//2 + 150, height//2 - 200)
         ball3_rect.center = (width//2 + 150, height//2 - 200)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -232,6 +235,7 @@ def phase1_attack_3_normal_fast_balls2():
         offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
         if player_mask.overlap(ball_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -255,6 +259,7 @@ def phase1_attack_2_horizontal_fast_balls():
         attack_beginning = False
         ball1_rect.center = (680, 701)
         ball2_rect.center = (1231, 900)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -277,6 +282,7 @@ def phase1_attack_2_horizontal_fast_balls():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -300,6 +306,7 @@ def phase1_attack_2_fast_speers():
         attack_beginning = False
         dodge_item_speer1_rect.center = (width//2 - 150, height//2 - 200)
         dodge_item_speer2_rect.center = (width//2 + 150, height//2 - 200)
+        throw.play()
         no_hit = True
         no_finish = True
 
@@ -322,6 +329,7 @@ def phase1_attack_2_fast_speers():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -347,6 +355,8 @@ def phase1_attack_2_slow_diagonal_speers_oaa():
         attack_beginning = False
         diagonal_speer_right_rect = diagonal_speer_right.get_rect(); diagonal_speer_right_rect.center = (621, 464)
         diagonal_speer_left_rect = diagonal_speer_left.get_rect(); diagonal_speer_left_rect.center = (1294, 488)
+        no_hit = True
+        throw.play()
         no_hit = True
         no_finish = True
         first_attack = True
@@ -379,6 +389,7 @@ def phase1_attack_2_slow_diagonal_speers_oaa():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -474,6 +485,7 @@ def phase2_attack_3_lightning_strikes_oaa():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if player_mask.overlap(item_mask, offset):
                 print("hit")
+                hit.play()
                 return True#, boss_pose
                 #no_hit = False
         
@@ -499,6 +511,9 @@ def phase2_attack_2_fast_lightning_strikes():
         dodge_item_flash_rect2.center = (width//2 + 150, 1150)
         
         no_hit = True
+        throw.play()
+        
+        no_hit = True
         no_finish = True
 
     screen.blit(dodge_item_flash, dodge_item_flash_rect1)
@@ -520,6 +535,7 @@ def phase2_attack_2_fast_lightning_strikes():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -550,6 +566,7 @@ def phase2_attack_4_slow_balls_shrunked():
         ball2_rect.center = (683, 694)
         ball3_rect.center = (860, 541)
         ball4_rect.center = (1063, 542)
+        
         potion_item_there = True
         no_hit = True
         no_finish = True
@@ -564,6 +581,7 @@ def phase2_attack_4_slow_balls_shrunked():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if potion_player_mask.overlap(item_mask, offset):
                 potion_item_there = False
+                effect.play()
                 small = True
     screen.blit(dodge_item_ball, ball1_rect)
     screen.blit(dodge_item_ball, ball2_rect)
@@ -592,6 +610,7 @@ def phase2_attack_4_slow_balls_shrunked():
         offset = (ball_rect.x - current_sprite_rect.x, ball_rect.y - current_sprite_rect.y)
         if player_mask.overlap(ball_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -635,6 +654,7 @@ def phase2_attack_3_normal_fast_speers_shrunked():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if potion_player_mask.overlap(item_mask, offset):
                 potion_item_there = False
+                effect.play()
                 small = True
     screen.blit(diagonal_speer_left, diagonal_speer_left_rect)
     screen.blit(diagonal_speer_right, diagonal_speer_right_rect)
@@ -662,6 +682,7 @@ def phase2_attack_3_normal_fast_speers_shrunked():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -671,7 +692,8 @@ def phase2_attack_3_normal_fast_speers_shrunked():
 
     #if no_hit and no_finish:
         #return None, boss_pose
-    
+
+
 def phase3_attack_4_normal_fast_speers_shrunked_oaa():
     global attack_start_time, attack_beginning, boss_pose
     global diagonal_speer_right, topright_speer, topright_speer_rect, diagonal_speer_right_rect, diagonal_speer_left_rect, dodge_item_speer, dodge_item_speer_rect, left_speer, left_speer_rect
@@ -711,6 +733,7 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
             offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
             if potion_player_mask.overlap(item_mask, offset):
                 potion_item_there = False
+                effect.play()
                 small = True
     
     
@@ -765,6 +788,7 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -776,14 +800,14 @@ def phase3_attack_4_normal_fast_speers_shrunked_oaa():
         #return None, boss_pose
 
 
+
 def phase3_attack_6_normal_fast_balls_shrunked_oaa():
     global attack_start_time, attack_beginning, boss_pose
     global ball1_rect, ball2_rect, ball3_rect, ball4_rect, ball5_rect, ball6_rect, dodge_item_ball
-    global potion_item, potion_item_rect
     global player_sprite_left, player_sprite_right, player_sprite_standing, player_sprite_up
     global player_sprite_left_rect, player_sprite_right_rect, player_sprite_standing_rect, player_sprite_up_rect
     global current_sprite
-    global potion_item_there, small, attack_preview
+    global potion_item_there, small, attack_preview, start_sound
     global dodge_speed1, dodge_speed2, dodge_speed3, dodge_speed4, dodge_speed5, dodge_speed6
 
 
@@ -793,7 +817,6 @@ def phase3_attack_6_normal_fast_balls_shrunked_oaa():
         attack_beginning = False
         randomx_in_outline = random.randint(734,1178)
         randomy_in_outline = random.randint(609,973)
-        potion_item_rect = potion_item.get_rect(); potion_item_rect.center = (randomx_in_outline, randomy_in_outline)
 
         ball1_rect.center = (1194, 491)
         ball2_rect.center = (1151, 490)
@@ -818,26 +841,12 @@ def phase3_attack_6_normal_fast_balls_shrunked_oaa():
         attack_preview = True
         
         
-        potion_item_there = True
+        
         no_hit = True
         no_finish = True
 
-    if potion_item_there:
-        screen.blit(potion_item, potion_item_rect)
-        potion_item_mask = pygame.mask.from_surface(potion_item)
-
-        potion_player_mask = pygame.mask.from_surface(current_sprite)
-
-        for item_rect, item_mask in zip([potion_item_rect], [potion_item_mask]):
-            offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
-            if potion_player_mask.overlap(item_mask, offset):
-                potion_item_there = False
-                small = True
     
     
-    
-    
-
     target_item1_x, target_item1_y = 1152, 1036
     target_item2_x, target_item2_y = 1032, 1031
     target_item3_x, target_item3_y = 854, 1033
@@ -852,30 +861,58 @@ def phase3_attack_6_normal_fast_balls_shrunked_oaa():
 
     if elapsed >= 1500:
         attack_preview = False
+        if start_sound:
+            throw.play()
+            start_sound = False
         ball1_rect = move_dodge_item(ball1_rect, (target_item1_x, target_item1_y), dodge_speed1)
         screen.blit(dodge_item_ball, ball1_rect)
-
+    if elapsed == 2299:
+        start_sound = True
     if elapsed >= 2300:
+        if start_sound:
+            throw.play()
+            start_sound = False
         ball2_rect = move_dodge_item(ball2_rect, (target_item2_x, target_item2_y), dodge_speed2)
         screen.blit(dodge_item_ball, ball2_rect)
 
+    if elapsed == 3099:
+        start_sound = True
     if elapsed >= 3100:
+        if start_sound:
+            throw.play()
+            start_sound = False
         ball3_rect = move_dodge_item(ball3_rect, (target_item3_x, target_item3_y), dodge_speed3)
         screen.blit(dodge_item_ball, ball3_rect)
 
+    if elapsed == 3899:
+        start_sound = True
     if elapsed >= 3900:
+        if start_sound:
+            throw.play()
+            start_sound = False
         ball4_rect = move_dodge_item(ball4_rect, (target_item4_x, target_item4_y), dodge_speed4)
         screen.blit(dodge_item_ball, ball4_rect)
 
+    if elapsed == 4699:
+        start_sound = True
     if elapsed >= 4700:
+        if start_sound:
+            throw.play()
+            start_sound = False
         ball5_rect = move_dodge_item(ball5_rect, (target_item5_x, target_item5_y), dodge_speed5)
         screen.blit(dodge_item_ball, ball5_rect)
 
+    if elapsed == 5499:
+        start_sound = True
     if elapsed >= 5500:
+        if start_sound:
+            throw.play()
+            start_sound = False
         ball6_rect = move_dodge_item(ball6_rect, (target_item6_x, target_item6_y), dodge_speed6)
         screen.blit(dodge_item_ball, ball6_rect)
 
         
+
 
     item_mask1 = pygame.mask.from_surface(dodge_item_ball)
     item_mask2 = pygame.mask.from_surface(dodge_item_ball)
@@ -890,12 +927,15 @@ def phase3_attack_6_normal_fast_balls_shrunked_oaa():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
     if ball6_rect.centerx >= target_item6_x and ball5_rect.centerx >= target_item5_x and ball4_rect.centery >= target_item4_y:
+        start_sound = True
         return False#, boss_pose
         #no_finish = False
+        start_sound = True
 
     #if no_hit and no_finish:
         #return None, boss_pose
@@ -914,6 +954,11 @@ def phase3_attack_1_ball_strike_speer():
         dodge_item_flash_rect1.center = (1116, 422)
         dodge_item_ball_rect.center = (802, 502)
         left_speer_rect.center = (1290, 870)
+
+
+        
+        no_hit = True
+        throw.play()
 
 
         
@@ -946,6 +991,7 @@ def phase3_attack_1_ball_strike_speer():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -971,6 +1017,8 @@ def phase3_attack_3_strikes_speer():
         dodge_item_flash_rect2.center = (width//2 + 150, height//2 - 200)
         dodge_item_speer_rect.center = (width//2, height//2 - 200)
         no_hit = True
+        throw.play()
+        no_hit = True
         no_finish = True
 
     screen.blit(dodge_item_flash, dodge_item_flash_rect1)
@@ -982,7 +1030,9 @@ def phase3_attack_3_strikes_speer():
     if elapsed >= 400:
         dodge_item_flash_rect1 = move_dodge_item(dodge_item_flash_rect1, (target_item1_x, target_item1_y), dodge_speed)
         dodge_item_flash_rect2 = move_dodge_item(dodge_item_flash_rect2, (target_item2_x, target_item2_y), dodge_speed)
-    if elapsed >= 1600:
+    if elapsed >= 1400:
+        screen.blit(dodge_item_speer, dodge_item_speer_rect)
+    if elapsed >= 1800:
         screen.blit(dodge_item_speer, dodge_item_speer_rect)
         dodge_item_speer_rect = move_dodge_item(dodge_item_speer_rect, (target_item3_x, target_item3_y), dodge_speed)
 
@@ -996,6 +1046,7 @@ def phase3_attack_3_strikes_speer():
         offset = (item_rect.x - current_sprite_rect.x, item_rect.y - current_sprite_rect.y)
         if player_mask.overlap(item_mask, offset):
             print("hit")
+            hit.play()
             return True#, boss_pose
             #no_hit = False
     
@@ -1006,51 +1057,56 @@ def phase3_attack_3_strikes_speer():
     #if no_hit and no_finish:
         #return None, boss_pose
 pygame.init()
+pygame.mixer.init()
 fps = 60
 fpsClock = pygame.time.Clock()
 
 
-icon = pygame.image.load("./imgs/icon.png")
+effect = pygame.mixer.Sound("Oracle_of_pythmenia/sfx/effect.mp3")
+hit = pygame.mixer.Sound("Oracle_of_pythmenia/sfx/hit.wav")
+throw = pygame.mixer.Sound("Oracle_of_pythmenia/sfx/throw.mp3")
+
+
+icon = pygame.image.load("Oracle_of_pythmenia/imgs/icon.png")
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
 
-player_sprite_standing = pygame.transform.scale(pygame.image.load("./imgs/Explorer steht.png"),(525/4,882.6/4))
-player_sprite_left = pygame.transform.scale(pygame.image.load("./imgs/Explorer links.png"),(525/3.6,764/3.6))
-player_sprite_right = pygame.transform.scale(pygame.image.load("./imgs/Explorer rechts.png"),(525/3.6,765/3.6))
-player_sprite_up =  pygame.transform.scale(pygame.image.load("./imgs/Explorer oben.png"),(561,867))
-background_wall = pygame.transform.scale(pygame.image.load("./imgs/Background_Wall.png"),(16000,1024))
-background_hall = pygame.transform.scale(pygame.image.load("./imgs/Background_Hall.png"),(1024,1024))
-oracle_sprite_normal = pygame.transform.scale(pygame.image.load("./imgs/Orakel_transparent.png"),(300,300))
-player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/player dialogue box.png"),(600,600))
-oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/oracle_dialogue box.png"),(600,600))
-background_bossfight = pygame.transform.scale(pygame.image.load("./imgs/background_bossfight.png"),(1920,1280))
-bossfight_outline = pygame.transform.scale(pygame.image.load("./imgs/bossfight_outline.png"),(600,600))   
-bossfight_raw_outline = pygame.transform.scale(pygame.image.load("./imgs/bossfight_raw_outline.png"),(600,600))
-dodge_item_ball = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball1 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball2 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball3 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball4 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_flash_alert = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_flash_alert.png"),(97/4,1333/4))
-dodge_item_flash = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_flash.png"),(350/4,1536/4))
-dodge_item_speer = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(230,230))
+player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/4,882.6/4))
+player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/3.6,764/3.6))
+player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.png"),(525/3.6,765/3.6))
+player_sprite_up =  pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer oben.png"),(561,867))
+background_wall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Wall.png"),(16000,1024))
+background_hall = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Background_Hall.png"),(1024,1024))
+oracle_sprite_normal = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Orakel_transparent.png"),(300,300))
+player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/player dialogue box.png"),(600,600))
+oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_dialogue box.png"),(600,600))
+background_bossfight = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/background_bossfight.png"),(1920,1280))
+bossfight_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_outline.png"),(600,600))   
+bossfight_raw_outline = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/bossfight_raw_outline.png"),(600,600))
+dodge_item_ball = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball1 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball2 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball3 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
+dodge_item_ball4 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_ball.png"),(100,100))
+dodge_item_flash_alert = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash_alert.png"),(97/4,1333/4))
+dodge_item_flash = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_flash.png"),(350/4,1536/4))
+dodge_item_speer = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(230,230))
 diagonal_speer_right = pygame.transform.rotate(dodge_item_speer, 45)
 diagonal_speer_left = pygame.transform.rotate(dodge_item_speer, -45)
 upsidedown_speer = pygame.transform.rotate(dodge_item_speer, 180)
 left_speer = pygame.transform.rotate(dodge_item_speer, -90)
 topright_speer = pygame.transform.rotate(dodge_item_speer, 135)
-dodge_item_speer1 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(300,300))
-dodge_item_speer2 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(300,300))
-oracle_both_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_both_down.png"),(400,400))
-oracle_left_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_left_down.png"),(600,600))
-oracle_right_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_right_down.png"),(600,600))
-oracle_true_form = pygame.transform.scale(pygame.image.load("./imgs/oracle_true_form.png"),(600,600))
-oracle_hit = pygame.transform.scale(pygame.image.load("./imgs/oracle_both_down_hit.png"),(400,400))
-damage_item = pygame.transform.scale(pygame.image.load("./imgs/damage_item.png"),(100,100))
-potion_item = pygame.transform.scale(pygame.image.load("./imgs/potion_item.png"),(100,100))
-
+dodge_item_speer1 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(300,300))
+dodge_item_speer2 = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/dodge_item_speer.png"),(300,300))
+oracle_both_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down.png"),(400,400))
+oracle_left_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_left_down.png"),(600,600))
+oracle_right_down = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_right_down.png"),(600,600))
+oracle_true_form = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_true_form.png"),(600,600))
+oracle_hit = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/oracle_both_down_hit.png"),(400,400))
+damage_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/damage_item.png"),(100,100))
+potion_item = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/potion_item.png"),(100,100))
 
 
 player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
@@ -1090,10 +1146,10 @@ left_speer_rect = left_speer.get_rect(); left_speer_rect.center = (1221, 575)
 topright_speer_rect = topright_speer.get_rect(); topright_speer_rect.center = (637, 1076)
 
 
-font = pygame.font.Font("./font/VT323-Regular.ttf",25)
-title_font = pygame.font.Font("./font/VT323-Regular.ttf",170)
-middle_font = pygame.font.Font("./font/VT323-Regular.ttf",90)
-middle_middle_font = pygame.font.Font("./font/VT323-Regular.ttf",40)
+font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",25)
+title_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",170)
+middle_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",90)
+middle_middle_font = pygame.font.Font("Oracle_of_pythmenia/font/VT323-Regular.ttf",40)
 boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
 boss_text2 = font.render("but can you fight?", True, (255,255,255))
 
@@ -1146,6 +1202,9 @@ boss_hit = False
 boss_hit_time = None
 boss_hp = 1000
 won = False
+won_start_time = None
+credits_started = False
+credits_offset = 0
 attack_preview = True
 first_attack = True
 bossfight_p2_start_time = None
@@ -1160,11 +1219,12 @@ dodge_speed3 = 0
 dodge_speed4 = 0
 dodge_speed5 = 0
 dodge_speed6 = 0
-
+start_music = True
+start_sound = True
 
 first_stage = False
-second_stage = True
-third_stage = False
+second_stage = False
+third_stage = True
 
 while running:
     for event in pygame.event.get():
@@ -1179,6 +1239,12 @@ while running:
     if first_stage:
         screen.fill((70, 144, 184, 255))
         screen.blit(background_wall, background_wall_rect)
+
+        if start_music:
+            start_music = False
+            pygame.mixer.init()
+            pygame.mixer.music.load("Oracle_of_pythmenia/bg_music/stage1.ogg") 
+            pygame.mixer.music.play(-1,0.0)
 
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
             current_sprite = player_sprite_left
@@ -1197,6 +1263,7 @@ while running:
         if background_wall_rect.x <= -13680:
             if keys[pygame.K_RETURN]:
                 second_stage = True
+                start_music = True
                 first_stage = False
 
         screen.blit(current_sprite, current_sprite_rect)
@@ -1204,6 +1271,12 @@ while running:
         screen.fill((0, 0, 0))
         screen.blit(background_hall, background_hall_rect)
         screen.blit(player_sprite_standing, player_sprite_standing_rect)
+
+        if start_music:
+            start_music = False
+            pygame.mixer.init()
+            pygame.mixer.music.load("Oracle_of_pythmenia/bg_music/stage2.mp3") 
+            pygame.mixer.music.play(-1,0.0)
 
         player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
         oracle_dialogue_box_texture_rect = oracle_dialogue_box_texture.get_rect(); oracle_dialogue_box_texture_rect.center = (width/1.9, height/2 - 200)
@@ -1214,6 +1287,7 @@ while running:
         elapsed = pygame.time.get_ticks() - oracle_start_time
         float_speed = 0.02
         if elapsed >= 3000 and elapsed <= 7000:
+
             float_offset += float_speed
             oracle_sprite_normal_rect.centery = (height/2) + math.sin(float_offset)*float_amplitude
             screen.blit(oracle_sprite_normal, oracle_sprite_normal_rect)
@@ -1249,6 +1323,13 @@ while running:
         if window_there:
             window.destroy()
             window_there = False
+
+        if start_music:
+            start_music = False
+            pygame.mixer.init()
+            pygame.mixer.music.load("Oracle_of_pythmenia/bg_music/stage3.mp3") 
+            pygame.mixer.music.play(-1,0.0)
+
         if dead == False or dead == None:
             screen.blit(background_bossfight, background_bossfight_rect)
             #print(boss_hp)
@@ -1359,14 +1440,15 @@ while running:
             
             
             if boss_hp == 1000:
-                bossfight_phase = 1
-            elif boss_hp <= 950 and boss_hp > 900:
+                bossfight_phase = 1  
+                """elif boss_hp <= 900 and boss_hp > 800:
                 bossfight_phase = 2
-            elif boss_hp <= 900 and boss_hp > 850:
-                bossfight_phase = 3
-            elif boss_hp <= 850:
+            elif boss_hp <= 800 and boss_hp > 700:
+                bossfight_phase = 3"""
+            elif boss_hp <= 950:
                 won = True
                 bossfight_phase = None
+                dead = True
             #phase1_attack_3_normal_fast_balls1()
             #print("test")
                 
@@ -1379,9 +1461,10 @@ while running:
                 if elapsed <= 5000:
                     boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
                     boss_text2 = font.render("but can you fight?", True, (255,255,255))
+                    boss_text2_rect = boss_text2.get_rect(center=(width/2, boss_text2_rect.centery))
                     screen.blit(boss_text1,boss_text1_rect)
                     screen.blit(boss_text2,boss_text2_rect)
-                if elapsed >= 5000:
+                elif elapsed > 5000:
                     boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
                     boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
                     screen.blit(boss_hp_text,boss_hp_text_rect)
@@ -1404,18 +1487,20 @@ while running:
                         dead = phase1_attack_2_horizontal_fast_balls()                        
                     if rng_attacks == 5:
                         dead = phase1_attack_2_slow_diagonal_speers_oaa()
-            if bossfight_phase == 2:
+            elif bossfight_phase == 2:
                 if bossfight_p2_start_time is None:
                     bossfight_p2_start_time = pygame.time.get_ticks()
                 elapsed_phase2 = pygame.time.get_ticks() - bossfight_p2_start_time
                 if elapsed_phase2 <= 5000:
                     boss_text1 = font.render("NOBODY has ever survived that,", True, (255,255,255))
                     boss_text2 = font.render("and so will YOU!", True, (255,255,255))
+                    boss_text2_rect = boss_text2.get_rect(center=(width/2, boss_text2_rect.centery))
                     screen.blit(boss_text1,boss_text1_rect)
                     screen.blit(boss_text2,boss_text2_rect)
                     attack_3_counter = 0
                     next_attack = True
-                if elapsed_phase2 >= 5000:
+                    attack_beginning = True
+                else:
                     boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
                     boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
                     screen.blit(boss_hp_text,boss_hp_text_rect)    
@@ -1437,19 +1522,20 @@ while running:
                         dead = phase2_attack_4_slow_balls_shrunked()
                     if rng_attacks == 4:
                         dead = phase2_attack_3_normal_fast_speers_shrunked()
-            if bossfight_phase == 3:
+            elif bossfight_phase == 3:
                 if bossfight_p3_start_time is None:
                     bossfight_p3_start_time = pygame.time.get_ticks()
                 elapsed_phase3 = pygame.time.get_ticks() - bossfight_p3_start_time
                 if elapsed_phase3 <= 5000:
                     boss_text1 = font.render("HOW...? HOW DID YOU NOT DIE?,", True, (255,255,255))
-                    boss_text2 = font.render("But you haven't seen my strongest attacks...", True, (255,255,255))
+                    boss_text2 = font.render("But you haven\'t seen my strongest attacks...", True, (255,255,255))
                     boss_text2_rect = boss_text2.get_rect(center=(width/2, boss_text2_rect.centery))
                     screen.blit(boss_text1,boss_text1_rect)
                     screen.blit(boss_text2,boss_text2_rect)
                     attack_3_counter = 0
                     next_attack = True
-                if elapsed_phase3 >= 5000:
+                    attack_beginning = True
+                else:
                     boss_hp_text = middle_middle_font.render(f"Oracle HP: {boss_hp}", True, (255,255,255))
                     boss_hp_text_rect = boss_hp_text.get_rect(center=(width/2, 46))
                     screen.blit(boss_hp_text,boss_hp_text_rect)    
@@ -1506,8 +1592,8 @@ while running:
                 if damage_item_rect.centery <= height/2 - 200:
                     boss_hit = True
                     di_going_to_boss = False
-            #pygame.display.flip()
-            if dead:
+            pygame.display.flip()
+            if dead and not won:
                 time.sleep(1)
         elif dead:
             screen.fill((0, 0, 0))
@@ -1552,18 +1638,107 @@ while running:
                 boss_hit_time = None
                 boss_hp = 1000
                 won = False
+                won_start_time = None
+                credits_started = False
+                credits_offset = 0
                 small = False
             if keys[pygame.K_RETURN] and selec == "right":
                 pygame.quit()
                 sys.exit()
         if won:
             screen.fill((0, 0, 0))
-            won_text = title_font.render("YOU WON", True, (255,255,255))
-            won_text_rect = won_text.get_rect(center=(width/2,height/2 - 200))
-            under_won_text = middle_middle_font.render("Congratulations, you have freed the souls of Pythmenia!", True, (255,255,255))
-            under_won_text_rect = under_won_text.get_rect(center=(width/2,height/2 - 100))
-            screen.blit(won_text, won_text_rect)
-            screen.blit(under_won_text, under_won_text_rect)
+            
+            
+            if won_start_time is None:
+                won_start_time = pygame.time.get_ticks()
+            
+            elapsed_won = pygame.time.get_ticks() - won_start_time
+            
+            
+            if elapsed_won < 4000:
+                won_text = title_font.render("YOU WON", True, (255,255,255))
+                won_text_rect = won_text.get_rect(center=(width/2, height/2 - 200))
+                under_won_text = middle_middle_font.render("Congratulations, you have freed the souls of Pythmenia!", True, (255,255,255))
+                under_won_text_rect = under_won_text.get_rect(center=(width/2, height/2 - 100))
+                screen.blit(won_text, won_text_rect)
+                screen.blit(under_won_text, under_won_text_rect)
+            else:
+                
+                if not credits_started:
+                    credits_started = True
+                
+                
+                won_y = height/2 - 200 - (elapsed_won - 4000) * 0.5
+                if won_y > -100:
+                    won_text = title_font.render("YOU WON", True, (255,255,255))
+                    won_text_rect = won_text.get_rect(center=(width/2, won_y))
+                    screen.blit(won_text, won_text_rect)
+                
+                
+                credits_lines = [
+                    ("ProfZ Productions presents", middle_middle_font, (255,255,255)),
+                    ("", font, (255,255,255)),
+                    ("Idea by Jonas - ProfZahnpasta", font, (255,255,255)),
+                    ("Programmed by Jonas - ProfZahnpasta", font, (255,255,255)),
+                    ("Game Design by ProfZahnpasta + ChatGPT", font, (255,255,255)),
+                    ("", font, (255,255,255)),
+                    ("With music by Robert Topala, Bert Cole,", font, (255,255,255)),
+                    ("Brooklyn Game Audio and Steven Rubio", font, (255,255,255)),
+                    ("", font, (255,255,255)), 
+                    ("With sound Effects by Toby Fox,", font, (255,255,255)),
+                    ("MagiaZ and Epic Stock Media", font, (255,255,255)),
+                    ("", font, (255,255,255)), 
+                    ("Using PyGame and CustomTKinter", font, (255,255,255)),
+                    ("", font, (255,255,255)),  
+                    ("A special thanks to Herr Berk", font, (255,255,255)),
+                    ("", font, (255,255,255)), 
+                    ("", font, (255,255,255)),  
+                    ("ORACLE OF PYTHMENIA", middle_font, (255,215,0)),
+                    ("", font, (255,255,255)), 
+                    ("", font, (255,255,255)), 
+                    ("Thanks for playing!", middle_middle_font, (255,255,255))
+                ]
+                
+                
+                credits_speed = 1.5
+                
+                
+                start_y = height + 100 - credits_offset
+                current_y = start_y
+                line_height = 40
+                
+                
+                oracle_line_y = start_y + (len(credits_lines) - 4) * line_height 
+                thanks_line_y = start_y + (len(credits_lines) - 1) * line_height
+                
+                
+                should_stop_animation = (oracle_line_y <= height/2 + 50 and thanks_line_y <= height - 50)
+                
+                if not should_stop_animation:
+                    credits_offset += credits_speed
+                
+                for line_text, font_obj, color in credits_lines:
+                    if line_text:
+                        text_surface = font_obj.render(line_text, True, color)
+                        text_rect = text_surface.get_rect(center=(width/2, current_y))
+                        
+                        
+                        if -100 < current_y < height + 100:
+                            screen.blit(text_surface, text_rect)
+                            
+                            
+                            if line_text == "ORACLE OF PYTHMENIA" and height/2 - 50 <= current_y <= height/2 + 50:
+                                credits_speed = 0.3
+                            else:
+                                credits_speed = 1.5
+                                
+                    current_y += line_height
+                
+                
+                if not should_stop_animation and start_y < -len(credits_lines) * line_height - 200:
+                    credits_offset = 0
+            
+            
             player_sprite_standing = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer steht.png"),(525/10,882.6/10))
             player_sprite_left = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer links.png"),(525/8.9,764/8.9))
             player_sprite_right = pygame.transform.scale(pygame.image.load("Oracle_of_pythmenia/imgs/Explorer rechts.PNG"),(525/8.9,765/8.9))

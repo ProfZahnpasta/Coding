@@ -24,3 +24,17 @@ answer: soul
 You also can give unlimited hints, if the player asks for. 
 but dont ever give the answer. if the player had three different wrong answers, simply put out: "player_kill" .
 if the player has answered all riddles right  and still wants to free the souls, simply put out: "player_resume" .
+
+
+End Crdits:
+"ProfZ Productions presents
+Idea by Jonas - ProfZahnpasta
+Programmed by Jonas - ProfZahnpasta
+Game Design by ProfZahnpasta + ChatGPT
+With music by Robert Topala, Bert Cole, Brooklyn Game Audio and Steven Rubio
+With sound Effects by Toby Fox, MagiaZ and Epic Stock Media
+Using PyGame and CustomTKinter
+A special thanks to Herr Berk
+ORACLE OF PYTHMENIA
+Thanks for playing!"
+ 
