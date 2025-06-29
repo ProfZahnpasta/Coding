@@ -62,6 +62,10 @@ pixel_font = customtkinter.CTkFont(family="Pixelify Sans Standard", size=20, wei
 entry = customtkinter.CTkEntry(master=window, font=pixel_font, width=300, height=30, placeholder_text="Ask the oracle anything...")
 entry.pack(pady=20)
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 def get_mousclick_coords():
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -85,7 +89,7 @@ def wrap_text(text, font, max_chars):
     return [font.render(line, True, (255, 255, 255)) for line in lines]
 
 def ask_oracle(Event=None):
-    global player_text_lines, oracle_lines,third_stage, second_stage
+    global player_text_lines, oracle_lines,third_stage, second_stage, start_music
     player_input = entry.get()
     window.withdraw()
 
@@ -1062,51 +1066,51 @@ fps = 60
 fpsClock = pygame.time.Clock()
 
 
-effect = pygame.mixer.Sound("./sfx/effect.mp3")
-hit = pygame.mixer.Sound("./sfx/hit.wav")
-throw = pygame.mixer.Sound("./sfx/throw.mp3")
+effect = pygame.mixer.Sound(resource_path("assets/sfx/effect.mp3"))
+hit = pygame.mixer.Sound(resource_path("assets/sfx/hit.wav"))
+throw = pygame.mixer.Sound(resource_path("assets/sfx/throw.mp3"))
 
 
-icon = pygame.image.load("./imgs/icon.png")
+icon = pygame.image.load(resource_path("assets/imgs/icon.png"))
 pygame.display.set_icon(icon)
 screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
 pygame.display.set_caption("Oracle of Pythmenia")
 
 
-player_sprite_standing = pygame.transform.scale(pygame.image.load("./imgs/Explorer steht.png"),(525/4,882.6/4))
-player_sprite_left = pygame.transform.scale(pygame.image.load("./imgs/Explorer links.png"),(525/3.6,764/3.6))
-player_sprite_right = pygame.transform.scale(pygame.image.load("./imgs/Explorer rechts.png"),(525/3.6,765/3.6))
-player_sprite_up =  pygame.transform.scale(pygame.image.load("./imgs/Explorer oben.png"),(561,867))
-background_wall = pygame.transform.scale(pygame.image.load("./imgs/Background_Wall.png"),(16000,1024))
-background_hall = pygame.transform.scale(pygame.image.load("./imgs/Background_Hall.png"),(1024,1024))
-oracle_sprite_normal = pygame.transform.scale(pygame.image.load("./imgs/Orakel_transparent.png"),(300,300))
-player_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/player dialogue box.png"),(600,600))
-oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load("./imgs/oracle_dialogue box.png"),(600,600))
-background_bossfight = pygame.transform.scale(pygame.image.load("./imgs/background_bossfight.png"),(1920,1280))
-bossfight_outline = pygame.transform.scale(pygame.image.load("./imgs/bossfight_outline.png"),(600,600))   
-bossfight_raw_outline = pygame.transform.scale(pygame.image.load("./imgs/bossfight_raw_outline.png"),(600,600))
-dodge_item_ball = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball1 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball2 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball3 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_ball4 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_ball.png"),(100,100))
-dodge_item_flash_alert = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_flash_alert.png"),(97/4,1333/4))
-dodge_item_flash = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_flash.png"),(350/4,1536/4))
-dodge_item_speer = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(230,230))
+player_sprite_standing = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer steht.png")),(525/4,882.6/4))
+player_sprite_left = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer links.png")),(525/3.6,764/3.6))
+player_sprite_right = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer rechts.png")),(525/3.6,765/3.6))
+player_sprite_up =  pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer oben.png")),(561,867))
+background_wall = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Background_Wall.png")),(16000,1024))
+background_hall = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Background_Hall.png")),(1024,1024))
+oracle_sprite_normal = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Orakel_transparent.png")),(300,300))
+player_dialogue_box_texture = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/player dialogue box.png")),(600,600))
+oracle_dialogue_box_texture = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/oracle_dialogue box.png")),(600,600))
+background_bossfight = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/background_bossfight.png")),(1920,1280))
+bossfight_outline = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/bossfight_outline.png")),(600,600))   
+bossfight_raw_outline = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/bossfight_raw_outline.png")),(600,600))
+dodge_item_ball = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_ball.png")),(100,100))
+dodge_item_ball1 = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_ball.png")),(100,100))
+dodge_item_ball2 = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_ball.png")),(100,100))
+dodge_item_ball3 = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_ball.png")),(100,100))
+dodge_item_ball4 = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_ball.png")),(100,100))
+dodge_item_flash_alert = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_flash_alert.png")),(97/4,1333/4))
+dodge_item_flash = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_flash.png")),(350/4,1536/4))
+dodge_item_speer = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_speer.png")),(230,230))
 diagonal_speer_right = pygame.transform.rotate(dodge_item_speer, 45)
 diagonal_speer_left = pygame.transform.rotate(dodge_item_speer, -45)
 upsidedown_speer = pygame.transform.rotate(dodge_item_speer, 180)
 left_speer = pygame.transform.rotate(dodge_item_speer, -90)
 topright_speer = pygame.transform.rotate(dodge_item_speer, 135)
-dodge_item_speer1 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(300,300))
-dodge_item_speer2 = pygame.transform.scale(pygame.image.load("./imgs/dodge_item_speer.png"),(300,300))
-oracle_both_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_both_down.png"),(400,400))
-oracle_left_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_left_down.png"),(600,600))
-oracle_right_down = pygame.transform.scale(pygame.image.load("./imgs/oracle_right_down.png"),(600,600))
-oracle_true_form = pygame.transform.scale(pygame.image.load("./imgs/oracle_true_form.png"),(600,600))
-oracle_hit = pygame.transform.scale(pygame.image.load("./imgs/oracle_both_down_hit.png"),(400,400))
-damage_item = pygame.transform.scale(pygame.image.load("./imgs/damage_item.png"),(100,100))
-potion_item = pygame.transform.scale(pygame.image.load("./imgs/potion_item.png"),(100,100))
+dodge_item_speer1 = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_speer.png")),(300,300))
+dodge_item_speer2 = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/dodge_item_speer.png")),(300,300))
+oracle_both_down = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/oracle_both_down.png")),(400,400))
+oracle_left_down = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/oracle_left_down.png")),(600,600))
+oracle_right_down = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/oracle_right_down.png")),(600,600))
+oracle_true_form = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/oracle_true_form.png")),(600,600))
+oracle_hit = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/oracle_both_down_hit.png")),(400,400))
+damage_item = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/damage_item.png")),(100,100))
+potion_item = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/potion_item.png")),(100,100))
 
 
 player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
@@ -1146,10 +1150,10 @@ left_speer_rect = left_speer.get_rect(); left_speer_rect.center = (1221, 575)
 topright_speer_rect = topright_speer.get_rect(); topright_speer_rect.center = (637, 1076)
 
 
-font = pygame.font.Font("./font/VT323-Regular.ttf",25)
-title_font = pygame.font.Font("./font/VT323-Regular.ttf",170)
-middle_font = pygame.font.Font("./font/VT323-Regular.ttf",90)
-middle_middle_font = pygame.font.Font("./font/VT323-Regular.ttf",40)
+font = pygame.font.Font(resource_path("assets/font/VT323-Regular.ttf"),25)
+title_font = pygame.font.Font(resource_path("assets/font/VT323-Regular.ttf"),170)
+middle_font = pygame.font.Font(resource_path("assets/font/VT323-Regular.ttf"),90)
+middle_middle_font = pygame.font.Font(resource_path("assets/font/VT323-Regular.ttf"),40)
 boss_text1 = font.render("You were smarter than I thought,", True, (255,255,255))
 boss_text2 = font.render("but can you fight?", True, (255,255,255))
 
@@ -1243,7 +1247,7 @@ while running:
         if start_music:
             start_music = False
             pygame.mixer.init()
-            pygame.mixer.music.load("./bg_music/stage1.ogg") 
+            pygame.mixer.music.load(resource_path("assets/bg_music/stage1.ogg")) 
             pygame.mixer.music.play(-1,0.0)
 
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
@@ -1275,7 +1279,7 @@ while running:
         if start_music:
             start_music = False
             pygame.mixer.init()
-            pygame.mixer.music.load("./bg_music/stage2.mp3") 
+            pygame.mixer.music.load(resource_path("assets/bg_music/stage2.mp3")) 
             pygame.mixer.music.play(-1,0.0)
 
         player_dialogue_box_texture_rect = player_dialogue_box_texture.get_rect(); player_dialogue_box_texture_rect.center = (width/1.85, height-160)
@@ -1327,7 +1331,7 @@ while running:
         if start_music:
             start_music = False
             pygame.mixer.init()
-            pygame.mixer.music.load("./bg_music/stage3.mp3") 
+            pygame.mixer.music.load(resource_path("assets/bg_music/stage3.mp3")) 
             pygame.mixer.music.play(-1,0.0)
 
         if dead == False or dead == None:
@@ -1354,15 +1358,15 @@ while running:
             
             screen.blit(bossfight_raw_outline, bossfight_raw_outline_rect)
             if small:
-                player_sprite_standing = pygame.transform.scale(pygame.image.load("./imgs/Explorer steht.png"),(525/10,882.6/10))
-                player_sprite_left = pygame.transform.scale(pygame.image.load("./imgs/Explorer links.png"),(525/8.9,764/8.9))
-                player_sprite_right = pygame.transform.scale(pygame.image.load("./imgs/Explorer rechts.PNG"),(525/8.9,765/8.9))
-                player_sprite_up =  pygame.transform.scale(pygame.image.load("./imgs/Explorer oben.png"),(561/10,867/10))
+                player_sprite_standing = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer steht.png")),(525/10,882.6/10))
+                player_sprite_left = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer links.png")),(525/8.9,764/8.9))
+                player_sprite_right = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer rechts.png")),(525/8.9,765/8.9))
+                player_sprite_up =  pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer oben.png")),(561/10,867/10))
             else:
-                player_sprite_standing = pygame.transform.scale(pygame.image.load("./imgs/Explorer steht.png"),(525/7.3,882.6/7.3))
-                player_sprite_left = pygame.transform.scale(pygame.image.load("./imgs/Explorer links.png"),(525/6.5,764/6.5))
-                player_sprite_right = pygame.transform.scale(pygame.image.load("./imgs/Explorer rechts.PNG"),(525/6.5,765/6.5))
-                player_sprite_up =  pygame.transform.scale(pygame.image.load("./imgs/Explorer oben.png"),(561/7.3,867/7.3))
+                player_sprite_standing = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer steht.png")),(525/7.3,882.6/7.3))
+                player_sprite_left = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer links.png")),(525/6.5,764/6.5))
+                player_sprite_right = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer rechts.png")),(525/6.5,765/6.5))
+                player_sprite_up =  pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer oben.png")),(561/7.3,867/7.3))
 
             player_sprite_standing_rect = player_sprite_standing.get_rect(); player_sprite_standing_rect.center = ((width/2, height-160))
             player_sprite_left_rect = player_sprite_left.get_rect(); player_sprite_left_rect.center = ((width/2, height-160))
@@ -1439,11 +1443,11 @@ while running:
             screen.blit(current_sprite, current_sprite_rect)
             
             
-            if boss_hp == 400:
+            if boss_hp == 1000:
                 bossfight_phase = 1  
-            elif boss_hp <= 250 and boss_hp > 150:
+            elif boss_hp <= 700 and boss_hp > 400:
                 bossfight_phase = 2
-            elif boss_hp <= 150 and boss_hp > 0:
+            elif boss_hp <= 400 and boss_hp > 0:
                 bossfight_phase = 3
             elif boss_hp <= 0:
                 won = True
@@ -1652,7 +1656,7 @@ while running:
             if start_music:
                 start_music = False
                 pygame.mixer.init()
-                pygame.mixer.music.load("./bg_music/won.mp3") 
+                pygame.mixer.music.load(resource_path("assets/bg_music/won.mp3")) 
                 pygame.mixer.music.play(-1,0.0)
 
             
@@ -1746,10 +1750,10 @@ while running:
                     credits_offset = 0
             
             
-            player_sprite_standing = pygame.transform.scale(pygame.image.load("./imgs/Explorer steht.png"),(525/10,882.6/10))
-            player_sprite_left = pygame.transform.scale(pygame.image.load("./imgs/Explorer links.png"),(525/8.9,764/8.9))
-            player_sprite_right = pygame.transform.scale(pygame.image.load("./imgs/Explorer rechts.PNG"),(525/8.9,765/8.9))
-            player_sprite_up =  pygame.transform.scale(pygame.image.load("./imgs/Explorer oben.png"),(561/10,867/10))
+            player_sprite_standing = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer steht.png")),(525/10,882.6/10))
+            player_sprite_left = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer links.png")),(525/8.9,764/8.9))
+            player_sprite_right = pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer rechts.png")),(525/8.9,765/8.9))
+            player_sprite_up =  pygame.transform.scale(pygame.image.load(resource_path("assets/imgs/Explorer oben.png")),(561/10,867/10))
             standing = True
             old_x, old_y = player_x, player_y
             if keys[pygame.K_a] or keys[pygame.K_LEFT]:
